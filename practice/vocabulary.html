@@ -49,6 +49,18 @@
   .c-e2t{background:linear-gradient(135deg,#5BC8F0,var(--sky));}
   .c-t2e{background:linear-gradient(135deg,#5BD9B2,var(--mint));}
   .c-conn{background:linear-gradient(135deg,#A988E0,var(--grape));}
+  .c-spell{background:linear-gradient(135deg,#FFC26B,#FF9F43);}
+
+  /* Spell mode */
+  .wordtiles{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:16px 0 6px;}
+  .ltr{width:46px; height:54px; border-radius:12px; display:grid; place-items:center; font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.6rem; background:#FBFDFF; border:3px solid #EEF3F7;}
+  .ltr.blank{border-style:dashed; border-color:var(--coral); color:transparent;}
+  .ltr.blank.active{box-shadow:0 0 0 4px rgba(255,122,107,.18); background:#FFF5F3;}
+  .ltr.filled{border-color:var(--mint); background:#E7FBF3; color:#1E8E6E;}
+  .bank{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:20px;}
+  .key{width:50px; height:50px; border-radius:12px; border:3px solid #E7EEF4; background:#fff; font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.4rem; cursor:pointer; color:var(--ink);}
+  .key:active{transform:scale(.95);}
+  .key.used{opacity:.3; pointer-events:none;}
 
   .shead{display:flex; align-items:center; gap:10px; margin-bottom:12px;}
   .back{border:0; background:#fff; box-shadow:var(--shadow); border-radius:14px; width:46px; height:46px; font-size:1.3rem; cursor:pointer; flex:none; color:var(--ink); font-weight:800; text-decoration:none; display:grid; place-items:center;}
@@ -147,6 +159,10 @@
         <span class="ic">🔗</span>
         <span><span class="t">จับคู่คำศัพท์</span><br><span class="d">จับคู่อังกฤษกับคำแปล</span></span>
       </button>
+      <button class="mcard c-spell" onclick="startSpell()">
+        <span class="ic">✏️</span>
+        <span><span class="t">เติมตัวอักษร</span><br><span class="d">เติมตัวอักษรที่หายไป · ฝึกสะกดคำ</span></span>
+      </button>
     </div>
   </section>
 
@@ -188,6 +204,20 @@
       <div class="connect" id="connectArea"></div>
       <div class="feedback" id="connFb"></div>
       <button class="nextbtn" id="connNext" onclick="goHome()">Done ✓</button>
+    </div>
+  </section>
+
+  <!-- SPELL -->
+  <section class="screen" id="spell">
+    <div class="shead">
+      <button class="back" onclick="goHome()">‹</button>
+      <span class="stitle">เติมตัวอักษร</span>
+      <span class="progress" id="spellProg">1 / 10</span>
+    </div>
+    <div class="panel">
+      <div id="spellBody"></div>
+      <div class="feedback" id="spellFb"></div>
+      <button class="nextbtn" id="spellNext" onclick="nextSpell()">Next →</button>
     </div>
   </section>
 
@@ -276,7 +306,7 @@ function addStar(){
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  document.getElementById('repeatBtn').classList.toggle('show', id==='quiz');
+  document.getElementById('repeatBtn').classList.toggle('show', id==='quiz' || id==='spell');
 }
 function goHome(){ if(window.speechSynthesis) speechSynthesis.cancel(); show('home'); }
 function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);}
@@ -317,7 +347,7 @@ function renderQuestion(){
   if(quiz.mode==='en2th'){
     lastSpoken=q.en;
     body.innerHTML=`<div class="instr">เลือกคำแปลที่ถูก 🔊</div>
-      <div class="stage"><div class="wordbig"><span class="em">${icon(q)}</span>${q.en}</div></div>
+      <div class="stage"><div class="wordbig">${q.en}</div></div>
       <div class="choices" id="choiceBox"></div>`;
     const wrong = shuffle(WORDS.filter(w=>w.th!==q.th)).slice(0,3).map(w=>w.th);
     renderChoices(shuffle([q.th,...wrong]), q.th, q.en);
@@ -325,7 +355,7 @@ function renderQuestion(){
   } else {
     lastSpoken=q.en;
     body.innerHTML=`<div class="instr">เลือกคำศัพท์ภาษาอังกฤษ</div>
-      <div class="stage"><div class="wordbig"><span class="em">${icon(q)}</span>${q.th}</div></div>
+      <div class="stage"><div class="wordbig">${q.th}</div></div>
       <div class="choices" id="choiceBox"></div>`;
     const wrong = shuffle(WORDS.filter(w=>w.en!==q.en)).slice(0,3).map(w=>w.en);
     renderChoices(shuffle([q.en,...wrong]), q.en, q.en);
@@ -401,6 +431,97 @@ function connPick(row,btn,th,total){
     btn.classList.add('picked'); btn.disabled=true;
     fb.textContent='ลองใหม่อีกครั้ง!'; fb.className='feedback bad';
   }
+}
+
+/* ---------- SPELL (fill the missing letters) ---------- */
+let spell={list:[],idx:0,score:0,word:'',blanks:[],pos:0,wrong:0};
+function startSpell(){
+  spell.idx=0; spell.score=0;
+  spell.list = shuffle(WORDS.slice()).slice(0, Math.min(QUIZ_LEN, WORDS.length));
+  show('spell'); renderSpell();
+}
+function renderSpell(){
+  const total=spell.list.length;
+  document.getElementById('spellProg').textContent=`${spell.idx+1} / ${total}`;
+  document.getElementById('spellFb').textContent=''; document.getElementById('spellFb').className='feedback';
+  document.getElementById('spellNext').classList.remove('show');
+  document.getElementById('spellNext').textContent = spell.idx===total-1 ? 'Finish ✓' : 'Next →';
+
+  const w=spell.list[spell.idx];
+  const word=w.en;
+  lastSpoken=word;
+
+  // choose blank positions (letters only)
+  const letterIdx = word.split('').map((c,i)=>c===' '?-1:i).filter(i=>i>=0);
+  const plainLen = word.replace(/ /g,'').length;
+  let nBlanks = plainLen<=3 ? 1 : (plainLen<=5 ? 2 : 3);
+  nBlanks = Math.min(nBlanks, letterIdx.length);
+  const blanks = shuffle(letterIdx.slice()).slice(0,nBlanks).sort((a,b)=>a-b);
+  spell.word=word; spell.blanks=blanks; spell.pos=0; spell.wrong=0;
+
+  // word tiles (blanks hidden)
+  let tiles='';
+  word.split('').forEach((c,i)=>{
+    if(c===' '){ tiles+=`<div style="width:14px"></div>`; return; }
+    if(blanks.includes(i)) tiles+=`<div class="ltr blank" data-i="${i}">${c}</div>`;
+    else tiles+=`<div class="ltr">${c}</div>`;
+  });
+
+  // letter bank = hidden letters + a few distractors
+  const hidden = blanks.map(i=>word[i].toLowerCase());
+  const alpha='abcdefghijklmnopqrstuvwxyz'.split('');
+  const distract=[];
+  const want = Math.min(3, 8-hidden.length);
+  while(distract.length < want){
+    const r=alpha[Math.floor(Math.random()*26)];
+    if(!hidden.includes(r) && !distract.includes(r)) distract.push(r);
+  }
+  const bank = shuffle([...hidden, ...distract]);
+  const keys = bank.map(ltr=>`<button class="key" data-l="${ltr}">${ltr}</button>`).join('');
+
+  document.getElementById('spellBody').innerHTML=
+    `<div class="instr">เติมตัวอักษรที่หายไป · ${icon(w)} ${w.th} 🔊</div>
+     <div class="wordtiles">${tiles}</div>
+     <div class="bank">${keys}</div>`;
+  highlightActiveBlank();
+  document.querySelectorAll('#spellBody .key').forEach(btn=>{ btn.onclick=()=>spellTap(btn); });
+  say(word);
+}
+function highlightActiveBlank(){
+  document.querySelectorAll('#spellBody .ltr.blank').forEach(el=>el.classList.remove('active'));
+  if(spell.pos < spell.blanks.length){
+    const el=document.querySelector(`#spellBody .ltr.blank[data-i="${spell.blanks[spell.pos]}"]`);
+    if(el) el.classList.add('active');
+  }
+}
+function spellTap(btn){
+  if(spell.pos>=spell.blanks.length) return;
+  const fb=document.getElementById('spellFb');
+  const expected = spell.word[spell.blanks[spell.pos]].toLowerCase();
+  if(btn.dataset.l===expected){
+    const i=spell.blanks[spell.pos];
+    const el=document.querySelector(`#spellBody .ltr.blank[data-i="${i}"]`);
+    el.classList.remove('blank','active'); el.classList.add('filled'); el.textContent=spell.word[i];
+    btn.classList.add('used');
+    spell.pos++;
+    highlightActiveBlank();
+    if(spell.pos===spell.blanks.length){
+      if(spell.wrong===0) spell.score++;
+      addStar(); miniConfetti();
+      fb.textContent='ถูกต้อง! 🌟 '+spell.word; fb.className='feedback good';
+      say(spell.word);
+      document.querySelectorAll('#spellBody .key:not(.used)').forEach(k=>k.disabled=true);
+      document.getElementById('spellNext').classList.add('show');
+    }
+  } else {
+    spell.wrong++;
+    fb.textContent='ยังไม่ใช่ ลองใหม่'; fb.className='feedback bad';
+    btn.style.animation='shake .4s'; setTimeout(()=>{ btn.style.animation=''; },400);
+  }
+}
+function nextSpell(){
+  if(spell.idx < spell.list.length-1){ spell.idx++; renderSpell(); }
+  else showResult(spell.score, spell.list.length, startSpell);
 }
 
 /* ---------- RESULT ---------- */
