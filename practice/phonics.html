@@ -211,33 +211,34 @@
    🔤 คลัง Phonics A–Z — แก้คำตัวอย่าง/อิโมจิได้ที่นี่
    { L:'ตัวพิมพ์ใหญ่', w:'คำตัวอย่าง', e:'อิโมจิ' }
    ===================================================================== */
+// s = เสียง phonics (สะกดให้ TTS อ่านใกล้เคียงเสียงจริง — แก้ได้)
 const PHONICS = [
-  { L:'A', w:'apple',   e:'🍎' },
-  { L:'B', w:'ball',    e:'⚽' },
-  { L:'C', w:'cat',     e:'🐱' },
-  { L:'D', w:'dog',     e:'🐶' },
-  { L:'E', w:'egg',     e:'🥚' },
-  { L:'F', w:'fish',    e:'🐟' },
-  { L:'G', w:'goat',    e:'🐐' },
-  { L:'H', w:'hat',     e:'🎩' },
-  { L:'I', w:'insect',  e:'🐛' },
-  { L:'J', w:'juice',   e:'🧃' },
-  { L:'K', w:'key',     e:'🔑' },
-  { L:'L', w:'lion',    e:'🦁' },
-  { L:'M', w:'monkey',  e:'🐵' },
-  { L:'N', w:'nose',    e:'👃' },
-  { L:'O', w:'octopus', e:'🐙' },
-  { L:'P', w:'pig',     e:'🐷' },
-  { L:'Q', w:'queen',   e:'👸' },
-  { L:'R', w:'rabbit',  e:'🐰' },
-  { L:'S', w:'sun',     e:'☀️' },
-  { L:'T', w:'tree',    e:'🌳' },
-  { L:'U', w:'umbrella',e:'☂️' },
-  { L:'V', w:'van',     e:'🚐' },
-  { L:'W', w:'watch',   e:'⌚' },
-  { L:'X', w:'box',     e:'📦' },
-  { L:'Y', w:'yo-yo',   e:'🪀' },
-  { L:'Z', w:'zebra',   e:'🦓' },
+  { L:'A', w:'apple',   e:'🍎', s:'ah' },
+  { L:'B', w:'ball',    e:'⚽', s:'buh' },
+  { L:'C', w:'cat',     e:'🐱', s:'kuh' },
+  { L:'D', w:'dog',     e:'🐶', s:'duh' },
+  { L:'E', w:'egg',     e:'🥚', s:'eh' },
+  { L:'F', w:'fish',    e:'🐟', s:'fuh' },
+  { L:'G', w:'goat',    e:'🐐', s:'guh' },
+  { L:'H', w:'hat',     e:'🎩', s:'huh' },
+  { L:'I', w:'insect',  e:'🐛', s:'ih' },
+  { L:'J', w:'juice',   e:'🧃', s:'juh' },
+  { L:'K', w:'key',     e:'🔑', s:'kuh' },
+  { L:'L', w:'lion',    e:'🦁', s:'luh' },
+  { L:'M', w:'monkey',  e:'🐵', s:'muh' },
+  { L:'N', w:'nose',    e:'👃', s:'nuh' },
+  { L:'O', w:'octopus', e:'🐙', s:'aw' },
+  { L:'P', w:'pig',     e:'🐷', s:'puh' },
+  { L:'Q', w:'queen',   e:'👸', s:'kwuh' },
+  { L:'R', w:'rabbit',  e:'🐰', s:'ruh' },
+  { L:'S', w:'sun',     e:'☀️', s:'sss' },
+  { L:'T', w:'tree',    e:'🌳', s:'tuh' },
+  { L:'U', w:'umbrella',e:'☂️', s:'uh' },
+  { L:'V', w:'van',     e:'🚐', s:'vuh' },
+  { L:'W', w:'watch',   e:'⌚', s:'wuh' },
+  { L:'X', w:'box',     e:'📦', s:' kss' },
+  { L:'Y', w:'yo-yo',   e:'🪀', s:'yuh' },
+  { L:'Z', w:'zebra',   e:'🦓', s:'zzz' },
 ];
 
 const QUIZ_LEN = 10;
@@ -259,7 +260,8 @@ function say(text){
   u.lang='en-US'; u.rate=.8; u.pitch=1.1; if(voice) u.voice=voice;
   speechSynthesis.speak(u);
 }
-function sayLetter(p){ say(`${p.L} is for ${p.w}`); }
+function saySound(p){ say(`${p.s}, ${p.s}`); }                 // เสียงล้วน (ใช้ตอนถาม)
+function sayPhonics(p){ say(`${p.s}, ${p.s}, ${p.w}`); }       // เสียง + คำ (ใช้ตอนเรียน/เฉลย)
 let lastSpoken="";
 document.getElementById('repeatBtn').onclick=()=>{ if(lastSpoken) say(lastSpoken); };
 
@@ -284,7 +286,7 @@ function startLearn(){
   PHONICS.forEach(p=>{
     const d=document.createElement('button'); d.className='ltile';
     d.innerHTML=`<div class="lt">${p.L} ${p.L.toLowerCase()}</div><div class="e">${p.e}</div><div class="w">${p.w}</div>`;
-    d.onclick=()=>{ sayLetter(p); g.querySelectorAll('.ltile').forEach(x=>x.classList.remove('spk')); d.classList.add('spk'); };
+    d.onclick=()=>{ sayPhonics(p); g.querySelectorAll('.ltile').forEach(x=>x.classList.remove('spk')); d.classList.add('spk'); };
     g.appendChild(d);
   });
   show('learn');
@@ -306,26 +308,26 @@ function renderQuestion(){
   document.getElementById('nextBtn').textContent = quiz.idx===total-1 ? 'Finish ✓' : 'Next →';
   const q=quiz.list[quiz.idx];
   const body=document.getElementById('quizBody');
-  lastSpoken=`${q.L} is for ${q.w}`;
+  lastSpoken=`${q.s}, ${q.s}, ${q.w}`;
 
   if(quiz.mode==='b2l'){
     // show picture+word, choose the beginning letter
-    body.innerHTML=`<div class="instr">คำนี้ขึ้นต้นด้วยตัวอะไร?</div>
+    body.innerHTML=`<div class="instr">เสียงนี้คือตัวอักษรอะไร? 🔊</div>
       <div class="stage"><div class="bigpic"><span class="em">${q.e}</span><span class="wd">${q.w}</span></div></div>
       <div class="choices" id="choiceBox"></div>`;
     const wrong = shuffle(PHONICS.filter(p=>p.L!==q.L)).slice(0,3).map(p=>p.L);
     const opts = shuffle([q.L,...wrong]).map(L=>({html:`${L} ${L.toLowerCase()}`, val:L}));
-    renderChoices(opts, q.L, ()=>sayLetter(q));
-    say('What letter?');
+    renderChoices(opts, q.L, ()=>sayPhonics(q));
+    saySound(q);
   } else {
     // show letter, choose the picture/word
-    body.innerHTML=`<div class="instr">เลือกคำที่ขึ้นต้นด้วยตัวนี้</div>
+    body.innerHTML=`<div class="instr">ตัวนี้มีเสียงอะไร? เลือกคำให้ถูก 🔊</div>
       <div class="stage"><div class="bigletter">${q.L} ${q.L.toLowerCase()}</div></div>
       <div class="choices" id="choiceBox"></div>`;
     const wrong = shuffle(PHONICS.filter(p=>p.w!==q.w)).slice(0,3);
     const opts = shuffle([q,...wrong]).map(p=>({html:`<span class="ce">${p.e}</span><span class="cw">${p.w}</span>`, val:p.w}));
-    renderChoices(opts, q.w, ()=>sayLetter(q));
-    sayLetter(q);
+    renderChoices(opts, q.w, ()=>sayPhonics(q));
+    saySound(q);
   }
 }
 function renderChoices(opts, correctVal, speakFn){
@@ -367,7 +369,7 @@ function startConnect(){
   document.getElementById('connProg').textContent='0 / '+picks.length;
   const area=document.getElementById('connectArea'); area.innerHTML='';
   picks.forEach(p=>{
-    const row=document.createElement('div'); row.className='crow'; row.dataset.ans=p.w; row.dataset.l=p.L; row.dataset.word=p.w;
+    const row=document.createElement('div'); row.className='crow'; row.dataset.ans=p.w; row.dataset.l=p.L; row.dataset.word=p.w; row.dataset.s=p.s;
     const cue=document.createElement('div'); cue.className='ccue'; cue.textContent=p.L+' '+p.L.toLowerCase();
     const optsWrap=document.createElement('div'); optsWrap.className='copts';
     row.appendChild(cue); row.appendChild(optsWrap); area.appendChild(row);
@@ -389,7 +391,7 @@ function connPick(row,btn,word,total){
   if(word===row.dataset.ans){
     row.classList.add('done'); conn.done++; addStar();
     row.querySelectorAll('.copt').forEach(c=>c.disabled=true);
-    say(`${row.dataset.l} is for ${row.dataset.word}`);
+    say(`${row.dataset.s}, ${row.dataset.s}, ${row.dataset.word}`);
     fb.textContent='จับคู่ถูก! 🌟'; fb.className='feedback good';
     document.getElementById('connProg').textContent=conn.done+' / '+total;
     miniConfetti();
