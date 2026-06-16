@@ -442,7 +442,7 @@ function pickAnswer(btn, chosen, correct, opts, fullSentence){
 }
 function nextQuestion(){
   if(quiz.idx < quiz.list.length-1){ quiz.idx++; renderQuestion(); }
-  else showResult(quiz.score, quiz.list.length, ()=>startQuiz(quiz.mode));
+  else { if(window.P18Auth) P18Auth.saveScore('body-senses', quiz.mode, quiz.score, quiz.list.length); showResult(quiz.score, quiz.list.length, ()=>startQuiz(quiz.mode)); }
 }
 
 /* ---------- CONNECT ---------- */
@@ -483,6 +483,7 @@ function connPick(row,btn,job){
     document.getElementById('connProg').textContent=conn.done+' / '+CONNECT.length;
     miniConfetti();
     if(conn.done===CONNECT.length){
+      if(window.P18Auth) P18Auth.saveScore('body-senses','match',CONNECT.length,CONNECT.length);
       setTimeout(()=>showResult(CONNECT.length,CONNECT.length, startConnect),600);
     }
   } else {
@@ -524,5 +525,7 @@ function burst(n){
 /* warm up speech on first interaction (mobile needs a user gesture) */
 document.body.addEventListener('click',function once(){ try{ say(' '); }catch(e){}; document.body.removeEventListener('click',once); }, {once:true});
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../auth.js"></script>
 </body>
 </html>

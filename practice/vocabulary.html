@@ -387,7 +387,7 @@ function pickAnswer(btn, chosen, correct, speakWord){
 }
 function nextQuestion(){
   if(quiz.idx < quiz.list.length-1){ quiz.idx++; renderQuestion(); }
-  else showResult(quiz.score, quiz.list.length, ()=>startQuiz(quiz.mode));
+  else { if(window.P18Auth) P18Auth.saveScore('vocabulary', quiz.mode, quiz.score, quiz.list.length); showResult(quiz.score, quiz.list.length, ()=>startQuiz(quiz.mode)); }
 }
 
 /* ---------- CONNECT (en -> th) ---------- */
@@ -426,7 +426,7 @@ function connPick(row,btn,th,total){
     fb.textContent='จับคู่ถูก! 🌟'; fb.className='feedback good';
     document.getElementById('connProg').textContent=conn.done+' / '+total;
     miniConfetti();
-    if(conn.done===total){ setTimeout(()=>showResult(total,total, startConnect),600); }
+    if(conn.done===total){ if(window.P18Auth) P18Auth.saveScore('vocabulary','match',total,total); setTimeout(()=>showResult(total,total, startConnect),600); }
   } else {
     btn.classList.add('picked'); btn.disabled=true;
     fb.textContent='ลองใหม่อีกครั้ง!'; fb.className='feedback bad';
@@ -521,7 +521,7 @@ function spellTap(btn){
 }
 function nextSpell(){
   if(spell.idx < spell.list.length-1){ spell.idx++; renderSpell(); }
-  else showResult(spell.score, spell.list.length, startSpell);
+  else { if(window.P18Auth) P18Auth.saveScore('vocabulary','spell',spell.score,spell.list.length); showResult(spell.score, spell.list.length, startSpell); }
 }
 
 /* ---------- RESULT ---------- */
@@ -554,5 +554,7 @@ function burst(n){
 }
 document.body.addEventListener('click',function once(){ try{ say(' '); }catch(e){}; document.body.removeEventListener('click',once); }, {once:true});
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../auth.js"></script>
 </body>
 </html>
