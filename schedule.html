@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🗓️ ตารางเรียน ป.1/8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Sarabun:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sun:#FFC93C; --sky:#8FD3F4; --sky-2:#C7ECFF;
+    --ink:#3A2E14; --ink-soft:#7A6B45; --line:#EADFC6;
+    --shadow:0 8px 0 rgba(58,46,20,.08), 0 14px 30px rgba(58,46,20,.14);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;}
+  body{
+    font-family:'Sarabun',sans-serif; color:var(--ink);
+    background:radial-gradient(120% 120% at 50% 0%, #FFF4D6 0%, var(--sky-2) 60%, var(--sky) 100%);
+    min-height:100dvh; padding:14px 12px 40px;
+  }
+  .wrap{max-width:1100px; margin:0 auto;}
+  .shead{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .back{border:0; background:#fff; box-shadow:var(--shadow); border-radius:14px; width:46px; height:46px; font-size:1.3rem; cursor:pointer; flex:none; color:var(--ink); font-weight:800; text-decoration:none; display:grid; place-items:center;}
+  .back:active{transform:translateY(2px);}
+  .stitle{font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.25rem;}
+
+  .titlecard{background:#fff; border-radius:22px; box-shadow:var(--shadow); padding:16px 18px; text-align:center; margin-bottom:14px; border:3px solid #FFE9A8;}
+  .titlecard h1{font-family:'Fredoka',sans-serif; margin:0 0 3px; font-size:1.35rem;}
+  .titlecard p{margin:0; color:var(--ink-soft); font-weight:600; font-size:.92rem;}
+
+  .scroll{overflow-x:auto; border-radius:20px; box-shadow:var(--shadow); -webkit-overflow-scrolling:touch;}
+  table{border-collapse:separate; border-spacing:0; width:100%; min-width:720px; background:#fff; font-size:.84rem;}
+  th,td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:8px 6px; text-align:center; vertical-align:middle;}
+  thead th{font-family:'Fredoka',sans-serif; font-weight:600; position:sticky; top:0;}
+  .h-period{background:#FCE4EC;} .h-period.c1{background:#FCE4EC;} .h-period.c2{background:#FFF2CC;}
+  .h-period.c3{background:#DCF1FF;} .h-period.c4{background:#FFE7D6;}
+  .h-period.c5{background:#EDE3FF;} .h-period.c6{background:#FFE0E6;} .h-period.c7{background:#FCE9D4;}
+  .h-lunch{background:#FFF7D6; color:#B8860B;}
+  .timerow td{background:#FBFBF7; color:var(--ink-soft); font-weight:600; font-size:.78rem;}
+
+  /* sticky first column (day) */
+  th.daycol, td.daycol{position:sticky; left:0; z-index:2; font-family:'Fredoka',sans-serif; font-weight:600; font-size:1rem; min-width:74px;}
+  thead th.corner{position:sticky; left:0; z-index:3; background:#FFE9A8;}
+  .d-mon td.daycol,.d-mon{}
+  .daycol{background:#FFF6E0;}
+  tbody tr:nth-child(odd) td:not(.daycol):not(.lunch){background:#FFFDF8;}
+  tbody tr:nth-child(even) td:not(.daycol):not(.lunch){background:#FBFAF4;}
+
+  .cell .s{font-weight:800; display:block; line-height:1.2;}
+  .cell .t{color:var(--ink-soft); font-size:.78rem; display:block;}
+  .cell .r{color:#A99668; font-size:.72rem; display:block;}
+  td.lunch{background:repeating-linear-gradient(45deg,#FFF7D6,#FFF7D6 8px,#FFF0BD 8px,#FFF0BD 16px); color:#B8860B; font-weight:700;}
+
+  .legend{margin-top:12px; text-align:center; color:var(--ink-soft); font-weight:600; font-size:.8rem;}
+  @media (max-width:600px){ .titlecard h1{font-size:1.15rem;} table{font-size:.8rem;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="shead">
+    <a class="back" href="index.html" title="กลับหน้าหลัก">‹</a>
+    <span class="stitle">🗓️ ตารางเรียน</span>
+  </div>
+
+  <div class="titlecard">
+    <h1>ตารางเรียนนักเรียน ป.1/8</h1>
+    <p>ห้องเรียนประจำ 1214 · ภาคเรียนที่ 1/2569 · โรงเรียนวิเชียรชม</p>
+  </div>
+
+  <div class="scroll">
+    <table id="tt"></table>
+  </div>
+  <div class="legend">เลื่อนตารางซ้าย-ขวาได้ ➡️ · ห้องเรียน 1214 (เว้นแต่ระบุไว้)</div>
+</div>
+
+<script>
+/* ============================================================
+   ข้อมูลตารางเรียน — แก้ที่นี่ได้เลย
+   แต่ละคาบ: {s:วิชา, t:ครู, r:ห้อง}  (ถ้า r ว่าง = ห้อง 1214)
+   null = พักเที่ยง
+   ============================================================ */
+const PERIODS = [
+  {n:'1', time:'08.30–09.30'},
+  {n:'2', time:'09.30–10.30'},
+  {n:'3', time:'10.30–11.30'},
+  {n:'พักเที่ยง', time:'11.30–12.30', lunch:true},
+  {n:'4', time:'12.30–13.30'},
+  {n:'5', time:'13.30–14.30'},
+  {n:'6', time:'14.30–15.30'},
+  {n:'7', time:'15.30–16.30'},
+];
+
+const DEFAULT_ROOM = '1214';
+
+const DAYS = [
+  { d:'จันทร์', slots:[
+    {s:'MATH', t:'Fretzie'},
+    {s:'วิทย์', t:'กวีวรรณ'},
+    {s:'Art & Music', t:'Deorah'},
+    null,
+    {s:'ภาษาไทย', t:'วรรณภา'},
+    {s:'การงานฯ', t:'วรรณภา'},
+    {s:'Reading', t:'Einas'},
+    {s:'SCI', t:'Baguinang'},
+  ]},
+  { d:'อังคาร', slots:[
+    {s:'ประวัติศาสตร์', t:'ฐายิกา'},
+    {s:'ภาษาไทย', t:'วรรณภา'},
+    {s:'Writing', t:'Tina'},
+    null,
+    {s:'SCI', t:'Baguinang'},
+    {s:'สังคมฯ', t:'ฐายิกา'},
+    {s:'Grammar', t:'JJ'},
+    {s:'MATH', t:'Fretzie'},
+  ]},
+  { d:'พุธ', slots:[
+    {s:'Health', t:'Deorah'},
+    {s:'คณิต', t:'เฉลิมศักดิ์'},
+    {s:'MATH', t:'Fretzie'},
+    null,
+    {s:'จินตคณิต', t:'ดนิตา'},
+    {s:'อังกฤษ', t:'จิราวรรณ'},
+    {s:'SCI', t:'Baguinang'},
+    {s:'สุขศึกษา', t:'วรรณภา'},
+  ]},
+  { d:'พฤหัสฯ', slots:[
+    {s:'ลูกเสือ', t:'', r:'ป.1'},
+    {s:'Reading', t:'Einas'},
+    {s:'ศิลปะ', t:'ธันยพร'},
+    null,
+    {s:'ภาษาไทย', t:'วรรณภา'},
+    {s:'วิทย์', t:'กวีวรรณ'},
+    {s:'ภาษาจีน', t:'ชัญญานุช'},
+    {s:'นน./ต้าน', t:'วรรณภา'},
+  ]},
+  { d:'ศุกร์', slots:[
+    {s:'SCI', t:'Baguinang'},
+    {s:'Grammar', t:'JJ'},
+    {s:'เทคโนฯ', t:'ธนวรรณ', r:'1212'},
+    null,
+    {s:'คณิต', t:'เฉลิมศักดิ์'},
+    {s:'Speech', t:'Einas'},
+    {s:'MATH', t:'Fretzie'},
+    {s:'English club', t:'', r:'1–3'},
+  ]},
+];
+
+function render(){
+  const colClass = ['c1','c2','c3','','c4','c5','c6','c7'];
+  let html = '<thead>';
+  // period header
+  html += '<tr><th class="corner">คาบที่</th>';
+  PERIODS.forEach((p,i)=>{
+    if(p.lunch) html += `<th class="h-lunch">${p.n}</th>`;
+    else html += `<th class="h-period ${colClass[i]}">${p.n}</th>`;
+  });
+  html += '</tr>';
+  // time row
+  html += '<tr class="timerow"><td class="daycol" style="background:#FFE9A8">เวลา</td>';
+  PERIODS.forEach(p=>{ html += `<td>${p.time}</td>`; });
+  html += '</tr></thead><tbody>';
+
+  DAYS.forEach(day=>{
+    html += `<tr><td class="daycol">${day.d}</td>`;
+    day.slots.forEach(slot=>{
+      if(slot===null){ html += '<td class="lunch">🍱<br>พัก</td>'; return; }
+      const room = slot.r || DEFAULT_ROOM;
+      html += `<td><div class="cell"><span class="s">${slot.s}</span>`
+            + (slot.t ? `<span class="t">${slot.t}</span>` : '')
+            + `<span class="r">${room}</span></div></td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  document.getElementById('tt').innerHTML = html;
+}
+render();
+</script>
+</body>
+</html>
