@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Vocabulary — Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800&family=Sarabun:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-1:#8FD3F4; --sky-2:#C7ECFF;
+    --ink:#27384A; --ink-soft:#5A6B7D;
+    --sun:#FFD23F; --coral:#FF7A6B; --mint:#41C9A0; --grape:#9B6DD6; --sky:#3FA9F5;
+    --good:#41C9A0; --bad:#FF6B6B;
+    --shadow:0 8px 0 rgba(39,56,74,.12), 0 14px 30px rgba(39,56,74,.18);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; height:100%;}
+  body{
+    font-family:'Sarabun','Nunito',sans-serif; color:var(--ink);
+    background:linear-gradient(160deg,var(--sky-1),var(--sky-2));
+    min-height:100dvh; display:flex; flex-direction:column; align-items:center; overflow-x:hidden;
+  }
+  .wrap{width:100%; max-width:560px; padding:14px 16px 30px; flex:1; display:flex; flex-direction:column;}
+
+  .top{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;}
+  .brand{font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.15rem; display:flex; align-items:center; gap:7px;}
+  .brand .dot{width:14px;height:14px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 4px rgba(255,122,107,.25);}
+  .stars{background:#fff; border-radius:999px; padding:6px 13px; font-weight:800; box-shadow:var(--shadow); display:flex; align-items:center; gap:6px; font-size:1rem;}
+  .stars .s{filter:drop-shadow(0 2px 0 rgba(255,178,0,.4)); transition:transform .25s;}
+  .stars.pop .s{transform:scale(1.5) rotate(18deg);}
+
+  .screen{display:none; flex:1; flex-direction:column;}
+  .screen.active{display:flex; animation:rise .35s ease both;}
+  @keyframes rise{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);}}
+
+  .hero{background:#fff; border-radius:26px; padding:22px 20px; box-shadow:var(--shadow); text-align:center; margin-bottom:16px;}
+  .hero h1{font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.7rem; margin:6px 0 2px;}
+  .hero p{margin:0; color:var(--ink-soft); font-weight:700;}
+  .hero .emoji{font-size:2.7rem; line-height:1;}
+  .menu{display:flex; flex-direction:column; gap:14px;}
+  .mcard{border:0; cursor:pointer; text-align:left; color:#fff; border-radius:22px; padding:18px; display:flex; align-items:center; gap:16px; box-shadow:var(--shadow); font-family:'Fredoka',sans-serif; transition:transform .12s;}
+  .mcard:active{transform:translateY(3px);}
+  .mcard .ic{font-size:2.1rem; background:rgba(255,255,255,.25); width:58px; height:58px; border-radius:16px; display:grid; place-items:center; flex:none;}
+  .mcard .t{font-size:1.2rem; font-weight:700; line-height:1.1;}
+  .mcard .d{font-family:'Sarabun',sans-serif; font-weight:700; opacity:.95; font-size:.9rem;}
+  .c-learn{background:linear-gradient(135deg,#FFB23F,var(--sun));}
+  .c-e2t{background:linear-gradient(135deg,#5BC8F0,var(--sky));}
+  .c-t2e{background:linear-gradient(135deg,#5BD9B2,var(--mint));}
+  .c-conn{background:linear-gradient(135deg,#A988E0,var(--grape));}
+
+  .shead{display:flex; align-items:center; gap:10px; margin-bottom:12px;}
+  .back{border:0; background:#fff; box-shadow:var(--shadow); border-radius:14px; width:46px; height:46px; font-size:1.3rem; cursor:pointer; flex:none; color:var(--ink); font-weight:800; text-decoration:none; display:grid; place-items:center;}
+  .back:active{transform:translateY(2px);}
+  .stitle{font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.2rem;}
+  .progress{margin-left:auto; font-weight:800; color:var(--ink-soft); background:#fff; padding:6px 12px; border-radius:999px; box-shadow:var(--shadow);}
+
+  .panel{background:#fff; border-radius:24px; box-shadow:var(--shadow); padding:18px 16px; flex:1; display:flex; flex-direction:column;}
+  .instr{font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.15rem; text-align:center; margin:2px 0 12px;}
+
+  .stage{display:grid; place-items:center; flex:1;}
+  .wordbig{font-family:'Fredoka',sans-serif; font-weight:700; font-size:2.1rem; text-align:center; line-height:1.2;}
+  .wordbig .em{font-size:3rem; display:block; margin-bottom:6px;}
+
+  /* badge for words without emoji */
+  .badge{display:inline-grid; place-items:center; width:1.5em; height:1.5em; border-radius:.35em; background:#FFE9A8; color:#B8740C; font-weight:800;}
+
+  .lgrid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; overflow-y:auto;}
+  .ltile{border:3px solid #EEF3F7; background:#FBFDFF; border-radius:18px; padding:14px 10px; text-align:center; cursor:pointer; transition:transform .1s,border-color .15s;}
+  .ltile:active{transform:scale(.96);}
+  .ltile.spk{border-color:var(--sun); background:#FFF8E6;}
+  .ltile .e{font-size:1.9rem;}
+  .ltile .en{font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.05rem; margin-top:3px;}
+  .ltile .th{color:var(--ink-soft); font-size:.95rem; font-weight:700;}
+  .ltile .spkr{font-size:.8rem; color:var(--ink-soft); font-weight:800; margin-top:2px;}
+
+  .choices{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:14px;}
+  .choices.one{grid-template-columns:1fr;}
+  .choice{border:3px solid #E7EEF4; background:#fff; border-radius:18px; padding:16px 10px; font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.25rem; cursor:pointer; color:var(--ink); transition:transform .1s, border-color .15s, background .15s;}
+  .choice:active{transform:scale(.97);}
+  .choice.correct{border-color:var(--good); background:#E7FBF3; color:#1E8E6E;}
+  .choice.wrong{border-color:var(--bad); background:#FFECEC; color:#D64545; animation:shake .4s;}
+  .choice:disabled{cursor:default;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-7px);}75%{transform:translateX(7px);}}
+
+  .feedback{text-align:center; font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.1rem; min-height:28px; margin-top:12px; color:var(--ink-soft);}
+  .feedback.good{color:var(--good);} .feedback.bad{color:var(--bad);}
+
+  .nextbtn{margin-top:auto; border:0; background:linear-gradient(135deg,#5BD9B2,var(--mint)); color:#fff; font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.2rem; padding:15px; border-radius:18px; box-shadow:var(--shadow); cursor:pointer; opacity:0; pointer-events:none; transition:opacity .2s;}
+  .nextbtn.show{opacity:1; pointer-events:auto;}
+  .nextbtn:active{transform:translateY(3px);}
+
+  .connect{display:flex; flex-direction:column; gap:10px;}
+  .crow{display:flex; align-items:center; gap:12px;}
+  .ccue{flex:none; width:120px; font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.15rem; background:#FBFDFF; border:3px solid #EEF3F7; border-radius:14px; padding:12px 8px; text-align:center; display:flex; align-items:center; justify-content:center; gap:7px;}
+  .copts{display:flex; flex-wrap:wrap; gap:8px; flex:1;}
+  .copt{border:3px solid #E7EEF4; background:#fff; border-radius:13px; padding:9px 13px; font-family:'Sarabun',sans-serif; font-weight:700; cursor:pointer; font-size:1rem;}
+  .copt.picked{opacity:.4;}
+  .crow.done .ccue{border-color:var(--good); background:#E7FBF3;}
+
+  .result{background:#fff; border-radius:26px; box-shadow:var(--shadow); padding:30px 22px; text-align:center; flex:1; display:flex; flex-direction:column; justify-content:center;}
+  .result .big{font-size:3.4rem;}
+  .result h2{font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.8rem; margin:8px 0 2px;}
+  .result .score{font-weight:800; color:var(--ink-soft); font-size:1.2rem;}
+  .result .rstars{font-size:2rem; margin:14px 0; letter-spacing:6px;}
+  .result button{margin-top:10px; border:0; border-radius:18px; padding:15px; font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.15rem; cursor:pointer; box-shadow:var(--shadow); color:#fff;}
+  .r-again{background:linear-gradient(135deg,#FFB23F,var(--sun));}
+  .result button.r-home{background:#fff; color:var(--ink); margin-top:12px; border:3px solid #EEF3F7; box-shadow:none;}
+
+  .speak-fab{position:fixed; bottom:18px; right:18px; width:60px; height:60px; border-radius:50%; border:0; background:var(--grape); color:#fff; font-size:1.6rem; box-shadow:var(--shadow); cursor:pointer; z-index:30; display:none;}
+  .speak-fab.show{display:grid; place-items:center;}
+  .speak-fab:active{transform:translateY(3px);}
+
+  .confetti{position:fixed; top:-10px; width:11px; height:18px; z-index:50; pointer-events:none; border-radius:2px;}
+  @keyframes fall{to{transform:translateY(105vh) rotate(540deg); opacity:0;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><span class="dot"></span> Vocabulary</div>
+    <div class="stars" id="starbox"><span class="s">⭐</span><span id="starnum">0</span></div>
+  </div>
+
+  <!-- HOME -->
+  <section class="screen active" id="home">
+    <div class="hero">
+      <div class="emoji">📚💡</div>
+      <h1>Vocabulary</h1>
+      <p id="wordcount">คำศัพท์ในคลัง</p>
+    </div>
+    <div class="menu">
+      <button class="mcard c-learn" onclick="startLearn()">
+        <span class="ic">🔤</span>
+        <span><span class="t">ท่องศัพท์</span><br><span class="d">แตะการ์ดเพื่อฟังเสียง</span></span>
+      </button>
+      <button class="mcard c-e2t" onclick="startQuiz('en2th')">
+        <span class="ic">🇬🇧</span>
+        <span><span class="t">อังกฤษ → ไทย</span><br><span class="d">เลือกคำแปลที่ถูก</span></span>
+      </button>
+      <button class="mcard c-t2e" onclick="startQuiz('th2en')">
+        <span class="ic">🇹🇭</span>
+        <span><span class="t">ไทย → อังกฤษ</span><br><span class="d">เลือกคำศัพท์ที่ถูก</span></span>
+      </button>
+      <button class="mcard c-conn" onclick="startConnect()">
+        <span class="ic">🔗</span>
+        <span><span class="t">จับคู่คำศัพท์</span><br><span class="d">จับคู่อังกฤษกับคำแปล</span></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- LEARN -->
+  <section class="screen" id="learn">
+    <div class="shead">
+      <button class="back" onclick="goHome()">‹</button>
+      <span class="stitle">ท่องศัพท์</span>
+    </div>
+    <div class="panel">
+      <div class="instr">แตะการ์ดเพื่อฟังเสียง 🔊</div>
+      <div class="lgrid" id="learnGrid"></div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="screen" id="quiz">
+    <div class="shead">
+      <button class="back" onclick="goHome()">‹</button>
+      <span class="stitle" id="quizTitle">Quiz</span>
+      <span class="progress" id="quizProg">1 / 10</span>
+    </div>
+    <div class="panel">
+      <div id="quizBody"></div>
+      <div class="feedback" id="quizFb"></div>
+      <button class="nextbtn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+    </div>
+  </section>
+
+  <!-- CONNECT -->
+  <section class="screen" id="connect">
+    <div class="shead">
+      <button class="back" onclick="goHome()">‹</button>
+      <span class="stitle">จับคู่คำศัพท์</span>
+      <span class="progress" id="connProg">0 / 5</span>
+    </div>
+    <div class="panel">
+      <div class="instr">จับคู่คำอังกฤษกับคำแปล</div>
+      <div class="connect" id="connectArea"></div>
+      <div class="feedback" id="connFb"></div>
+      <button class="nextbtn" id="connNext" onclick="goHome()">Done ✓</button>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="result">
+    <div class="result">
+      <div class="big" id="rEmoji">🎉</div>
+      <h2 id="rTitle">Great job!</h2>
+      <div class="score" id="rScore">10 / 10</div>
+      <div class="rstars" id="rStars">⭐⭐⭐</div>
+      <button class="r-again" id="rAgain">เล่นอีกครั้ง</button>
+      <button class="r-home" onclick="goHome()">กลับเมนู</button>
+    </div>
+  </section>
+</div>
+
+<button class="speak-fab" id="repeatBtn" title="ฟังอีกครั้ง">🔊</button>
+
+<script>
+/* =====================================================================
+   📚 คลังคำศัพท์ — เพิ่มคำใหม่ที่นี่ได้เลย (เพิ่ม 1 บรรทัด = ใช้ได้ทุกโหมด)
+   รูปแบบ:  { en:'คำอังกฤษ', th:'คำแปลไทย', emoji:'อิโมจิ (ใส่หรือไม่ก็ได้)' }
+   ===================================================================== */
+const WORDS = [
+  { en:'plus',    th:'บวก',        emoji:'➕' },
+  { en:'fill',    th:'เติม',       emoji:'✍️' },
+  { en:'circle',  th:'วงกลม',      emoji:'⭕' },
+  { en:'sun',     th:'พระอาทิตย์',  emoji:'☀️' },
+  { en:'star',    th:'ดาว',        emoji:'⭐' },
+  { en:'stand',   th:'ยืน',        emoji:'🧍' },
+  { en:'banana',  th:'กล้วย',      emoji:'🍌' },
+  { en:'corn',    th:'ข้าวโพด',     emoji:'🌽' },
+  { en:'tree',    th:'ต้นไม้',      emoji:'🌳' },
+  { en:'root',    th:'ราก',        emoji:'🌱' },
+  { en:'stem',    th:'ลำต้น',       emoji:'🪵' },
+  { en:'flower',  th:'ดอกไม้',      emoji:'🌸' },
+  { en:'ant',     th:'มด',         emoji:'🐜' },
+  { en:'apple',   th:'แอปเปิ้ล',    emoji:'🍎' },
+  { en:'air',     th:'อากาศ',      emoji:'💨' },
+  { en:'color',   th:'สี',         emoji:'🎨' },
+  { en:'cat',     th:'แมว',        emoji:'🐱' },
+  { en:'coconut', th:'มะพร้าว',     emoji:'🥥' },
+  { en:'equal',   th:'เท่ากับ',     emoji:'🟰' },
+  { en:'ear',     th:'หู',         emoji:'👂' },
+  { en:'eye',     th:'ตา',         emoji:'👁️' },
+  { en:'need',    th:'ต้องการ',     emoji:'🤲' },
+  { en:'water',   th:'น้ำ',         emoji:'💧' },
+  { en:'breathe', th:'หายใจ',      emoji:'🌬️' },
+  { en:'left',    th:'ซ้าย',       emoji:'⬅️' },
+  { en:'right',   th:'ขวา',        emoji:'➡️' },
+  { en:'go',      th:'ไป',         emoji:'🏃' },
+  { en:'table',   th:'โต๊ะ',        emoji:'🪑' },
+  { en:'bag',     th:'กระเป๋า',     emoji:'👜' },
+  { en:'paper',   th:'กระดาษ',      emoji:'📄' },
+];
+
+const QUIZ_LEN = 10;   // จำนวนข้อต่อรอบ (ปรับได้)
+const MATCH_LEN = 5;   // จำนวนคู่ต่อรอบโหมดจับคู่
+
+/* ---------- Speech (อังกฤษ) ---------- */
+let voice = null;
+function pickVoice(){
+  const vs = speechSynthesis.getVoices();
+  voice = vs.find(v=>/en[-_]US/i.test(v.lang) && /female|samantha|zira|google us/i.test(v.name))
+       || vs.find(v=>/en[-_]US/i.test(v.lang))
+       || vs.find(v=>/^en/i.test(v.lang)) || null;
+}
+if('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='en-US'; u.rate=.85; u.pitch=1.1; if(voice) u.voice=voice;
+  speechSynthesis.speak(u);
+}
+let lastSpoken="";
+document.getElementById('repeatBtn').onclick=()=>{ if(lastSpoken) say(lastSpoken); };
+
+/* ---------- Helpers ---------- */
+let stars = 0;
+function addStar(){
+  stars++; document.getElementById('starnum').textContent=stars;
+  const sb=document.getElementById('starbox'); sb.classList.add('pop');
+  setTimeout(()=>sb.classList.remove('pop'),260);
+}
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('repeatBtn').classList.toggle('show', id==='quiz');
+}
+function goHome(){ if(window.speechSynthesis) speechSynthesis.cancel(); show('home'); }
+function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);}
+function icon(w){ return w.emoji ? w.emoji : `<span class="badge">${(w.en[0]||'?').toUpperCase()}</span>`; }
+
+document.getElementById('wordcount').textContent = `มี ${WORDS.length} คำในคลัง · จะเพิ่มเรื่อยๆ`;
+
+/* ---------- LEARN ---------- */
+function startLearn(){
+  const g=document.getElementById('learnGrid'); g.innerHTML='';
+  WORDS.forEach(w=>{
+    const d=document.createElement('button'); d.className='ltile';
+    d.innerHTML=`<div class="e">${icon(w)}</div><div class="en">${w.en}</div><div class="th">${w.th}</div><div class="spkr">🔊 แตะฟัง</div>`;
+    d.onclick=()=>{ say(w.en); g.querySelectorAll('.ltile').forEach(x=>x.classList.remove('spk')); d.classList.add('spk'); };
+    g.appendChild(d);
+  });
+  show('learn');
+}
+
+/* ---------- QUIZ (en2th / th2en) ---------- */
+let quiz={mode:null,list:[],idx:0,score:0};
+function startQuiz(mode){
+  quiz.mode=mode; quiz.idx=0; quiz.score=0;
+  quiz.list = shuffle(WORDS.slice()).slice(0, Math.min(QUIZ_LEN, WORDS.length));
+  document.getElementById('quizTitle').textContent = mode==='en2th' ? 'อังกฤษ → ไทย' : 'ไทย → อังกฤษ';
+  show('quiz'); renderQuestion();
+}
+function renderQuestion(){
+  const total=quiz.list.length;
+  document.getElementById('quizProg').textContent=`${quiz.idx+1} / ${total}`;
+  document.getElementById('quizFb').textContent='';
+  document.getElementById('quizFb').className='feedback';
+  document.getElementById('nextBtn').classList.remove('show');
+  document.getElementById('nextBtn').textContent = quiz.idx===total-1 ? 'Finish ✓' : 'Next →';
+  const q=quiz.list[quiz.idx];
+  const body=document.getElementById('quizBody');
+
+  if(quiz.mode==='en2th'){
+    lastSpoken=q.en;
+    body.innerHTML=`<div class="instr">เลือกคำแปลที่ถูก 🔊</div>
+      <div class="stage"><div class="wordbig"><span class="em">${icon(q)}</span>${q.en}</div></div>
+      <div class="choices" id="choiceBox"></div>`;
+    const wrong = shuffle(WORDS.filter(w=>w.th!==q.th)).slice(0,3).map(w=>w.th);
+    renderChoices(shuffle([q.th,...wrong]), q.th, q.en);
+    say(q.en);
+  } else {
+    lastSpoken=q.en;
+    body.innerHTML=`<div class="instr">เลือกคำศัพท์ภาษาอังกฤษ</div>
+      <div class="stage"><div class="wordbig"><span class="em">${icon(q)}</span>${q.th}</div></div>
+      <div class="choices" id="choiceBox"></div>`;
+    const wrong = shuffle(WORDS.filter(w=>w.en!==q.en)).slice(0,3).map(w=>w.en);
+    renderChoices(shuffle([q.en,...wrong]), q.en, q.en);
+  }
+}
+function renderChoices(opts, correct, speakWord){
+  const box=document.getElementById('choiceBox'); box.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button'); b.className='choice'; b.textContent=o;
+    b.onclick=()=>pickAnswer(b,o,correct,speakWord);
+    box.appendChild(b);
+  });
+}
+function pickAnswer(btn, chosen, correct, speakWord){
+  const box=document.getElementById('choiceBox');
+  box.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('quizFb');
+  if(chosen===correct){
+    btn.classList.add('correct'); quiz.score++; addStar();
+    fb.textContent='เก่งมาก! 🌟'; fb.className='feedback good';
+    say(speakWord); miniConfetti();
+  } else {
+    btn.classList.add('wrong');
+    box.querySelectorAll('.choice').forEach(b=>{ if(b.textContent===correct) b.classList.add('correct'); });
+    fb.textContent='คำตอบคือ "'+correct+'"'; fb.className='feedback bad';
+    say(speakWord);
+  }
+  document.getElementById('nextBtn').classList.add('show');
+}
+function nextQuestion(){
+  if(quiz.idx < quiz.list.length-1){ quiz.idx++; renderQuestion(); }
+  else showResult(quiz.score, quiz.list.length, ()=>startQuiz(quiz.mode));
+}
+
+/* ---------- CONNECT (en -> th) ---------- */
+let conn={done:0};
+function startConnect(){
+  conn.done=0;
+  document.getElementById('connFb').textContent='';
+  document.getElementById('connNext').classList.remove('show');
+  const picks = shuffle(WORDS.slice()).slice(0, Math.min(MATCH_LEN, WORDS.length));
+  document.getElementById('connProg').textContent='0 / '+picks.length;
+  const area=document.getElementById('connectArea'); area.innerHTML='';
+  picks.forEach(w=>{
+    const row=document.createElement('div'); row.className='crow'; row.dataset.ans=w.th; row.dataset.en=w.en;
+    const cue=document.createElement('div'); cue.className='ccue'; cue.innerHTML=`<span>${icon(w)}</span> ${w.en}`;
+    const optsWrap=document.createElement('div'); optsWrap.className='copts';
+    row.appendChild(cue); row.appendChild(optsWrap); area.appendChild(row);
+  });
+  const thChoices = shuffle(picks.map(w=>w.th));
+  area.querySelectorAll('.crow').forEach(row=>{
+    const wrap=row.querySelector('.copts');
+    thChoices.forEach(th=>{
+      const o=document.createElement('button'); o.className='copt'; o.textContent=th;
+      o.onclick=()=>connPick(row,o,th,picks.length);
+      wrap.appendChild(o);
+    });
+  });
+  show('connect');
+}
+function connPick(row,btn,th,total){
+  if(row.classList.contains('done')) return;
+  const fb=document.getElementById('connFb');
+  if(th===row.dataset.ans){
+    row.classList.add('done'); conn.done++; addStar();
+    row.querySelectorAll('.copt').forEach(c=>c.disabled=true);
+    say(row.dataset.en);
+    fb.textContent='จับคู่ถูก! 🌟'; fb.className='feedback good';
+    document.getElementById('connProg').textContent=conn.done+' / '+total;
+    miniConfetti();
+    if(conn.done===total){ setTimeout(()=>showResult(total,total, startConnect),600); }
+  } else {
+    btn.classList.add('picked'); btn.disabled=true;
+    fb.textContent='ลองใหม่อีกครั้ง!'; fb.className='feedback bad';
+  }
+}
+
+/* ---------- RESULT ---------- */
+function showResult(score,total,againFn){
+  show('result');
+  const pct=score/total;
+  document.getElementById('rScore').textContent=score+' / '+total;
+  document.getElementById('rEmoji').textContent = pct===1?'🏆':pct>=.7?'🎉':'💪';
+  document.getElementById('rTitle').textContent = pct===1?'เยี่ยมมาก!':pct>=.7?'เก่งมาก!':'สู้ต่อไป!';
+  document.getElementById('rStars').textContent = pct===1?'⭐⭐⭐':pct>=.7?'⭐⭐':'⭐';
+  document.getElementById('rAgain').onclick=againFn;
+  if(pct>=.7) bigConfetti();
+  say(pct===1?'Perfect! Well done!':pct>=.7?'Great job!':'Good try! Keep going!');
+}
+
+/* ---------- Confetti ---------- */
+const COLORS=['#FFD23F','#FF7A6B','#41C9A0','#9B6DD6','#3FA9F5'];
+function miniConfetti(){ burst(14); }
+function bigConfetti(){ burst(60); }
+function burst(n){
+  for(let i=0;i<n;i++){
+    const c=document.createElement('div'); c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=COLORS[i%COLORS.length];
+    c.style.animation=`fall ${1+Math.random()*1.2}s ${Math.random()*.3}s linear forwards`;
+    c.style.transform=`rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),2600);
+  }
+}
+document.body.addEventListener('click',function once(){ try{ say(' '); }catch(e){}; document.body.removeEventListener('click',once); }, {once:true});
+</script>
+</body>
+</html>
