@@ -330,7 +330,7 @@ function startLearn(){
 let quiz={mode:null,list:[],idx:0,score:0};
 function startQuiz(mode){
   quiz.mode=mode; quiz.idx=0; quiz.score=0;
-  quiz.list = shuffle(WORDS.slice()).slice(0, Math.min(QUIZ_LEN, WORDS.length));
+  quiz.list = shuffle(WORDS.slice()); // ทุกคำในคลัง
   document.getElementById('quizTitle').textContent = mode==='en2th' ? 'อังกฤษ → ไทย' : 'ไทย → อังกฤษ';
   show('quiz'); renderQuestion();
 }
@@ -437,7 +437,7 @@ function connPick(row,btn,th,total){
 let spell={list:[],idx:0,score:0,word:'',blanks:[],pos:0,wrong:0};
 function startSpell(){
   spell.idx=0; spell.score=0;
-  spell.list = shuffle(WORDS.slice()).slice(0, Math.min(QUIZ_LEN, WORDS.length));
+  spell.list = shuffle(WORDS.slice()); // ทุกคำในคลัง
   show('spell'); renderSpell();
 }
 function renderSpell(){

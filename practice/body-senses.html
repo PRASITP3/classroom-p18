@@ -376,8 +376,8 @@ function startLearn(){
 let quiz={mode:null,list:[],idx:0,score:0};
 function startQuiz(mode){
   quiz.mode=mode; quiz.idx=0; quiz.score=0;
-  if(mode==='body'){ quiz.list=shuffle(BODY.slice()).slice(0,10); document.getElementById('quizTitle').textContent='Body Parts'; }
-  else { quiz.list=shuffle(SENSE.slice()).slice(0,10); document.getElementById('quizTitle').textContent='Five Senses'; }
+  if(mode==='body'){ quiz.list=shuffle(BODY.slice()); document.getElementById('quizTitle').textContent='Body Parts'; }
+  else { quiz.list=shuffle(SENSE.slice()); document.getElementById('quizTitle').textContent='Five Senses'; }
   show('quiz'); renderQuestion();
 }
 function renderQuestion(){

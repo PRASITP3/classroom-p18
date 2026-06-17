@@ -296,7 +296,7 @@ function startLearn(){
 let quiz={mode:null,list:[],idx:0,score:0};
 function startQuiz(mode){
   quiz.mode=mode; quiz.idx=0; quiz.score=0;
-  quiz.list = shuffle(PHONICS.slice()).slice(0, Math.min(QUIZ_LEN, PHONICS.length));
+  quiz.list = shuffle(PHONICS.slice()); // ทุกตัวอักษรในคลัง
   document.getElementById('quizTitle').textContent = mode==='b2l' ? 'Beginning Sound' : 'Letter → Word';
   show('quiz'); renderQuestion();
 }
