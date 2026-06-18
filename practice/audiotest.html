@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ทดสอบเสียง — Audio Test</title>
+<style>
+  body{font-family:-apple-system,'Sarabun',sans-serif; max-width:560px; margin:0 auto; padding:18px; background:#f4f7fb; color:#223;}
+  h1{font-size:1.3rem;}
+  button{display:block; width:100%; margin:10px 0; padding:16px; font-size:1.15rem; font-weight:700;
+    border:0; border-radius:14px; background:#3FA9F5; color:#fff; cursor:pointer;}
+  button.alt{background:#9B6DD6;}
+  button.tts{background:#41C9A0;}
+  pre{background:#0f1720; color:#7CF2B0; padding:14px; border-radius:12px; font-size:.82rem;
+    white-space:pre-wrap; word-break:break-word; min-height:120px; line-height:1.5;}
+  .row{display:flex; gap:10px;} .row button{margin:10px 0;}
+</style>
+</head>
+<body>
+<h1>🔊 ทดสอบเสียง (Audio Test)</h1>
+<p>แตะปุ่มทีละปุ่ม แล้วดูข้อความด้านล่าง — ถ้ามีเสียงออกให้บอกด้วยว่าได้ยินอะไร</p>
+
+<button id="b1">1) เล่น g_w.wav (วิธีที่เกมใช้)</button>
+<button id="b2" class="alt">2) เล่น g_w.wav (Audio ใหม่ทุกครั้ง)</button>
+<button id="b3" class="tts">3) ทดสอบ TTS พูด "ga ga goat"</button>
+<button id="b4" class="tts">4) แสดงรายชื่อเสียง (voices) ในเครื่อง</button>
+
+<pre id="log">พร้อมทดสอบ…
+</pre>
+
+<script>
+const AUDIO='g_w.wav';
+const logEl=document.getElementById('log');
+function log(m){ logEl.textContent += '\n' + m; }
+log('UA: ' + navigator.userAgent);
+const probe=document.createElement('audio');
+log('canPlayType audio/wav     = "' + probe.canPlayType('audio/wav') + '"');
+log('canPlayType audio/wave    = "' + probe.canPlayType('audio/wave') + '"');
+log('canPlayType audio/x-wav   = "' + probe.canPlayType('audio/x-wav') + '"');
+log('canPlayType audio/mpeg    = "' + probe.canPlayType('audio/mpeg') + '"');
+log('canPlayType audio/mp4     = "' + probe.canPlayType('audio/mp4') + '"');
+
+let shared=null;
+function getShared(){ if(!shared) shared=new Audio(); return shared; }
+
+document.getElementById('b1').onclick=()=>{
+  log('\n[1] reuse element → ' + AUDIO);
+  const a=getShared();
+  a.muted=false; a.src=AUDIO; a.currentTime=0;
+  a.onerror=()=>log('[1] onerror: code=' + (a.error&&a.error.code));
+  const pr=a.play();
+  if(pr&&pr.then) pr.then(()=>log('[1] ✅ play() RESOLVED — ควรมีเสียง')).catch(e=>log('[1] ❌ play() REJECTED: ' + e.name + ' — ' + e.message));
+  else log('[1] play() ไม่คืน promise');
+};
+document.getElementById('b2').onclick=()=>{
+  log('\n[2] new Audio() → ' + AUDIO);
+  const a=new Audio(AUDIO);
+  a.onerror=()=>log('[2] onerror: code=' + (a.error&&a.error.code));
+  const pr=a.play();
+  if(pr&&pr.then) pr.then(()=>log('[2] ✅ play() RESOLVED — ควรมีเสียง')).catch(e=>log('[2] ❌ play() REJECTED: ' + e.name + ' — ' + e.message));
+};
+document.getElementById('b3').onclick=()=>{
+  log('\n[3] TTS speak "ga, ga, goat" (lang en-US)');
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance('ga, ga, goat'); u.lang='en-US';
+    const vs=speechSynthesis.getVoices();
+    const en=vs.find(v=>/^en/i.test(v.lang));
+    if(en){ u.voice=en; log('[3] ใช้ voice: ' + en.name + ' (' + en.lang + ')'); }
+    else log('[3] ⚠️ ไม่พบเสียงภาษาอังกฤษ — จะอ่านด้วยเสียง default');
+    speechSynthesis.speak(u);
+  }catch(e){ log('[3] error: ' + e.message); }
+};
+document.getElementById('b4').onclick=()=>{
+  const vs=speechSynthesis.getVoices();
+  log('\n[4] มี ' + vs.length + ' เสียง:');
+  vs.forEach(v=>log('   • ' + v.name + ' [' + v.lang + ']' + (v.default?' (default)':'')));
+  if(!vs.length) log('   (ว่าง — iOS บางทีต้องแตะปุ่มนี้ซ้ำอีกครั้ง)');
+};
+</script>
+</body>
+</html>
