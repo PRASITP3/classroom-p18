@@ -217,15 +217,15 @@ const PHONICS = [
   { L:'B', w:'ball',    e:'⚽', s:'bah' },
   { L:'C', w:'cat',     e:'🐱', s:'kah' },
   { L:'D', w:'dog',     e:'🐶', s:'dah' },
-  { L:'E', w:'egg',     e:'🥚', s:'eh' },
-  { L:'F', w:'fish',    e:'🐟', s:'fah' },
+  { L:'E', w:'egg',     e:'🥚', s:'ehh' },
+  { L:'F', w:'fish',    e:'🐟', s:'fuh' },
   { L:'G', w:'goat',    e:'🐐', s:'gah' },
   { L:'H', w:'hat',     e:'🎩', s:'hah' },
   { L:'I', w:'insect',  e:'🐛', s:'ihh' },
-  { L:'J', w:'juice',   e:'🧃', s:'jah' },
+  { L:'J', w:'juice',   e:'🧃', s:'juh' },
   { L:'K', w:'key',     e:'🔑', s:'kah' },
   { L:'L', w:'lion',    e:'🦁', s:'lah' },
-  { L:'M', w:'monkey',  e:'🐵', s:'mah' },
+  { L:'M', w:'monkey',  e:'🐵', s:'muh' },
   { L:'N', w:'nose',    e:'👃', s:'nah' },
   { L:'O', w:'octopus', e:'🐙', s:'aw' },
   { L:'P', w:'pig',     e:'🐷', s:'pah' },
@@ -263,7 +263,7 @@ function say(text){
 /* เล่นไฟล์เสียงอังกฤษที่อัดไว้ล่วงหน้า (ไม่พึ่งเสียงในเครื่องผู้เล่น)
    ถ้าโหลดไฟล์ไม่ได้ → fallback ไปใช้ TTS ของเครื่อง */
 const AUDIO_BASE='audio/';
-const AUDIO_VER='?v=7';   // bump เพื่อบังคับเบราว์เซอร์โหลดไฟล์เสียงใหม่ (v7 = อัดพยัญชนะทุกตัวเป็น -ah)
+const AUDIO_VER='?v=8';   // bump (v8 = J/F/M กลับเป็น -uh, E=ehh; -ah เฉพาะ G,H,R,S,Z)
 let audioEl=null;
 function getAudio(){ if(!audioEl) audioEl=new Audio(); return audioEl; }
 function playFile(file, fallback){
