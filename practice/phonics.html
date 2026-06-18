@@ -263,7 +263,7 @@ function say(text){
 /* เล่นไฟล์เสียงอังกฤษที่อัดไว้ล่วงหน้า (ไม่พึ่งเสียงในเครื่องผู้เล่น)
    ถ้าโหลดไฟล์ไม่ได้ → fallback ไปใช้ TTS ของเครื่อง */
 const AUDIO_BASE='audio/';
-const AUDIO_VER='?v=8';   // bump (v8 = J/F/M กลับเป็น -uh, E=ehh; -ah เฉพาะ G,H,R,S,Z)
+const AUDIO_VER='?v=9';   // v9 = อัดใหม่ทั้ง A-Z ด้วย phoneme (กำหนดเสียงเป๊ะ ไม่ใช่สะกดคำ)
 let audioEl=null;
 function getAudio(){ if(!audioEl) audioEl=new Audio(); return audioEl; }
 function playFile(file, fallback){
