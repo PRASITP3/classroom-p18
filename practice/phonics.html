@@ -264,15 +264,29 @@ function say(text){
    ถ้าโหลดไฟล์ไม่ได้ → fallback ไปใช้ TTS ของเครื่อง */
 const AUDIO_BASE='audio/';
 let audioEl=null;
+function getAudio(){ if(!audioEl) audioEl=new Audio(); return audioEl; }
 function playFile(file, fallback){
+  const a=getAudio();
+  if(window.speechSynthesis) speechSynthesis.cancel();
   try{
-    if(audioEl){ audioEl.pause(); }
-    if(window.speechSynthesis) speechSynthesis.cancel();
-    audioEl=new Audio(AUDIO_BASE+file);
-    audioEl.onerror=()=>{ if(fallback) say(fallback); };
-    const pr=audioEl.play();
-    if(pr&&pr.catch) pr.catch(()=>{ if(fallback) say(fallback); });
+    a.pause();
+    a.muted=false;
+    a.src=AUDIO_BASE+file;
+    a.currentTime=0;
+    a.onerror=()=>{ if(fallback) say(fallback); };
+    const pr=a.play();
+    // AbortError = ถูกเสียงใหม่ตัดจังหวะ (ปกติ) ไม่ต้อง fallback
+    if(pr&&pr.catch) pr.catch(err=>{ if(err && err.name==='AbortError') return; if(fallback) say(fallback); });
   }catch(e){ if(fallback) say(fallback); }
+}
+// ปลดล็อกการเล่นเสียงในครั้งแรกที่ผู้ใช้แตะ (จำเป็นบนมือถือ/แท็บเล็ต)
+function unlockAudio(){
+  const a=getAudio();
+  try{
+    a.muted=true; a.src=AUDIO_BASE+'a_s.wav';
+    const pr=a.play();
+    if(pr&&pr.then) pr.then(()=>{ a.pause(); a.currentTime=0; a.muted=false; }).catch(()=>{ a.muted=false; });
+  }catch(e){ a.muted=false; }
 }
 function saySound(p){ playFile(p.L.toLowerCase()+'_s.wav', `${p.s}, ${p.s}`); }        // เสียงล้วน (ใช้ตอนถาม)
 function sayPhonics(p){ playFile(p.L.toLowerCase()+'_w.wav', `${p.s}, ${p.s}, ${p.w}`); } // เสียง + คำ (ใช้ตอนเรียน/เฉลย)
@@ -444,7 +458,7 @@ function burst(n){
     setTimeout(()=>c.remove(),2600);
   }
 }
-document.body.addEventListener('click',function once(){ try{ say(' '); }catch(e){}; document.body.removeEventListener('click',once); }, {once:true});
+document.body.addEventListener('click',function once(){ unlockAudio(); try{ say(' '); }catch(e){}; document.body.removeEventListener('click',once); }, {once:true});
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../auth.js"></script>
