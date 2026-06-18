@@ -214,31 +214,31 @@
 // s = เสียง phonics (สะกดให้ TTS อ่านใกล้เคียงเสียงจริง — แก้ได้)
 const PHONICS = [
   { L:'A', w:'apple',   e:'🍎', s:'ah' },
-  { L:'B', w:'ball',    e:'⚽', s:'buh' },
-  { L:'C', w:'cat',     e:'🐱', s:'kuh' },
-  { L:'D', w:'dog',     e:'🐶', s:'duh' },
+  { L:'B', w:'ball',    e:'⚽', s:'bah' },
+  { L:'C', w:'cat',     e:'🐱', s:'kah' },
+  { L:'D', w:'dog',     e:'🐶', s:'dah' },
   { L:'E', w:'egg',     e:'🥚', s:'eh' },
-  { L:'F', w:'fish',    e:'🐟', s:'fuh' },
+  { L:'F', w:'fish',    e:'🐟', s:'fah' },
   { L:'G', w:'goat',    e:'🐐', s:'gah' },
-  { L:'H', w:'hat',     e:'🎩', s:'huh' },
+  { L:'H', w:'hat',     e:'🎩', s:'hah' },
   { L:'I', w:'insect',  e:'🐛', s:'ihh' },
-  { L:'J', w:'juice',   e:'🧃', s:'juh' },
-  { L:'K', w:'key',     e:'🔑', s:'kuh' },
-  { L:'L', w:'lion',    e:'🦁', s:'luh' },
-  { L:'M', w:'monkey',  e:'🐵', s:'muh' },
-  { L:'N', w:'nose',    e:'👃', s:'nuh' },
+  { L:'J', w:'juice',   e:'🧃', s:'jah' },
+  { L:'K', w:'key',     e:'🔑', s:'kah' },
+  { L:'L', w:'lion',    e:'🦁', s:'lah' },
+  { L:'M', w:'monkey',  e:'🐵', s:'mah' },
+  { L:'N', w:'nose',    e:'👃', s:'nah' },
   { L:'O', w:'octopus', e:'🐙', s:'aw' },
-  { L:'P', w:'pig',     e:'🐷', s:'puh' },
-  { L:'Q', w:'queen',   e:'👸', s:'kwuh' },
-  { L:'R', w:'rabbit',  e:'🐰', s:'ruh' },
-  { L:'S', w:'sun',     e:'☀️', s:'sss' },
-  { L:'T', w:'tree',    e:'🌳', s:'tuh' },
+  { L:'P', w:'pig',     e:'🐷', s:'pah' },
+  { L:'Q', w:'queen',   e:'👸', s:'kwah' },
+  { L:'R', w:'rabbit',  e:'🐰', s:'rah' },
+  { L:'S', w:'sun',     e:'☀️', s:'sah' },
+  { L:'T', w:'tree',    e:'🌳', s:'tah' },
   { L:'U', w:'umbrella',e:'☂️', s:'uh' },
-  { L:'V', w:'van',     e:'🚐', s:'vuh' },
-  { L:'W', w:'watch',   e:'⌚', s:'wuh' },
+  { L:'V', w:'van',     e:'🚐', s:'vah' },
+  { L:'W', w:'watch',   e:'⌚', s:'wah' },
   { L:'X', w:'box',     e:'📦', s:'iks' },
-  { L:'Y', w:'yo-yo',   e:'🪀', s:'yuh' },
-  { L:'Z', w:'zebra',   e:'🦓', s:'zuh' },
+  { L:'Y', w:'yo-yo',   e:'🪀', s:'yah' },
+  { L:'Z', w:'zebra',   e:'🦓', s:'zah' },
 ];
 
 const QUIZ_LEN = 10;
@@ -263,7 +263,7 @@ function say(text){
 /* เล่นไฟล์เสียงอังกฤษที่อัดไว้ล่วงหน้า (ไม่พึ่งเสียงในเครื่องผู้เล่น)
    ถ้าโหลดไฟล์ไม่ได้ → fallback ไปใช้ TTS ของเครื่อง */
 const AUDIO_BASE='audio/';
-const AUDIO_VER='?v=6';   // bump เพื่อบังคับเบราว์เซอร์โหลดไฟล์เสียงใหม่ (v6 = อัด i,x ใหม่)
+const AUDIO_VER='?v=7';   // bump เพื่อบังคับเบราว์เซอร์โหลดไฟล์เสียงใหม่ (v7 = อัดพยัญชนะทุกตัวเป็น -ah)
 let audioEl=null;
 function getAudio(){ if(!audioEl) audioEl=new Audio(); return audioEl; }
 function playFile(file, fallback){
