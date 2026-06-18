@@ -263,6 +263,7 @@ function say(text){
 /* เล่นไฟล์เสียงอังกฤษที่อัดไว้ล่วงหน้า (ไม่พึ่งเสียงในเครื่องผู้เล่น)
    ถ้าโหลดไฟล์ไม่ได้ → fallback ไปใช้ TTS ของเครื่อง */
 const AUDIO_BASE='audio/';
+const AUDIO_VER='?v=2';   // bump เพื่อบังคับเบราว์เซอร์โหลดไฟล์เสียงใหม่ (กันแคชเก่าที่ MIME ผิด)
 let audioEl=null;
 function getAudio(){ if(!audioEl) audioEl=new Audio(); return audioEl; }
 function playFile(file, fallback){
@@ -271,7 +272,7 @@ function playFile(file, fallback){
   try{
     a.pause();
     a.muted=false;
-    a.src=AUDIO_BASE+file;
+    a.src=AUDIO_BASE+file+AUDIO_VER;
     a.currentTime=0;
     a.onerror=()=>{ if(fallback) say(fallback); };
     const pr=a.play();
@@ -283,7 +284,7 @@ function playFile(file, fallback){
 function unlockAudio(){
   const a=getAudio();
   try{
-    a.muted=true; a.src=AUDIO_BASE+'a_s.wav';
+    a.muted=true; a.src=AUDIO_BASE+'a_s.wav'+AUDIO_VER;
     const pr=a.play();
     if(pr&&pr.then) pr.then(()=>{ a.pause(); a.currentTime=0; a.muted=false; }).catch(()=>{ a.muted=false; });
   }catch(e){ a.muted=false; }
