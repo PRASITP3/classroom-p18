@@ -51,7 +51,14 @@
       #p18gate button:active{transform:translateY(3px); box-shadow:0 1px 0 #E0902B;}
       #p18gate .err{color:#D64545; font-weight:700; min-height:22px; margin-top:10px; font-size:.95rem;}
       #p18gate .hint{color:#A99668; font-size:.8rem; margin-top:8px;}
-      #p18chip{position:fixed; left:14px; bottom:14px; z-index:9990; display:flex; align-items:center; gap:8px;
+      #p18nav{position:fixed; left:14px; bottom:14px; z-index:9990; display:flex; align-items:center; gap:8px;}
+      #p18back{display:inline-flex; align-items:center; gap:3px; background:#fff; border-radius:999px;
+        padding:8px 15px; cursor:pointer; text-decoration:none; border:2px solid #FFE9A8;
+        box-shadow:0 4px 0 rgba(58,46,20,.10),0 8px 20px rgba(58,46,20,.16);
+        font-family:'Fredoka','Sarabun',sans-serif; font-weight:700; color:#3A2E14; font-size:.95rem;}
+      #p18back:active{transform:translateY(2px);}
+      #p18back .a{font-size:1.15rem; line-height:1; margin-top:-1px;}
+      #p18chip{display:flex; align-items:center; gap:8px;
         background:#fff; border-radius:999px; padding:7px 12px 7px 13px; cursor:pointer;
         box-shadow:0 4px 0 rgba(58,46,20,.10),0 8px 20px rgba(58,46,20,.16); font-family:'Sarabun',sans-serif;
         font-weight:700; color:#3A2E14; font-size:.9rem; border:2px solid #FFE9A8;}
@@ -130,8 +137,33 @@
     catch (e) { console.warn('recordLogin failed (ตาราง student_logins อาจยังไม่ถูกสร้าง)', e); }
   }
 
+  function navBar() {
+    let bar = document.getElementById('p18nav');
+    if (!bar) { bar = document.createElement('div'); bar.id = 'p18nav'; document.body.appendChild(bar); }
+    return bar;
+  }
+
+  // ปุ่ม "กลับ" — พากลับหน้าแม่ที่เหมาะสม (เกม→คลังเกม, อื่นๆ→หน้าหลัก, หน้าหลัก→ซ่อน)
+  function showBack() {
+    injectStyles();
+    if (document.getElementById('p18back')) return;
+    const p = location.pathname;
+    const inPractice = p.includes('/practice/');
+    const atPracticeHub = /\/practice\/(index\.html)?$/.test(p);
+    const atSiteHome = !inPractice && /(\/|\/index\.html)$/.test(p);
+    if (atSiteHome) return;                              // หน้าหลัก: ไม่ต้องมีปุ่มกลับ
+    const target = (inPractice && !atPracticeHub) ? 'index.html'        // หน้าเกม → practice/index.html
+                 : inPractice ? '../index.html'                          // คลังเกม → หน้าหลัก
+                 : 'index.html';                                         // registry/schedule → หน้าหลัก
+    const b = document.createElement('a');
+    b.id = 'p18back'; b.href = target; b.title = 'กลับ';
+    b.innerHTML = `<span class="a">‹</span> กลับ`;
+    navBar().appendChild(b);
+  }
+
   function showChip(s) {
     injectStyles();
+    showBack();
     if (document.getElementById('p18chip')) return;
     const chip = document.createElement('div');
     chip.id = 'p18chip';
@@ -140,7 +172,7 @@
     chip.addEventListener('click', () => {
       if (confirm('ออกจากระบบ / สลับผู้ใช้?')) Auth.logout();
     });
-    document.body.appendChild(chip);
+    navBar().appendChild(chip);
   }
 
   /* ---------- init ---------- */
