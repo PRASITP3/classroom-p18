@@ -1,0 +1,10 @@
+{
+  "headers": [
+    {
+      "source": "/practice/audio/(.*)",
+      "headers": [
+        { "key": "Content-Type", "value": "audio/wav" }
+      ]
+    }
+  ]
+}
