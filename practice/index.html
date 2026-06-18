@@ -45,6 +45,11 @@
   .soon{background:#fff; border:3px dashed #C7D6E2; color:var(--ink-soft); box-shadow:none; opacity:.85;}
   .soon .ic{background:#EEF3F7;}
   .empty{text-align:center; color:var(--ink-soft); font-weight:700; padding:30px 10px;}
+
+  .subj{display:flex; align-items:center; gap:9px; margin:22px 2px 2px; font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.15rem; color:var(--ink);}
+  .subj:first-child{margin-top:4px;}
+  .subj .sj-ic{font-size:1.25rem;}
+  .subj .sj-line{flex:1; height:3px; border-radius:3px; background:rgba(39,56,74,.12);}
 </style>
 </head>
 <body>
@@ -106,23 +111,47 @@ const GAMES = [
     file: 'phonics.html',
     ready: true,
   },
+  {
+    title: 'ภาษาจีน · ตัวเลข',
+    desc: 'นับเลขจีน 0–100 · 汉字 + พินอิน · มีเสียงพูด',
+    subject: 'ภาษาจีน',
+    emoji: '🔢',
+    color: 'linear-gradient(135deg,#FF8E7A,#E8453C)',
+    file: 'chinese-numbers.html',
+    ready: true,
+  },
 ];
 
+/* ไอคอนประจำหมวดวิชา (เรียงตามที่เจอครั้งแรกใน GAMES) */
+const SUBJECT_ICON = { 'English':'🇬🇧', 'ภาษาจีน':'🇨🇳' };
+
+function cardHTML(g){
+  const inner = `
+    <span class="ic">${g.emoji}</span>
+    <span>
+      <span class="t">${g.title}</span>
+      <br><span class="d">${g.desc}</span>
+      <br><span class="tag">${g.ready ? g.subject : 'เร็วๆ นี้'}</span>
+    </span>`;
+  if(g.ready){
+    return `<a class="gcard" style="background:${g.color}" href="${g.file}">${inner}</a>`;
+  }
+  return `<div class="gcard soon">${inner}</div>`;
+}
 function render(){
   const grid = document.getElementById('grid');
   if(!GAMES.length){ grid.innerHTML = '<div class="empty">ยังไม่มีเกม — เพิ่มได้ในไฟล์ practice/index.html</div>'; return; }
-  grid.innerHTML = GAMES.map(g => {
-    const inner = `
-      <span class="ic">${g.emoji}</span>
-      <span>
-        <span class="t">${g.title}</span>
-        <br><span class="d">${g.desc}</span>
-        <br><span class="tag">${g.ready ? g.subject : 'เร็วๆ นี้'}</span>
-      </span>`;
-    if(g.ready){
-      return `<a class="gcard" style="background:${g.color}" href="${g.file}">${inner}</a>`;
-    }
-    return `<div class="gcard soon">${inner}</div>`;
+  // จัดกลุ่มตามวิชา เรียงหมวดตามลำดับที่เจอครั้งแรก
+  const order = [];
+  const groups = {};
+  GAMES.forEach(g => {
+    const s = g.subject || 'อื่นๆ';
+    if(!groups[s]){ groups[s] = []; order.push(s); }
+    groups[s].push(g);
+  });
+  grid.innerHTML = order.map(s => {
+    const head = `<div class="subj"><span class="sj-ic">${SUBJECT_ICON[s] || '📘'}</span><span>${s}</span><span class="sj-line"></span></div>`;
+    return head + groups[s].map(cardHTML).join('');
   }).join('');
 }
 render();
