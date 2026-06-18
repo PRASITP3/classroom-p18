@@ -269,16 +269,15 @@ function getAudio(){ if(!audioEl) audioEl=new Audio(); return audioEl; }
 function playFile(file, fallback){
   const a=getAudio();
   if(window.speechSynthesis) speechSynthesis.cancel();
+  a.muted=false;
+  // fallback ไป TTS เฉพาะตอน "ไฟล์โหลดไม่ได้จริง" (onerror) เท่านั้น
+  // ไม่ fallback ตอน play() ถูกบล็อก/ตัดจังหวะ เพราะจะพูดผิดเป็น "จีเอ"
+  a.onerror=()=>{ if(fallback) say(fallback); };
+  a.src=AUDIO_BASE+file+AUDIO_VER;
   try{
-    a.pause();
-    a.muted=false;
-    a.src=AUDIO_BASE+file+AUDIO_VER;
-    a.currentTime=0;
-    a.onerror=()=>{ if(fallback) say(fallback); };
     const pr=a.play();
-    // AbortError = ถูกเสียงใหม่ตัดจังหวะ (ปกติ) ไม่ต้อง fallback
-    if(pr&&pr.catch) pr.catch(err=>{ if(err && err.name==='AbortError') return; if(fallback) say(fallback); });
-  }catch(e){ if(fallback) say(fallback); }
+    if(pr&&pr.catch) pr.catch(()=>{});
+  }catch(e){}
 }
 // ปลดล็อกการเล่นเสียงในครั้งแรกที่ผู้ใช้แตะ (จำเป็นบนมือถือ/แท็บเล็ต)
 function unlockAudio(){
