@@ -263,7 +263,7 @@ function say(text){
 /* เล่นไฟล์เสียงอังกฤษที่อัดไว้ล่วงหน้า (ไม่พึ่งเสียงในเครื่องผู้เล่น)
    ถ้าโหลดไฟล์ไม่ได้ → fallback ไปใช้ TTS ของเครื่อง */
 const AUDIO_BASE='audio/';
-const AUDIO_VER='?v=9';   // v9 = อัดใหม่ทั้ง A-Z ด้วย phoneme (กำหนดเสียงเป๊ะ ไม่ใช่สะกดคำ)
+const AUDIO_VER='?v=10';  // v10 = phoneme + สระเปิด /ɑ/ (แบบ "gah") ทุกพยัญชนะ ให้ชัด
 let audioEl=null;
 function getAudio(){ if(!audioEl) audioEl=new Audio(); return audioEl; }
 function playFile(file, fallback){
