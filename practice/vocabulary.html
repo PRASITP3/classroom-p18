@@ -272,7 +272,7 @@ const WORDS = [
   { en:'left',    th:'ซ้าย',       emoji:'⬅️' },
   { en:'right',   th:'ขวา',        emoji:'➡️' },
   { en:'go',      th:'ไป',         emoji:'🏃' },
-  { en:'table',   th:'โต๊ะ',        emoji:'' },
+  { en:'table',   th:'โต๊ะ',        emoji:'', svg:'<svg viewBox="0 0 24 24" width="1em" height="1em" style="vertical-align:-.15em"><rect x="2.5" y="7.5" width="19" height="3" rx="1.3" fill="#B07A4F"/><rect x="4.6" y="10" width="2.4" height="9" rx="1" fill="#8B5E3C"/><rect x="17" y="10" width="2.4" height="9" rx="1" fill="#8B5E3C"/></svg>' },
   { en:'bag',     th:'กระเป๋า',     emoji:'👜' },
   { en:'paper',   th:'กระดาษ',      emoji:'📄' },
 ];
@@ -313,7 +313,7 @@ function show(id){
 }
 function goHome(){ if(window.speechSynthesis) speechSynthesis.cancel(); show('home'); }
 function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);}
-function icon(w){ return w.emoji ? w.emoji : `<span class="badge">${(w.en[0]||'?').toUpperCase()}</span>`; }
+function icon(w){ return w.svg ? w.svg : (w.emoji ? w.emoji : `<span class="badge">${(w.en[0]||'?').toUpperCase()}</span>`); }
 
 document.getElementById('wordcount').textContent = `มี ${WORDS.length} คำในคลัง · จะเพิ่มเรื่อยๆ`;
 
