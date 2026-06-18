@@ -260,10 +260,24 @@ function say(text){
   u.lang='en-US'; u.rate=.8; u.pitch=1.1; if(voice) u.voice=voice;
   speechSynthesis.speak(u);
 }
-function saySound(p){ say(`${p.s}, ${p.s}`); }                 // เสียงล้วน (ใช้ตอนถาม)
-function sayPhonics(p){ say(`${p.s}, ${p.s}, ${p.w}`); }       // เสียง + คำ (ใช้ตอนเรียน/เฉลย)
-let lastSpoken="";
-document.getElementById('repeatBtn').onclick=()=>{ if(lastSpoken) say(lastSpoken); };
+/* เล่นไฟล์เสียงอังกฤษที่อัดไว้ล่วงหน้า (ไม่พึ่งเสียงในเครื่องผู้เล่น)
+   ถ้าโหลดไฟล์ไม่ได้ → fallback ไปใช้ TTS ของเครื่อง */
+const AUDIO_BASE='audio/';
+let audioEl=null;
+function playFile(file, fallback){
+  try{
+    if(audioEl){ audioEl.pause(); }
+    if(window.speechSynthesis) speechSynthesis.cancel();
+    audioEl=new Audio(AUDIO_BASE+file);
+    audioEl.onerror=()=>{ if(fallback) say(fallback); };
+    const pr=audioEl.play();
+    if(pr&&pr.catch) pr.catch(()=>{ if(fallback) say(fallback); });
+  }catch(e){ if(fallback) say(fallback); }
+}
+function saySound(p){ playFile(p.L.toLowerCase()+'_s.wav', `${p.s}, ${p.s}`); }        // เสียงล้วน (ใช้ตอนถาม)
+function sayPhonics(p){ playFile(p.L.toLowerCase()+'_w.wav', `${p.s}, ${p.s}, ${p.w}`); } // เสียง + คำ (ใช้ตอนเรียน/เฉลย)
+let replay=null;
+document.getElementById('repeatBtn').onclick=()=>{ if(replay) replay(); };
 
 /* ---------- Helpers ---------- */
 let stars = 0;
@@ -308,7 +322,7 @@ function renderQuestion(){
   document.getElementById('nextBtn').textContent = quiz.idx===total-1 ? 'Finish ✓' : 'Next →';
   const q=quiz.list[quiz.idx];
   const body=document.getElementById('quizBody');
-  lastSpoken=`${q.s}, ${q.s}, ${q.w}`;
+  replay=()=>saySound(q);
 
   if(quiz.mode==='b2l'){
     // show picture+word, choose the beginning letter
@@ -391,7 +405,7 @@ function connPick(row,btn,word,total){
   if(word===row.dataset.ans){
     row.classList.add('done'); conn.done++; addStar();
     row.querySelectorAll('.copt').forEach(c=>c.disabled=true);
-    say(`${row.dataset.s}, ${row.dataset.s}, ${row.dataset.word}`);
+    playFile(row.dataset.l.toLowerCase()+'_w.wav', `${row.dataset.s}, ${row.dataset.s}, ${row.dataset.word}`);
     fb.textContent='จับคู่ถูก! 🌟'; fb.className='feedback good';
     document.getElementById('connProg').textContent=conn.done+' / '+total;
     miniConfetti();
