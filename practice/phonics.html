@@ -263,7 +263,7 @@ function say(text){
 /* เล่นไฟล์เสียงอังกฤษที่อัดไว้ล่วงหน้า (ไม่พึ่งเสียงในเครื่องผู้เล่น)
    ถ้าโหลดไฟล์ไม่ได้ → fallback ไปใช้ TTS ของเครื่อง */
 const AUDIO_BASE='audio/';
-const AUDIO_VER='?v=2';   // bump เพื่อบังคับเบราว์เซอร์โหลดไฟล์เสียงใหม่ (กันแคชเก่าที่ MIME ผิด)
+const AUDIO_VER='?v=3';   // bump เพื่อบังคับเบราว์เซอร์โหลดไฟล์เสียงใหม่ (v3 = แก้ fmt chunk 18→16)
 let audioEl=null;
 function getAudio(){ if(!audioEl) audioEl=new Audio(); return audioEl; }
 function playFile(file, fallback){
