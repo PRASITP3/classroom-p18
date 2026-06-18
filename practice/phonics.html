@@ -221,7 +221,7 @@ const PHONICS = [
   { L:'F', w:'fish',    e:'🐟', s:'fuh' },
   { L:'G', w:'goat',    e:'🐐', s:'gah' },
   { L:'H', w:'hat',     e:'🎩', s:'huh' },
-  { L:'I', w:'insect',  e:'🐛', s:'ih' },
+  { L:'I', w:'insect',  e:'🐛', s:'ihh' },
   { L:'J', w:'juice',   e:'🧃', s:'juh' },
   { L:'K', w:'key',     e:'🔑', s:'kuh' },
   { L:'L', w:'lion',    e:'🦁', s:'luh' },
@@ -236,7 +236,7 @@ const PHONICS = [
   { L:'U', w:'umbrella',e:'☂️', s:'uh' },
   { L:'V', w:'van',     e:'🚐', s:'vuh' },
   { L:'W', w:'watch',   e:'⌚', s:'wuh' },
-  { L:'X', w:'box',     e:'📦', s:'ks' },
+  { L:'X', w:'box',     e:'📦', s:'iks' },
   { L:'Y', w:'yo-yo',   e:'🪀', s:'yuh' },
   { L:'Z', w:'zebra',   e:'🦓', s:'zuh' },
 ];
@@ -263,28 +263,20 @@ function say(text){
 /* เล่นไฟล์เสียงอังกฤษที่อัดไว้ล่วงหน้า (ไม่พึ่งเสียงในเครื่องผู้เล่น)
    ถ้าโหลดไฟล์ไม่ได้ → fallback ไปใช้ TTS ของเครื่อง */
 const AUDIO_BASE='audio/';
-const AUDIO_VER='?v=5';   // bump เพื่อบังคับเบราว์เซอร์โหลดไฟล์เสียงใหม่ (v5 = อัด g ใหม่ "gah")
+const AUDIO_VER='?v=6';   // bump เพื่อบังคับเบราว์เซอร์โหลดไฟล์เสียงใหม่ (v6 = อัด i,x ใหม่)
 let audioEl=null;
 function getAudio(){ if(!audioEl) audioEl=new Audio(); return audioEl; }
-function dbg(m){
-  let d=document.getElementById('p18dbg');
-  if(!d){ d=document.createElement('div'); d.id='p18dbg';
-    d.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:84px;z-index:9999;background:#0f1720;color:#7CF2B0;font:700 12px/1.4 sans-serif;padding:7px 13px;border-radius:10px;max-width:92vw;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.3)';
-    document.body.appendChild(d); }
-  d.textContent='[v5] '+m;
-}
 function playFile(file, fallback){
   const a=getAudio();
   if(window.speechSynthesis) speechSynthesis.cancel();
   a.muted=false;
   // fallback ไป TTS เฉพาะตอน "ไฟล์โหลดไม่ได้จริง" (onerror) เท่านั้น
-  a.onerror=()=>{ dbg('⚠ โหลดไฟล์ไม่ได้ → TTS: '+file+' (err code '+(a.error&&a.error.code)+')'); if(fallback) say(fallback); };
+  a.onerror=()=>{ if(fallback) say(fallback); };
   a.src=AUDIO_BASE+file+AUDIO_VER;
-  dbg('⏳ กำลังโหลด '+AUDIO_BASE+file+AUDIO_VER);
   try{
     const pr=a.play();
-    if(pr&&pr.then) pr.then(()=>dbg('▶ เล่นไฟล์เสียง: '+file)).catch(e=>dbg('play() rejected: '+e.name+' (ไฟล์ยังอาจเล่นได้)'));
-  }catch(e){ dbg('exception: '+e.message); }
+    if(pr&&pr.catch) pr.catch(()=>{});
+  }catch(e){}
 }
 // ปลดล็อกการเล่นเสียงในครั้งแรกที่ผู้ใช้แตะ (จำเป็นบนมือถือ/แท็บเล็ต)
 function unlockAudio(){
