@@ -221,7 +221,7 @@ const PHONICS = [
   { L:'F', w:'fish',    e:'🐟', s:'fuh' },
   { L:'G', w:'goat',    e:'🐐', s:'gah' },
   { L:'H', w:'hat',     e:'🎩', s:'hah' },
-  { L:'I', w:'insect',  e:'🐛', s:'ihh' },
+  { L:'I', w:'insect',  e:'🐛', s:'ih' },
   { L:'J', w:'juice',   e:'🧃', s:'juh' },
   { L:'K', w:'key',     e:'🔑', s:'kah' },
   { L:'L', w:'lion',    e:'🦁', s:'lah' },
@@ -263,7 +263,7 @@ function say(text){
 /* เล่นไฟล์เสียงอังกฤษที่อัดไว้ล่วงหน้า (ไม่พึ่งเสียงในเครื่องผู้เล่น)
    ถ้าโหลดไฟล์ไม่ได้ → fallback ไปใช้ TTS ของเครื่อง */
 const AUDIO_BASE='audio/';
-const AUDIO_VER='?v=13';  // v13 = ย้อน J,M,L,I กลับเวอร์ชันแรก (juh/muh/luh/ih) ตามที่ผู้ใช้ขอ
+const AUDIO_VER='?v=14';  // v14 = I อัดใหม่ด้วย phoneme /ɪ/ (J,M,L คงเวอร์ชันแรก)
 let audioEl=null;
 function getAudio(){ if(!audioEl) audioEl=new Audio(); return audioEl; }
 function playFile(file, fallback){
