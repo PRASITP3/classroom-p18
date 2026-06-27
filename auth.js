@@ -147,6 +147,8 @@
   function showBack() {
     injectStyles();
     if (document.getElementById('p18back')) return;
+    // ถ้าหน้านี้มีปุ่มกลับด้านบนอยู่แล้ว (.back) ไม่ต้องเพิ่มปุ่มกลับล่างให้ซ้ำ
+    if (document.querySelector('.back')) return;
     const p = location.pathname;
     const inPractice = p.includes('/practice/');
     const atPracticeHub = /\/practice\/(index\.html)?$/.test(p);

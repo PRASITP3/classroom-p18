@@ -145,11 +145,17 @@
   @media (max-width:380px){
     .mcard .t{font-size:1.1rem;} .lgrid{grid-template-columns:repeat(2,1fr);}
   }
+  /* ปุ่มกลับด้านบน (โชว์เฉพาะหน้าเมนูเกม) */
+  .topback{display:none; flex:none; text-decoration:none; background:#fff; border-radius:12px; width:42px; height:42px; align-items:center; justify-content:center; font-size:1.4rem; font-weight:800; color:var(--ink); box-shadow:var(--shadow);}
+  .topback:active{transform:translateY(2px);}
+  .top .brand{margin-right:auto;}
+  .wrap:has(#home.active) .topback{display:grid;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="top">
+    <a class="topback" href="index.html" title="กลับไปติวเด็ก">‹</a>
     <div class="brand"><span class="dot"></span> Body &amp; Senses</div>
     <div class="stars" id="starbox"><span class="s">⭐</span><span id="starnum">0</span></div>
   </div>
