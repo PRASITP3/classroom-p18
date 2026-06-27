@@ -120,7 +120,7 @@
   <!-- HOME -->
   <section class="screen active" id="home">
     <div class="hero">
-      <div class="emoji">🇹🇭 ◌า</div>
+      <div class="emoji">🇹🇭 -า</div>
       <h1>ฝึกสระภาษาไทย</h1>
       <p>เลือกแบบฝึกเพื่อเริ่มเลย</p>
     </div>
@@ -196,27 +196,27 @@
 
 /* ---------- ทะเบียนสระ (ชื่อ + รูปสระ) ---------- */
 const V = {
-  a:   {name:'สระอะ',  form:'◌ะ'},
-  aa:  {name:'สระอา',  form:'◌า'},
-  i:   {name:'สระอิ',  form:'◌ิ'},
-  ii:  {name:'สระอี',  form:'◌ี'},
-  ue:  {name:'สระอึ',  form:'◌ึ'},
-  uee: {name:'สระอือ', form:'◌ือ'},
-  u:   {name:'สระอุ',  form:'◌ุ'},
-  uu:  {name:'สระอู',  form:'◌ู'},
-  e:   {name:'สระเอ',  form:'เ◌'},
-  ae:  {name:'สระแอ',  form:'แ◌'},
-  aeq: {name:'สระแอะ', form:'แ◌ะ'},
-  o:   {name:'สระโอ',  form:'โ◌'},
-  aw:  {name:'สระออ',  form:'◌อ'},
-  oe:  {name:'สระเออ', form:'เ◌อ'},
-  ai:  {name:'สระไอ',  form:'ไ◌'},
-  aiy: {name:'สระใอ',  form:'ใ◌'},
-  ao:  {name:'สระเอา', form:'เ◌า'},
-  am:  {name:'สระอำ',  form:'◌ำ'},
-  ia:  {name:'สระเอีย', form:'เ◌ีย'},
-  uea: {name:'สระเอือ', form:'เ◌ือ'},
-  ua:  {name:'สระอัว', form:'◌ัว'},
+  a:   {name:'สระอะ',  form:'-ะ'},
+  aa:  {name:'สระอา',  form:'-า'},
+  i:   {name:'สระอิ',  form:'-ิ'},
+  ii:  {name:'สระอี',  form:'-ี'},
+  ue:  {name:'สระอึ',  form:'-ึ'},
+  uee: {name:'สระอือ', form:'-ือ'},
+  u:   {name:'สระอุ',  form:'-ุ'},
+  uu:  {name:'สระอู',  form:'-ู'},
+  e:   {name:'สระเอ',  form:'เ-'},
+  ae:  {name:'สระแอ',  form:'แ-'},
+  aeq: {name:'สระแอะ', form:'แ-ะ'},
+  o:   {name:'สระโอ',  form:'โ-'},
+  aw:  {name:'สระออ',  form:'-อ'},
+  oe:  {name:'สระเออ', form:'เ-อ'},
+  ai:  {name:'สระไอ',  form:'ไ-'},
+  aiy: {name:'สระใอ',  form:'ใ-'},
+  ao:  {name:'สระเอา', form:'เ-า'},
+  am:  {name:'สระอำ',  form:'-ำ'},
+  ia:  {name:'สระเอีย', form:'เ-ีย'},
+  uea: {name:'สระเอือ', form:'เ-ือ'},
+  ua:  {name:'สระอัว', form:'-ัว'},
 };
 
 /* ---------- คลังคำ + ภาพ ----------
@@ -263,21 +263,38 @@ const CHART = [
   {vid:'ao',  ex:'เรา'},
 ];
 
-/* ---------- เสียงอ่าน (ภาษาไทย th-TH) ---------- */
+/* ---------- เสียงอ่าน ----------
+   เครื่อง/เบราว์เซอร์หลายตัว (โดยเฉพาะเดสก์ท็อป) ไม่มีเสียงภาษาไทยติดตั้ง
+   จึงให้เบราว์เซอร์ของผู้ใช้ดึงเสียงไทยจาก Google TTS โดยตรง (อ่านได้ทุกคำ)
+   ถ้าใช้ไม่ได้ค่อยถอยไปใช้เสียงสังเคราะห์ของเครื่อง (เครื่องที่มีเสียงไทย) */
 let voice = null;
 function pickVoice(){
+  if(!('speechSynthesis' in window)) return;
   const vs = speechSynthesis.getVoices();
   voice = vs.find(v=>/th[-_]TH/i.test(v.lang) && /female|google|kanya|premwadee/i.test(v.name))
        || vs.find(v=>/th[-_]TH/i.test(v.lang))
        || vs.find(v=>/^th/i.test(v.lang)) || null;
 }
 if('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
-function say(text){
+function googleTTS(text){
+  return 'https://translate.google.com/translate_tts?ie=UTF-8&tl=th&client=tw-ob&q='+encodeURIComponent(text);
+}
+function synth(text){
   if(!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang='th-TH'; u.rate=.8; u.pitch=1.05; if(voice) u.voice=voice;
   speechSynthesis.speak(u);
+}
+let curAudio=null;
+function say(text){
+  // Google TTS (จากเบราว์เซอร์ผู้ใช้) → เสียงสังเคราะห์
+  if(curAudio){ try{ curAudio.pause(); }catch(e){} curAudio.onerror=null; }
+  if(window.speechSynthesis) speechSynthesis.cancel();
+  const a=new Audio(googleTTS(text)); curAudio=a;
+  a.onerror=()=>{ if(a===curAudio) synth(text); };
+  const p=a.play();
+  if(p&&p.catch) p.catch(()=>{ if(a===curAudio) synth(text); });
 }
 let lastSpoken="";
 document.getElementById('repeatBtn').onclick=()=>{ if(lastSpoken) say(lastSpoken); };
@@ -309,7 +326,7 @@ function show(id){
   document.getElementById(id).classList.add('active');
   document.getElementById('repeatBtn').classList.toggle('show', id==='quiz');
 }
-function goHome(){ if(window.speechSynthesis) speechSynthesis.cancel(); show('home'); }
+function goHome(){ if(curAudio) curAudio.pause(); if(window.speechSynthesis) speechSynthesis.cancel(); show('home'); }
 function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);}
 const ALL_VIDS = Object.keys(V);
 function distractVids(correct,n){ return shuffle(ALL_VIDS.filter(k=>k!==correct)).slice(0,n); }
