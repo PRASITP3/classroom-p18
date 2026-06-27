@@ -57,8 +57,8 @@
   .ltr.blank{border-style:dashed; border-color:var(--coral); color:transparent;}
   .ltr.blank.active{box-shadow:0 0 0 4px rgba(255,122,107,.18); background:#FFF5F3;}
   .ltr.filled{border-color:var(--mint); background:#E7FBF3; color:#1E8E6E;}
-  .bank{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:20px;}
-  .key{width:50px; height:50px; border-radius:12px; border:3px solid #E7EEF4; background:#fff; font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.4rem; cursor:pointer; color:var(--ink);}
+  .bank{display:flex; flex-wrap:wrap; gap:7px; justify-content:center; margin-top:18px;}
+  .key{width:42px; height:46px; border-radius:11px; border:3px solid #E7EEF4; background:#fff; font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.25rem; cursor:pointer; color:var(--ink);}
   .key:active{transform:scale(.95);}
   .key.used{opacity:.3; pointer-events:none;}
 
@@ -161,7 +161,7 @@
       </button>
       <button class="mcard c-spell" onclick="startSpell()">
         <span class="ic">✏️</span>
-        <span><span class="t">เติมตัวอักษร</span><br><span class="d">เติมตัวอักษรที่หายไป · ฝึกสะกดคำ</span></span>
+        <span><span class="t">เติมตัวอักษร</span><br><span class="d">สะกดทั้งคำจากตัวอักษร a–z</span></span>
       </button>
     </div>
   </section>
@@ -454,36 +454,23 @@ function renderSpell(){
   const word=w.en;
   lastSpoken=word;
 
-  // choose blank positions (letters only)
-  const letterIdx = word.split('').map((c,i)=>c===' '?-1:i).filter(i=>i>=0);
-  const plainLen = word.replace(/ /g,'').length;
-  let nBlanks = plainLen<=3 ? 1 : (plainLen<=5 ? 2 : 3);
-  nBlanks = Math.min(nBlanks, letterIdx.length);
-  const blanks = shuffle(letterIdx.slice()).slice(0,nBlanks).sort((a,b)=>a-b);
+  // ทุกตำแหน่งตัวอักษรเป็นช่องว่าง (เว้นวรรคข้าม) ให้เด็กสะกดทั้งคำ
+  const blanks = word.split('').map((c,i)=>c===' '?-1:i).filter(i=>i>=0);
   spell.word=word; spell.blanks=blanks; spell.pos=0; spell.wrong=0;
 
-  // word tiles (blanks hidden)
+  // ช่องตัวอักษรทั้งหมดว่าง
   let tiles='';
   word.split('').forEach((c,i)=>{
     if(c===' '){ tiles+=`<div style="width:14px"></div>`; return; }
-    if(blanks.includes(i)) tiles+=`<div class="ltr blank" data-i="${i}">${c}</div>`;
-    else tiles+=`<div class="ltr">${c}</div>`;
+    tiles+=`<div class="ltr blank" data-i="${i}">${c}</div>`;
   });
 
-  // letter bank = hidden letters + a few distractors
-  const hidden = blanks.map(i=>word[i].toLowerCase());
-  const alpha='abcdefghijklmnopqrstuvwxyz'.split('');
-  const distract=[];
-  const want = Math.min(3, 8-hidden.length);
-  while(distract.length < want){
-    const r=alpha[Math.floor(Math.random()*26)];
-    if(!hidden.includes(r) && !distract.includes(r)) distract.push(r);
-  }
-  const bank = shuffle([...hidden, ...distract]);
-  const keys = bank.map(ltr=>`<button class="key" data-l="${ltr}">${ltr}</button>`).join('');
+  // ปุ่มตัวอักษรครบ a–z ให้เลือก
+  const keys='abcdefghijklmnopqrstuvwxyz'.split('')
+    .map(ltr=>`<button class="key" data-l="${ltr}">${ltr}</button>`).join('');
 
   document.getElementById('spellBody').innerHTML=
-    `<div class="instr">เติมตัวอักษรที่หายไป · ${icon(w)} ${w.th} 🔊</div>
+    `<div class="instr">สะกดทั้งคำ เลือกตัวอักษร a–z · ${icon(w)} ${w.th} 🔊</div>
      <div class="wordtiles">${tiles}</div>
      <div class="bank">${keys}</div>`;
   highlightActiveBlank();
@@ -505,7 +492,6 @@ function spellTap(btn){
     const i=spell.blanks[spell.pos];
     const el=document.querySelector(`#spellBody .ltr.blank[data-i="${i}"]`);
     el.classList.remove('blank','active'); el.classList.add('filled'); el.textContent=spell.word[i];
-    btn.classList.add('used');
     spell.pos++;
     highlightActiveBlank();
     if(spell.pos===spell.blanks.length){
@@ -513,7 +499,7 @@ function spellTap(btn){
       addStar(); miniConfetti();
       fb.textContent='ถูกต้อง! 🌟 '+spell.word; fb.className='feedback good';
       say(spell.word);
-      document.querySelectorAll('#spellBody .key:not(.used)').forEach(k=>k.disabled=true);
+      document.querySelectorAll('#spellBody .key').forEach(k=>k.disabled=true);
       document.getElementById('spellNext').classList.add('show');
     }
   } else {
