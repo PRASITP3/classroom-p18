@@ -223,49 +223,58 @@ const V = {
    parts: เรียงตัวอักษรของคำ, ตัวไหนเป็นสระให้ v:1
    (รูป "เติมสระ" จะเว้นช่องว่างตรงตัว v:1 ให้อัตโนมัติ) */
 const BANK = [
-  {e:'🐟', vid:'aa',  parts:[{t:'ป'},{t:'ล'},{t:'า',v:1}]},                 // ปลา
-  {e:'🍵', vid:'aa',  parts:[{t:'ช'},{t:'า',v:1}]},                          // ชา
+  {e:'🙏', vid:'a',   parts:[{t:'พ'},{t:'ร'},{t:'ะ',v:1}]},                  // พระ
+  {e:'🐟', vid:'aa',  parts:[{t:'ป'},{t:'ล'},{t:'า',v:1}]},                  // ปลา
   {e:'👁️', vid:'aa',  parts:[{t:'ต'},{t:'า',v:1}]},                          // ตา
-  {e:'🦵', vid:'aa',  parts:[{t:'ข'},{t:'า',v:1}]},                          // ขา
-  {e:'⭐', vid:'aa',  parts:[{t:'ด'},{t:'า',v:1},{t:'ว'}]},                  // ดาว
-  {e:'🐭', vid:'uu',  parts:[{t:'ห'},{t:'น'},{t:'ู',v:1}]},                  // หนู
+  {e:'🐒', vid:'i',   parts:[{t:'ล'},{t:'ิ',v:1},{t:'ง'}]},                  // ลิง
+  {e:'👻', vid:'ii',  parts:[{t:'ผ'},{t:'ี',v:1}]},                          // ผี
+  {e:'🏢', vid:'ue',  parts:[{t:'ต'},{t:'ึ',v:1},{t:'ก'}]},                  // ตึก
+  {e:'🖐️', vid:'uee', parts:[{t:'ม'},{t:'ื',v:1},{t:'อ',v:1}]},             // มือ
+  {e:'👴', vid:'u',   parts:[{t:'ล'},{t:'ุ',v:1},{t:'ง'}]},                  // ลุง
   {e:'👂', vid:'uu',  parts:[{t:'ห'},{t:'ู',v:1}]},                          // หู
   {e:'🐍', vid:'uu',  parts:[{t:'ง'},{t:'ู',v:1}]},                          // งู
-  {e:'🦀', vid:'uu',  parts:[{t:'ป'},{t:'ู',v:1}]},                          // ปู
-  {e:'👻', vid:'ii',  parts:[{t:'ผ'},{t:'ี',v:1}]},                          // ผี
-  {e:'🖐️', vid:'uee', parts:[{t:'ม'},{t:'ื',v:1},{t:'อ',v:1}]},             // มือ
-  {e:'🐒', vid:'i',   parts:[{t:'ล'},{t:'ิ',v:1},{t:'ง'}]},                  // ลิง
-  {e:'🏢', vid:'ue',  parts:[{t:'ต'},{t:'ึ',v:1},{t:'ก'}]},                  // ตึก
-  {e:'💃', vid:'am',  parts:[{t:'ร'},{t:'ำ',v:1}]},                          // รำ
-  {e:'🔥', vid:'ai',  parts:[{t:'ไ',v:1},{t:'ฟ'}]},                          // ไฟ
-  {e:'❤️', vid:'aiy', parts:[{t:'ใ',v:1},{t:'จ'}]},                          // ใจ
+  {e:'☁️', vid:'e',   parts:[{t:'เ',v:1},{t:'ม'},{t:'ฆ'}]},                  // เมฆ
+  {e:'🐈', vid:'ae',  parts:[{t:'แ',v:1},{t:'ม'},{t:'ว'}]},                  // แมว
+  {e:'🐑', vid:'aeq', parts:[{t:'แ',v:1},{t:'ก'},{t:'ะ',v:1}]},              // แกะ
   {e:'🎀', vid:'o',   parts:[{t:'โ',v:1},{t:'บ'}]},                          // โบ
   {e:'👨‍⚕️', vid:'aw', parts:[{t:'ห'},{t:'ม'},{t:'อ',v:1}]},                 // หมอ
+  {e:'👧', vid:'oe',  parts:[{t:'เ',v:1},{t:'ธ'},{t:'อ',v:1}]},              // เธอ
+  {e:'🐔', vid:'ai',  parts:[{t:'ไ',v:1},{t:'ก'},{t:'่'}]},                  // ไก่
+  {e:'❤️', vid:'aiy', parts:[{t:'ใ',v:1},{t:'จ'}]},                          // ใจ
+  {e:'🐢', vid:'ao',  parts:[{t:'เ',v:1},{t:'ต'},{t:'่'},{t:'า',v:1}]},      // เต่า
+  {e:'💃', vid:'am',  parts:[{t:'ร'},{t:'ำ',v:1}]},                          // รำ
+  {e:'👅', vid:'ia',  parts:[{t:'เ',v:1},{t:'ล'},{t:'ี',v:1},{t:'ย',v:1}]}, // เลีย
   {e:'🐯', vid:'uea', parts:[{t:'เ',v:1},{t:'ส'},{t:'ื',v:1},{t:'อ',v:1}]},  // เสือ
   {e:'🛶', vid:'uea', parts:[{t:'เ',v:1},{t:'ร'},{t:'ื',v:1},{t:'อ',v:1}]},  // เรือ
-  {e:'🐑', vid:'aeq', parts:[{t:'แ',v:1},{t:'ก'},{t:'ะ',v:1}]},              // แกะ
-  {e:'🐈', vid:'ae',  parts:[{t:'แ',v:1},{t:'ม'},{t:'ว'}]},                  // แมว
   {e:'🐄', vid:'ua',  parts:[{t:'ว'},{t:'ั',v:1},{t:'ว',v:1}]},              // วัว
 ];
 
-/* ---------- คลังสระสำหรับหน้าเรียนรู้ (สระ + คำตัวอย่าง) ---------- */
+/* ---------- คลังสระสำหรับหน้าเรียนรู้ (สระ + คำตัวอย่าง ครบทุกสระ) ---------- */
 const CHART = [
-  {vid:'a',   ex:'จะ'},  {vid:'aa',  ex:'ตา'},
+  {vid:'a',   ex:'พระ'}, {vid:'aa',  ex:'ตา'},
   {vid:'i',   ex:'ลิง'}, {vid:'ii',  ex:'ผี'},
   {vid:'ue',  ex:'ตึก'}, {vid:'uee', ex:'มือ'},
   {vid:'u',   ex:'ลุง'}, {vid:'uu',  ex:'หู'},
-  {vid:'e',   ex:'เก'},  {vid:'ae',  ex:'แมว'},
+  {vid:'e',   ex:'เมฆ'}, {vid:'ae',  ex:'แมว'},
   {vid:'aeq', ex:'แกะ'}, {vid:'o',   ex:'โบ'},
   {vid:'aw',  ex:'หมอ'}, {vid:'oe',  ex:'เธอ'},
-  {vid:'ia',  ex:'เสีย'},{vid:'uea', ex:'เสือ'},
-  {vid:'ua',  ex:'วัว'}, {vid:'am',  ex:'รำ'},
-  {vid:'ai',  ex:'ไฟ'},  {vid:'aiy', ex:'ใจ'},
-  {vid:'ao',  ex:'เรา'},
+  {vid:'ai',  ex:'ไก่'}, {vid:'aiy', ex:'ใจ'},
+  {vid:'ao',  ex:'เต่า'},{vid:'am',  ex:'รำ'},
+  {vid:'ia',  ex:'เลีย'},{vid:'uea', ex:'เสือ'},
+  {vid:'ua',  ex:'วัว'},
 ];
 
 /* ---------- เสียงอ่าน ----------
-   มือถือส่วนใหญ่มีเสียงภาษาไทยในตัว → ใช้เสียงในเครื่องก่อน (เสถียร, ออฟไลน์ได้)
-   เครื่องที่ไม่มีเสียงไทย (เดสก์ท็อปหลายเครื่อง) → ดึงจาก Google TTS แทน */
+   เล่นไฟล์เสียงที่อัดไว้ในเซิร์ฟเวอร์เรา (audio-th/*.mp3) → มีเสียงทุกอุปกรณ์
+   รวมถึงเครื่องที่ไม่มีเสียงไทยติดตั้ง  ถ้าหาไฟล์ไม่เจอจึงใช้เสียงสังเคราะห์ */
+const AUDIO_DIR='audio-th/';
+const AUDIO = {
+  'ปลา':'pla','ตา':'ta','หู':'hu','งู':'ngu','เสือ':'suea','เรือ':'ruea',
+  'พระ':'phra','ลิง':'ling','ผี':'phi','ตึก':'tuek','มือ':'mue','ลุง':'lung',
+  'เมฆ':'mek','แมว':'maew','แกะ':'kae','โบ':'bo','หมอ':'mo','เธอ':'thoe',
+  'ไก่':'kai','ใจ':'jai','เต่า':'tao','รำ':'ram','เลีย':'lia','วัว':'wua',
+  'เก่งมาก ทำได้เต็ม':'r_perfect','เยี่ยมมาก':'r_great','สู้ๆ นะ ฝึกอีกนิดเดียว':'r_try',
+};
 let voice = null;
 function pickVoice(){
   if(!('speechSynthesis' in window)) return;
@@ -275,41 +284,29 @@ function pickVoice(){
        || vs.find(v=>/^th/i.test(v.lang)) || null;
 }
 if('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
-function hasThaiVoice(){
-  try{ return ('speechSynthesis' in window) && speechSynthesis.getVoices().some(v=>/^th\b|th[-_]/i.test(v.lang)); }
-  catch(e){ return false; }
-}
-function googleTTS(text){
-  return 'https://translate.google.com/translate_tts?ie=UTF-8&tl=th&client=tw-ob&q='+encodeURIComponent(text);
-}
 function synth(text){
   if(!('speechSynthesis' in window)) return;
   const u = new SpeechSynthesisUtterance(text);
   u.lang='th-TH'; u.rate=.85; u.pitch=1.05; if(voice) u.voice=voice;
   const go=()=>{ try{ speechSynthesis.speak(u); }catch(e){} };
   if(speechSynthesis.speaking || speechSynthesis.pending){
-    // กำลังพูดอยู่ → ยกเลิกแล้วหน่วงนิด (แก้บั๊ก Android ที่ speak ถูกยกเลิกทันที)
     try{ speechSynthesis.cancel(); }catch(e){}
     setTimeout(go, 60);
-  } else {
-    go(); // เรียกแบบ synchronous ใน gesture → iOS Safari ปลดล็อกเสียงได้
-  }
+  } else { go(); }
 }
-let curAudio=null, sayTimer=null;
+let curAudio=null;
 function say(text){
   if(curAudio){ try{ curAudio.pause(); }catch(e){} curAudio.onerror=null; curAudio=null; }
-  if(sayTimer){ clearTimeout(sayTimer); sayTimer=null; }
-  // มีเสียงไทยในเครื่อง → ใช้เลย (เคสมือถือ)
-  if(hasThaiVoice()){ synth(text); return; }
-  if(window.speechSynthesis){ try{ speechSynthesis.cancel(); }catch(e){} }
-  // ไม่มีเสียงไทย → Google TTS, ถ้าล้มเหลว/ค้างค่อยลองสังเคราะห์
-  let done=false; const fb=()=>{ if(!done){ done=true; synth(text); } };
-  const a=new Audio(googleTTS(text)); curAudio=a;
-  a.onerror=()=>{ if(a===curAudio) fb(); };
-  a.onplaying=()=>{ done=true; if(sayTimer){ clearTimeout(sayTimer); sayTimer=null; } };
-  const p=a.play();
-  if(p&&p.catch) p.catch(()=>fb());
-  sayTimer=setTimeout(()=>{ if(a===curAudio && a.currentTime===0) fb(); }, 1500);
+  const slug=AUDIO[text];
+  if(slug){
+    // เล่นไฟล์ที่อัดไว้ — เสถียรทุกเครื่อง  ถ้าโหลดไม่ได้ค่อยใช้เสียงสังเคราะห์
+    const a=new Audio(AUDIO_DIR+slug+'.mp3'); curAudio=a;
+    a.onerror=()=>{ if(a===curAudio) synth(text); };
+    const p=a.play();
+    if(p&&p.catch) p.catch(()=>{ if(a===curAudio) synth(text); });
+    return;
+  }
+  synth(text);
 }
 let lastSpoken="";
 document.getElementById('repeatBtn').onclick=()=>{ if(lastSpoken) say(lastSpoken); };
@@ -365,7 +362,7 @@ let quiz={mode:null,list:[],idx:0,score:0};
 const TITLES={fill:'เติมสระที่หายไป', name:'ดูคำ บอกสระ', pic:'ดูภาพ เติมสระ'};
 function startQuiz(mode){
   quiz.mode=mode; quiz.idx=0; quiz.score=0;
-  quiz.list=shuffle(BANK.slice()).slice(0,10);
+  quiz.list=shuffle(BANK.slice());   // ครบทุกคำ = ครอบคลุมทุกสระ
   document.getElementById('quizTitle').textContent=TITLES[mode];
   show('quiz'); renderQuestion();
 }
@@ -401,7 +398,7 @@ function renderQuestion(){
       <div class="choices four" id="choiceBox"></div>`;
     const vids=shuffle([q.vid,...distractVids(q.vid,3)]);
     renderChoices(vids,q.vid,'fill',q);
-    say(isPic ? 'นี่คือรูปอะไร' : word);
+    if(!isPic) say(word);   // โหมดภาพ: ให้เด็กดูรูปแล้วคิดเอง (กด 🔊 ฟังคำได้)
   }
 }
 function renderChoices(vids, correct, kind, item){
