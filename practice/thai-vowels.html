@@ -386,7 +386,7 @@ function renderQuestion(){
     body.innerHTML=`<div class="instr">คำนี้ใช้สระอะไร? 🔎</div>
       <div class="stage">
         <div class="bigemoji">${q.e}</div>
-        <div class="wordline">${fullWordHTML(q,false)}</div>
+        <div class="wordline" id="wordline">${blankedHTML(q)}</div>
       </div>
       <div class="choices" id="choiceBox"></div>`;
     const vids=shuffle([q.vid,...distractVids(q.vid,3)]);
