@@ -356,9 +356,8 @@ function startLearn(){
   CHART.forEach(c=>{
     const d=document.createElement('button'); d.className='vtile';
     d.innerHTML=`<div class="form">${V[c.vid].form}</div>
-                 <div class="nm">${V[c.vid].name}</div>
-                 <div class="ex">${c.ex} 🔊</div>`;
-    d.onclick=()=>{ lastSpoken=c.ex; playFile('lesson_'+c.vid, c.ex); g.querySelectorAll('.vtile').forEach(x=>x.classList.remove('spk')); d.classList.add('spk'); };
+                 <div class="nm">${V[c.vid].name} 🔊</div>`;
+    d.onclick=()=>{ lastSpoken=V[c.vid].name; playFile('lesson_'+c.vid, V[c.vid].name); g.querySelectorAll('.vtile').forEach(x=>x.classList.remove('spk')); d.classList.add('spk'); };
     g.appendChild(d);
   });
   show('learn');
