@@ -151,7 +151,7 @@
       <span class="stitle">เรียนรู้สระ</span>
     </div>
     <div class="panel">
-      <div class="instr">แตะที่สระเพื่อฟังคำตัวอย่าง 🔊</div>
+      <div class="instr">แตะที่สระเพื่อฟังการสะกดคำ 🔊</div>
       <div class="chart" id="chart"></div>
     </div>
   </section>
@@ -308,6 +308,13 @@ function say(text){
   }
   synth(text);
 }
+function playFile(slug, fallbackText){
+  if(curAudio){ try{ curAudio.pause(); }catch(e){} curAudio.onerror=null; curAudio=null; }
+  const a=new Audio(AUDIO_DIR+slug+'.mp3'); curAudio=a;
+  a.onerror=()=>{ if(a===curAudio && fallbackText) synth(fallbackText); };
+  const p=a.play();
+  if(p&&p.catch) p.catch(()=>{ if(a===curAudio && fallbackText) synth(fallbackText); });
+}
 let lastSpoken="";
 document.getElementById('repeatBtn').onclick=()=>{ if(lastSpoken) say(lastSpoken); };
 
@@ -351,7 +358,7 @@ function startLearn(){
     d.innerHTML=`<div class="form">${V[c.vid].form}</div>
                  <div class="nm">${V[c.vid].name}</div>
                  <div class="ex">${c.ex} 🔊</div>`;
-    d.onclick=()=>{ lastSpoken=c.ex; say(c.ex); g.querySelectorAll('.vtile').forEach(x=>x.classList.remove('spk')); d.classList.add('spk'); };
+    d.onclick=()=>{ lastSpoken=c.ex; playFile('lesson_'+c.vid, c.ex); g.querySelectorAll('.vtile').forEach(x=>x.classList.remove('spk')); d.classList.add('spk'); };
     g.appendChild(d);
   });
   show('learn');
