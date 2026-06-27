@@ -217,6 +217,18 @@ const V = {
   ia:  {name:'สระเอีย', form:'เ-ีย'},
   uea: {name:'สระเอือ', form:'เ-ือ'},
   ua:  {name:'สระอัว', form:'-ัว'},
+  // สระเสียงสั้น + สระเกิน (เพิ่มให้ครบ 32 เสียงตามตำรา)
+  eq:  {name:'สระเอะ', form:'เ-ะ'},
+  oq:  {name:'สระโอะ', form:'โ-ะ'},
+  awq: {name:'สระเอาะ', form:'เ-าะ'},
+  oeq: {name:'สระเออะ', form:'เ-อะ'},
+  iaq: {name:'สระเอียะ', form:'เ-ียะ'},
+  ueaq:{name:'สระเอือะ', form:'เ-ือะ'},
+  uaq: {name:'สระอัวะ', form:'-ัวะ'},
+  rue: {name:'สระ ฤ',  form:'ฤ'},
+  ruee:{name:'สระ ฤๅ', form:'ฤๅ'},
+  lue: {name:'สระ ฦ',  form:'ฦ'},
+  luee:{name:'สระ ฦๅ', form:'ฦๅ'},
 };
 
 /* ---------- คลังคำ + ภาพ ----------
@@ -247,21 +259,22 @@ const BANK = [
   {e:'🐯', vid:'uea', parts:[{t:'เ',v:1},{t:'ส'},{t:'ื',v:1},{t:'อ',v:1}]},  // เสือ
   {e:'🛶', vid:'uea', parts:[{t:'เ',v:1},{t:'ร'},{t:'ื',v:1},{t:'อ',v:1}]},  // เรือ
   {e:'🐄', vid:'ua',  parts:[{t:'ว'},{t:'ั',v:1},{t:'ว',v:1}]},              // วัว
+  {e:'⚽', vid:'eq',  parts:[{t:'เ',v:1},{t:'ต'},{t:'ะ',v:1}]},              // เตะ
+  {e:'🪑', vid:'oq',  parts:[{t:'โ',v:1},{t:'ต'},{t:'๊'},{t:'ะ',v:1}]},      // โต๊ะ
+  {e:'🏝️', vid:'awq', parts:[{t:'เ',v:1},{t:'ก'},{t:'า',v:1},{t:'ะ',v:1}]},  // เกาะ
 ];
 
-/* ---------- คลังสระสำหรับหน้าเรียนรู้ (สระ + คำตัวอย่าง ครบทุกสระ) ---------- */
+/* ---------- คลังสระสำหรับหน้าเรียนรู้ — ครบ 32 เสียงตามตำรา ---------- */
 const CHART = [
-  {vid:'a',   ex:'พระ'}, {vid:'aa',  ex:'ตา'},
-  {vid:'i',   ex:'ลิง'}, {vid:'ii',  ex:'ผี'},
-  {vid:'ue',  ex:'ตึก'}, {vid:'uee', ex:'มือ'},
-  {vid:'u',   ex:'ลุง'}, {vid:'uu',  ex:'หู'},
-  {vid:'e',   ex:'เมฆ'}, {vid:'ae',  ex:'แมว'},
-  {vid:'aeq', ex:'แกะ'}, {vid:'o',   ex:'โบ'},
-  {vid:'aw',  ex:'หมอ'}, {vid:'oe',  ex:'เธอ'},
-  {vid:'ai',  ex:'ไก่'}, {vid:'aiy', ex:'ใจ'},
-  {vid:'ao',  ex:'เต่า'},{vid:'am',  ex:'รำ'},
-  {vid:'ia',  ex:'เลีย'},{vid:'uea', ex:'เสือ'},
-  {vid:'ua',  ex:'วัว'},
+  // สระเดี่ยว 18 (สั้น/ยาว)
+  {vid:'a'}, {vid:'aa'}, {vid:'i'}, {vid:'ii'}, {vid:'ue'}, {vid:'uee'},
+  {vid:'u'}, {vid:'uu'}, {vid:'eq'}, {vid:'e'}, {vid:'aeq'}, {vid:'ae'},
+  {vid:'oq'}, {vid:'o'}, {vid:'awq'}, {vid:'aw'}, {vid:'oeq'}, {vid:'oe'},
+  // สระประสม 6
+  {vid:'iaq'}, {vid:'ia'}, {vid:'ueaq'}, {vid:'uea'}, {vid:'uaq'}, {vid:'ua'},
+  // สระเกิน 8
+  {vid:'am'}, {vid:'aiy'}, {vid:'ai'}, {vid:'ao'},
+  {vid:'rue'}, {vid:'ruee'}, {vid:'lue'}, {vid:'luee'},
 ];
 
 /* ---------- เสียงอ่าน ----------
@@ -273,6 +286,7 @@ const AUDIO = {
   'พระ':'phra','ลิง':'ling','ผี':'phi','ตึก':'tuek','มือ':'mue','ลุง':'lung',
   'เมฆ':'mek','แมว':'maew','แกะ':'kae','โบ':'bo','หมอ':'mo','เธอ':'thoe',
   'ไก่':'kai','ใจ':'jai','เต่า':'tao','รำ':'ram','เลีย':'lia','วัว':'wua',
+  'เตะ':'te','โต๊ะ':'to','เกาะ':'ko',
   'เก่งมาก ทำได้เต็ม':'r_perfect','เยี่ยมมาก':'r_great','สู้ๆ นะ ฝึกอีกนิดเดียว':'r_try',
 };
 let voice = null;
@@ -347,8 +361,9 @@ function show(id){
 }
 function goHome(){ if(curAudio) curAudio.pause(); if(window.speechSynthesis) speechSynthesis.cancel(); show('home'); }
 function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);}
-const ALL_VIDS = Object.keys(V);
-function distractVids(correct,n){ return shuffle(ALL_VIDS.filter(k=>k!==correct)).slice(0,n); }
+// ตัวเลือกลวงสุ่มจากสระที่มีในคลังคำ (ที่ ป.1 ใช้บ่อย) ไม่รวมสระหายาก
+const QUIZ_VIDS = [...new Set(BANK.map(b=>b.vid))];
+function distractVids(correct,n){ return shuffle(QUIZ_VIDS.filter(k=>k!==correct)).slice(0,n); }
 
 /* ---------- LEARN ---------- */
 function startLearn(){
