@@ -264,9 +264,8 @@ const CHART = [
 ];
 
 /* ---------- เสียงอ่าน ----------
-   เครื่อง/เบราว์เซอร์หลายตัว (โดยเฉพาะเดสก์ท็อป) ไม่มีเสียงภาษาไทยติดตั้ง
-   จึงให้เบราว์เซอร์ของผู้ใช้ดึงเสียงไทยจาก Google TTS โดยตรง (อ่านได้ทุกคำ)
-   ถ้าใช้ไม่ได้ค่อยถอยไปใช้เสียงสังเคราะห์ของเครื่อง (เครื่องที่มีเสียงไทย) */
+   มือถือส่วนใหญ่มีเสียงภาษาไทยในตัว → ใช้เสียงในเครื่องก่อน (เสถียร, ออฟไลน์ได้)
+   เครื่องที่ไม่มีเสียงไทย (เดสก์ท็อปหลายเครื่อง) → ดึงจาก Google TTS แทน */
 let voice = null;
 function pickVoice(){
   if(!('speechSynthesis' in window)) return;
@@ -276,25 +275,41 @@ function pickVoice(){
        || vs.find(v=>/^th/i.test(v.lang)) || null;
 }
 if('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function hasThaiVoice(){
+  try{ return ('speechSynthesis' in window) && speechSynthesis.getVoices().some(v=>/^th\b|th[-_]/i.test(v.lang)); }
+  catch(e){ return false; }
+}
 function googleTTS(text){
   return 'https://translate.google.com/translate_tts?ie=UTF-8&tl=th&client=tw-ob&q='+encodeURIComponent(text);
 }
 function synth(text){
   if(!('speechSynthesis' in window)) return;
-  speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.lang='th-TH'; u.rate=.8; u.pitch=1.05; if(voice) u.voice=voice;
-  speechSynthesis.speak(u);
+  u.lang='th-TH'; u.rate=.85; u.pitch=1.05; if(voice) u.voice=voice;
+  const go=()=>{ try{ speechSynthesis.speak(u); }catch(e){} };
+  if(speechSynthesis.speaking || speechSynthesis.pending){
+    // กำลังพูดอยู่ → ยกเลิกแล้วหน่วงนิด (แก้บั๊ก Android ที่ speak ถูกยกเลิกทันที)
+    try{ speechSynthesis.cancel(); }catch(e){}
+    setTimeout(go, 60);
+  } else {
+    go(); // เรียกแบบ synchronous ใน gesture → iOS Safari ปลดล็อกเสียงได้
+  }
 }
-let curAudio=null;
+let curAudio=null, sayTimer=null;
 function say(text){
-  // Google TTS (จากเบราว์เซอร์ผู้ใช้) → เสียงสังเคราะห์
-  if(curAudio){ try{ curAudio.pause(); }catch(e){} curAudio.onerror=null; }
-  if(window.speechSynthesis) speechSynthesis.cancel();
+  if(curAudio){ try{ curAudio.pause(); }catch(e){} curAudio.onerror=null; curAudio=null; }
+  if(sayTimer){ clearTimeout(sayTimer); sayTimer=null; }
+  // มีเสียงไทยในเครื่อง → ใช้เลย (เคสมือถือ)
+  if(hasThaiVoice()){ synth(text); return; }
+  if(window.speechSynthesis){ try{ speechSynthesis.cancel(); }catch(e){} }
+  // ไม่มีเสียงไทย → Google TTS, ถ้าล้มเหลว/ค้างค่อยลองสังเคราะห์
+  let done=false; const fb=()=>{ if(!done){ done=true; synth(text); } };
   const a=new Audio(googleTTS(text)); curAudio=a;
-  a.onerror=()=>{ if(a===curAudio) synth(text); };
+  a.onerror=()=>{ if(a===curAudio) fb(); };
+  a.onplaying=()=>{ done=true; if(sayTimer){ clearTimeout(sayTimer); sayTimer=null; } };
   const p=a.play();
-  if(p&&p.catch) p.catch(()=>{ if(a===curAudio) synth(text); });
+  if(p&&p.catch) p.catch(()=>fb());
+  sayTimer=setTimeout(()=>{ if(a===curAudio && a.currentTime===0) fb(); }, 1500);
 }
 let lastSpoken="";
 document.getElementById('repeatBtn').onclick=()=>{ if(lastSpoken) say(lastSpoken); };
@@ -457,8 +472,8 @@ function burst(n){
   }
 }
 
-/* warm up speech on first interaction */
-document.body.addEventListener('click',function once(){ try{ say(' '); }catch(e){}; document.body.removeEventListener('click',once); }, {once:true});
+/* ปลุก speechSynthesis ครั้งแรก (บางเครื่องต้อง resume ก่อนใช้งาน) */
+document.body.addEventListener('click',function once(){ try{ if(window.speechSynthesis) speechSynthesis.resume(); }catch(e){}; document.body.removeEventListener('click',once); }, {once:true});
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../auth.js"></script>
