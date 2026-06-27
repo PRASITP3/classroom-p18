@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>สระไทย — ฝึกก่อนสอบ ป.1/8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Sarabun:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-1:#8FD3F4; --sky-2:#C7ECFF;
+    --ink:#27384A; --ink-soft:#5A6B7D;
+    --sun:#FFD23F; --coral:#FF7A6B; --mint:#41C9A0; --grape:#9B6DD6; --sky:#3FA9F5;
+    --card:#FFFFFF; --good:#41C9A0; --bad:#FF6B6B;
+    --shadow:0 8px 0 rgba(39,56,74,.12), 0 14px 30px rgba(39,56,74,.18);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; height:100%;}
+  body{
+    font-family:'Sarabun',sans-serif; color:var(--ink);
+    background:linear-gradient(160deg,#9CE6C9,#C7ECFF);
+    min-height:100dvh; display:flex; flex-direction:column; align-items:center;
+    overflow-x:hidden;
+  }
+  .wrap{width:100%; max-width:560px; padding:14px 16px 30px; flex:1; display:flex; flex-direction:column;}
+
+  .top{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;}
+  .brand{font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.15rem; color:var(--ink); display:flex; align-items:center; gap:7px;}
+  .brand .dot{width:14px;height:14px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 4px rgba(65,201,160,.25);}
+  .stars{background:#fff; border-radius:999px; padding:6px 13px; font-weight:800; box-shadow:var(--shadow); display:flex; align-items:center; gap:6px; font-size:1rem;}
+  .stars .s{filter:drop-shadow(0 2px 0 rgba(255,178,0,.4)); transition:transform .25s;}
+  .stars.pop .s{transform:scale(1.5) rotate(18deg);}
+
+  .screen{display:none; flex:1; flex-direction:column;}
+  .screen.active{display:flex; animation:rise .35s ease both;}
+  @keyframes rise{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);}}
+
+  .hero{background:#fff; border-radius:26px; padding:22px 20px; box-shadow:var(--shadow); text-align:center; margin-bottom:16px; position:relative; overflow:hidden;}
+  .hero h1{font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.6rem; margin:6px 0 2px;}
+  .hero p{margin:0; color:var(--ink-soft); font-weight:700;}
+  .hero .emoji{font-size:2.7rem; line-height:1;}
+  .menu{display:flex; flex-direction:column; gap:14px;}
+  .mcard{border:0; cursor:pointer; text-align:left; color:#fff; border-radius:22px; padding:18px 18px; display:flex; align-items:center; gap:16px; box-shadow:var(--shadow); font-family:'Sarabun',sans-serif; transition:transform .12s;}
+  .mcard:active{transform:translateY(3px);}
+  .mcard .ic{font-size:2rem; background:rgba(255,255,255,.25); width:58px; height:58px; border-radius:16px; display:grid; place-items:center; flex:none;}
+  .mcard .t{font-size:1.25rem; font-weight:800; line-height:1.15;}
+  .mcard .d{font-family:'Sarabun',sans-serif; font-weight:700; opacity:.95; font-size:.9rem;}
+  .c-learn{background:linear-gradient(135deg,#FFB23F,var(--sun));}
+  .c-fill{background:linear-gradient(135deg,#5BC8F0,var(--sky));}
+  .c-name{background:linear-gradient(135deg,#A988E0,var(--grape));}
+  .c-pic{background:linear-gradient(135deg,#5BD9B2,var(--mint));}
+
+  .shead{display:flex; align-items:center; gap:10px; margin-bottom:12px;}
+  .back{border:0; background:#fff; box-shadow:var(--shadow); border-radius:14px; width:46px; height:46px; font-size:1.3rem; cursor:pointer; flex:none; color:var(--ink); font-weight:800; text-decoration:none; display:grid; place-items:center;}
+  .back:active{transform:translateY(2px);}
+  .stitle{font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.2rem;}
+  .progress{margin-left:auto; font-weight:800; color:var(--ink-soft); background:#fff; padding:6px 12px; border-radius:999px; box-shadow:var(--shadow);}
+
+  .panel{background:#fff; border-radius:24px; box-shadow:var(--shadow); padding:18px 16px; flex:1; display:flex; flex-direction:column;}
+  .instr{font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.12rem; text-align:center; margin:2px 0 10px; color:var(--ink);}
+
+  .stage{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; flex:1;}
+  .bigemoji{font-size:4.6rem; line-height:1;}
+  .smemoji{font-size:2.2rem; line-height:1; opacity:.9;}
+  .wordline{font-family:'Sarabun',sans-serif; font-weight:800; font-size:3.2rem; line-height:1.2; letter-spacing:2px; color:var(--ink); text-align:center;}
+  .wordline .vhi{color:var(--mint);}
+  .vbox{display:inline-block; min-width:.7em; height:1em; margin:0 .04em; border-bottom:6px dotted var(--coral); color:transparent; vertical-align:bottom;}
+
+  .choices{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:14px;}
+  .choices.four{grid-template-columns:repeat(2,1fr);}
+  .choice{border:3px solid #E7EEF4; background:#fff; border-radius:18px; padding:16px 10px; font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.5rem; cursor:pointer; color:var(--ink); transition:transform .1s, border-color .15s, background .15s;}
+  .choice.nm{font-size:1.25rem;}
+  .choice:active{transform:scale(.97);}
+  .choice.correct{border-color:var(--good); background:#E7FBF3; color:#1E8E6E;}
+  .choice.wrong{border-color:var(--bad); background:#FFECEC; color:#D64545; animation:shake .4s;}
+  .choice:disabled{cursor:default;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-7px);}75%{transform:translateX(7px);}}
+
+  .feedback{text-align:center; font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.12rem; min-height:28px; margin-top:12px; color:var(--ink-soft);}
+  .feedback.good{color:var(--good);} .feedback.bad{color:var(--bad);}
+
+  .nextbtn{margin-top:14px; border:0; background:linear-gradient(135deg,#5BD9B2,var(--mint)); color:#fff; font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.2rem; padding:15px; border-radius:18px; box-shadow:var(--shadow); cursor:pointer; opacity:0; pointer-events:none; transition:opacity .2s;}
+  .nextbtn.show{opacity:1; pointer-events:auto;}
+  .nextbtn:active{transform:translateY(3px);}
+
+  /* LEARN chart */
+  .chart{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; overflow-y:auto;}
+  .vtile{border:3px solid #EEF3F7; background:#FBFDFF; border-radius:16px; padding:12px 8px; text-align:center; cursor:pointer; transition:transform .1s,border-color .15s,background .15s;}
+  .vtile:active{transform:scale(.96);}
+  .vtile.spk{border-color:var(--sun); background:#FFF8E6;}
+  .vtile .form{font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.7rem; color:var(--sky);}
+  .vtile .nm{font-weight:800; font-size:.95rem; margin-top:2px;}
+  .vtile .ex{font-weight:700; font-size:1.05rem; color:var(--ink-soft); margin-top:1px;}
+
+  .result{background:#fff; border-radius:26px; box-shadow:var(--shadow); padding:30px 22px; text-align:center; flex:1; display:flex; flex-direction:column; justify-content:center;}
+  .result .big{font-size:3.4rem;}
+  .result h2{font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.7rem; margin:8px 0 2px;}
+  .result .score{font-weight:800; color:var(--ink-soft); font-size:1.2rem;}
+  .result .rstars{font-size:2rem; margin:14px 0; letter-spacing:6px;}
+  .result button{margin-top:10px; border:0; border-radius:18px; padding:15px; font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.15rem; cursor:pointer; box-shadow:var(--shadow); color:#fff;}
+  .r-again{background:linear-gradient(135deg,#FFB23F,var(--sun));}
+  .result button.r-home{background:#fff; color:var(--ink); margin-top:12px; border:3px solid #EEF3F7; box-shadow:none;}
+
+  .speak-fab{position:fixed; bottom:18px; right:18px; width:60px; height:60px; border-radius:50%; border:0; background:var(--grape); color:#fff; font-size:1.6rem; box-shadow:var(--shadow); cursor:pointer; z-index:30; display:none;}
+  .speak-fab.show{display:grid; place-items:center;}
+  .speak-fab:active{transform:translateY(3px);}
+
+  .confetti{position:fixed; top:-10px; width:11px; height:18px; z-index:50; pointer-events:none; border-radius:2px;}
+  @keyframes fall{to{transform:translateY(105vh) rotate(540deg); opacity:0;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><span class="dot"></span> สระไทย · ป.1</div>
+    <div class="stars" id="starbox"><span class="s">⭐</span><span id="starnum">0</span></div>
+  </div>
+
+  <!-- HOME -->
+  <section class="screen active" id="home">
+    <div class="hero">
+      <div class="emoji">🇹🇭 ◌า</div>
+      <h1>ฝึกสระภาษาไทย</h1>
+      <p>เลือกแบบฝึกเพื่อเริ่มเลย</p>
+    </div>
+    <div class="menu">
+      <button class="mcard c-learn" onclick="startLearn()">
+        <span class="ic">📖</span>
+        <span><span class="t">เรียนรู้สระ</span><br><span class="d">แตะดูสระ + คำตัวอย่าง · มีเสียงอ่าน 🔊</span></span>
+      </button>
+      <button class="mcard c-fill" onclick="startQuiz('fill')">
+        <span class="ic">✏️</span>
+        <span><span class="t">เติมสระที่หายไป</span><br><span class="d">ดูคำที่ขาดสระ แล้วเลือกสระให้ถูก</span></span>
+      </button>
+      <button class="mcard c-name" onclick="startQuiz('name')">
+        <span class="ic">🔎</span>
+        <span><span class="t">ดูคำ บอกสระ</span><br><span class="d">คำนี้ใช้สระอะไร? เลือกชื่อสระ</span></span>
+      </button>
+      <button class="mcard c-pic" onclick="startQuiz('pic')">
+        <span class="ic">🖼️</span>
+        <span><span class="t">ดูภาพ เติมสระ</span><br><span class="d">ดูรูป แล้วเติมสระให้ตรงกับภาพ</span></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- LEARN -->
+  <section class="screen" id="learn">
+    <div class="shead">
+      <button class="back" onclick="goHome()">‹</button>
+      <span class="stitle">เรียนรู้สระ</span>
+    </div>
+    <div class="panel">
+      <div class="instr">แตะที่สระเพื่อฟังคำตัวอย่าง 🔊</div>
+      <div class="chart" id="chart"></div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="screen" id="quiz">
+    <div class="shead">
+      <button class="back" onclick="goHome()">‹</button>
+      <span class="stitle" id="quizTitle">แบบฝึก</span>
+      <span class="progress" id="quizProg">1 / 10</span>
+    </div>
+    <div class="panel">
+      <div id="quizBody"></div>
+      <div class="feedback" id="quizFb"></div>
+      <button class="nextbtn" id="nextBtn" onclick="nextQuestion()">ข้อต่อไป →</button>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="result">
+    <div class="result">
+      <div class="big" id="rEmoji">🎉</div>
+      <h2 id="rTitle">เก่งมาก!</h2>
+      <div class="score" id="rScore">10 / 10</div>
+      <div class="rstars" id="rStars">⭐⭐⭐</div>
+      <button class="r-again" id="rAgain">เล่นอีกครั้ง</button>
+      <button class="r-home" onclick="goHome()">กลับเมนู</button>
+    </div>
+  </section>
+</div>
+
+<button class="speak-fab" id="repeatBtn" title="ฟังอีกครั้ง">🔊</button>
+
+<script>
+/* ============================================================
+   สระไทย — แบบฝึกก่อนสอบ ป.1/8
+   3 รูปแบบตามที่ครูแจ้ง:
+     fill = เติมสระที่หายไป
+     name = ให้คำมาแล้วบอกสระ
+     pic  = ให้ภาพมาแล้วเติมสระให้ตรงตามภาพ
+   ============================================================ */
+
+/* ---------- ทะเบียนสระ (ชื่อ + รูปสระ) ---------- */
+const V = {
+  a:   {name:'สระอะ',  form:'◌ะ'},
+  aa:  {name:'สระอา',  form:'◌า'},
+  i:   {name:'สระอิ',  form:'◌ิ'},
+  ii:  {name:'สระอี',  form:'◌ี'},
+  ue:  {name:'สระอึ',  form:'◌ึ'},
+  uee: {name:'สระอือ', form:'◌ือ'},
+  u:   {name:'สระอุ',  form:'◌ุ'},
+  uu:  {name:'สระอู',  form:'◌ู'},
+  e:   {name:'สระเอ',  form:'เ◌'},
+  ae:  {name:'สระแอ',  form:'แ◌'},
+  aeq: {name:'สระแอะ', form:'แ◌ะ'},
+  o:   {name:'สระโอ',  form:'โ◌'},
+  aw:  {name:'สระออ',  form:'◌อ'},
+  oe:  {name:'สระเออ', form:'เ◌อ'},
+  ai:  {name:'สระไอ',  form:'ไ◌'},
+  aiy: {name:'สระใอ',  form:'ใ◌'},
+  ao:  {name:'สระเอา', form:'เ◌า'},
+  am:  {name:'สระอำ',  form:'◌ำ'},
+  ia:  {name:'สระเอีย', form:'เ◌ีย'},
+  uea: {name:'สระเอือ', form:'เ◌ือ'},
+  ua:  {name:'สระอัว', form:'◌ัว'},
+};
+
+/* ---------- คลังคำ + ภาพ ----------
+   parts: เรียงตัวอักษรของคำ, ตัวไหนเป็นสระให้ v:1
+   (รูป "เติมสระ" จะเว้นช่องว่างตรงตัว v:1 ให้อัตโนมัติ) */
+const BANK = [
+  {e:'🐟', vid:'aa',  parts:[{t:'ป'},{t:'ล'},{t:'า',v:1}]},                 // ปลา
+  {e:'🍵', vid:'aa',  parts:[{t:'ช'},{t:'า',v:1}]},                          // ชา
+  {e:'👁️', vid:'aa',  parts:[{t:'ต'},{t:'า',v:1}]},                          // ตา
+  {e:'🦵', vid:'aa',  parts:[{t:'ข'},{t:'า',v:1}]},                          // ขา
+  {e:'⭐', vid:'aa',  parts:[{t:'ด'},{t:'า',v:1},{t:'ว'}]},                  // ดาว
+  {e:'🐭', vid:'uu',  parts:[{t:'ห'},{t:'น'},{t:'ู',v:1}]},                  // หนู
+  {e:'👂', vid:'uu',  parts:[{t:'ห'},{t:'ู',v:1}]},                          // หู
+  {e:'🐍', vid:'uu',  parts:[{t:'ง'},{t:'ู',v:1}]},                          // งู
+  {e:'🦀', vid:'uu',  parts:[{t:'ป'},{t:'ู',v:1}]},                          // ปู
+  {e:'👻', vid:'ii',  parts:[{t:'ผ'},{t:'ี',v:1}]},                          // ผี
+  {e:'🖐️', vid:'uee', parts:[{t:'ม'},{t:'ื',v:1},{t:'อ',v:1}]},             // มือ
+  {e:'🐒', vid:'i',   parts:[{t:'ล'},{t:'ิ',v:1},{t:'ง'}]},                  // ลิง
+  {e:'🏢', vid:'ue',  parts:[{t:'ต'},{t:'ึ',v:1},{t:'ก'}]},                  // ตึก
+  {e:'💃', vid:'am',  parts:[{t:'ร'},{t:'ำ',v:1}]},                          // รำ
+  {e:'🔥', vid:'ai',  parts:[{t:'ไ',v:1},{t:'ฟ'}]},                          // ไฟ
+  {e:'❤️', vid:'aiy', parts:[{t:'ใ',v:1},{t:'จ'}]},                          // ใจ
+  {e:'🎀', vid:'o',   parts:[{t:'โ',v:1},{t:'บ'}]},                          // โบ
+  {e:'👨‍⚕️', vid:'aw', parts:[{t:'ห'},{t:'ม'},{t:'อ',v:1}]},                 // หมอ
+  {e:'🐯', vid:'uea', parts:[{t:'เ',v:1},{t:'ส'},{t:'ื',v:1},{t:'อ',v:1}]},  // เสือ
+  {e:'🛶', vid:'uea', parts:[{t:'เ',v:1},{t:'ร'},{t:'ื',v:1},{t:'อ',v:1}]},  // เรือ
+  {e:'🐑', vid:'aeq', parts:[{t:'แ',v:1},{t:'ก'},{t:'ะ',v:1}]},              // แกะ
+  {e:'🐈', vid:'ae',  parts:[{t:'แ',v:1},{t:'ม'},{t:'ว'}]},                  // แมว
+  {e:'🐄', vid:'ua',  parts:[{t:'ว'},{t:'ั',v:1},{t:'ว',v:1}]},              // วัว
+];
+
+/* ---------- คลังสระสำหรับหน้าเรียนรู้ (สระ + คำตัวอย่าง) ---------- */
+const CHART = [
+  {vid:'a',   ex:'จะ'},  {vid:'aa',  ex:'ตา'},
+  {vid:'i',   ex:'ลิง'}, {vid:'ii',  ex:'ผี'},
+  {vid:'ue',  ex:'ตึก'}, {vid:'uee', ex:'มือ'},
+  {vid:'u',   ex:'ลุง'}, {vid:'uu',  ex:'หู'},
+  {vid:'e',   ex:'เก'},  {vid:'ae',  ex:'แมว'},
+  {vid:'aeq', ex:'แกะ'}, {vid:'o',   ex:'โบ'},
+  {vid:'aw',  ex:'หมอ'}, {vid:'oe',  ex:'เธอ'},
+  {vid:'ia',  ex:'เสีย'},{vid:'uea', ex:'เสือ'},
+  {vid:'ua',  ex:'วัว'}, {vid:'am',  ex:'รำ'},
+  {vid:'ai',  ex:'ไฟ'},  {vid:'aiy', ex:'ใจ'},
+  {vid:'ao',  ex:'เรา'},
+];
+
+/* ---------- เสียงอ่าน (ภาษาไทย th-TH) ---------- */
+let voice = null;
+function pickVoice(){
+  const vs = speechSynthesis.getVoices();
+  voice = vs.find(v=>/th[-_]TH/i.test(v.lang) && /female|google|kanya|premwadee/i.test(v.name))
+       || vs.find(v=>/th[-_]TH/i.test(v.lang))
+       || vs.find(v=>/^th/i.test(v.lang)) || null;
+}
+if('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='th-TH'; u.rate=.8; u.pitch=1.05; if(voice) u.voice=voice;
+  speechSynthesis.speak(u);
+}
+let lastSpoken="";
+document.getElementById('repeatBtn').onclick=()=>{ if(lastSpoken) say(lastSpoken); };
+
+/* ---------- helpers ---------- */
+function wordOf(item){ return item.parts.map(p=>p.t).join(''); }
+function fullWordHTML(item, hi){
+  return item.parts.map(p=> (p.v && hi) ? `<span class="vhi">${p.t}</span>` : p.t).join('');
+}
+function blankedHTML(item){
+  let out='', prevV=false;
+  item.parts.forEach(p=>{
+    if(p.v){ if(!prevV) out+='<span class="vbox">_</span>'; }
+    else out+=p.t;
+    prevV=!!p.v;
+  });
+  return out;
+}
+
+/* ---------- state ---------- */
+let stars = 0;
+function addStar(){
+  stars++; document.getElementById('starnum').textContent=stars;
+  const sb=document.getElementById('starbox'); sb.classList.add('pop');
+  setTimeout(()=>sb.classList.remove('pop'),260);
+}
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('repeatBtn').classList.toggle('show', id==='quiz');
+}
+function goHome(){ if(window.speechSynthesis) speechSynthesis.cancel(); show('home'); }
+function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);}
+const ALL_VIDS = Object.keys(V);
+function distractVids(correct,n){ return shuffle(ALL_VIDS.filter(k=>k!==correct)).slice(0,n); }
+
+/* ---------- LEARN ---------- */
+function startLearn(){
+  const g=document.getElementById('chart'); g.innerHTML='';
+  CHART.forEach(c=>{
+    const d=document.createElement('button'); d.className='vtile';
+    d.innerHTML=`<div class="form">${V[c.vid].form}</div>
+                 <div class="nm">${V[c.vid].name}</div>
+                 <div class="ex">${c.ex} 🔊</div>`;
+    d.onclick=()=>{ lastSpoken=c.ex; say(c.ex); g.querySelectorAll('.vtile').forEach(x=>x.classList.remove('spk')); d.classList.add('spk'); };
+    g.appendChild(d);
+  });
+  show('learn');
+}
+
+/* ---------- QUIZ ---------- */
+let quiz={mode:null,list:[],idx:0,score:0};
+const TITLES={fill:'เติมสระที่หายไป', name:'ดูคำ บอกสระ', pic:'ดูภาพ เติมสระ'};
+function startQuiz(mode){
+  quiz.mode=mode; quiz.idx=0; quiz.score=0;
+  quiz.list=shuffle(BANK.slice()).slice(0,10);
+  document.getElementById('quizTitle').textContent=TITLES[mode];
+  show('quiz'); renderQuestion();
+}
+function renderQuestion(){
+  const total=quiz.list.length, q=quiz.list[quiz.idx];
+  document.getElementById('quizProg').textContent=`${quiz.idx+1} / ${total}`;
+  const fb=document.getElementById('quizFb'); fb.textContent=''; fb.className='feedback';
+  const nb=document.getElementById('nextBtn'); nb.classList.remove('show');
+  nb.textContent = quiz.idx===total-1 ? 'ดูผลคะแนน ✓' : 'ข้อต่อไป →';
+  const body=document.getElementById('quizBody');
+  const word=wordOf(q);
+  lastSpoken=word;
+
+  if(quiz.mode==='name'){
+    body.innerHTML=`<div class="instr">คำนี้ใช้สระอะไร? 🔎</div>
+      <div class="stage">
+        <div class="bigemoji">${q.e}</div>
+        <div class="wordline">${fullWordHTML(q,false)}</div>
+      </div>
+      <div class="choices" id="choiceBox"></div>`;
+    const vids=shuffle([q.vid,...distractVids(q.vid,3)]);
+    renderChoices(vids,q.vid,'name',q);
+    say(word);
+  } else {
+    const isPic = quiz.mode==='pic';
+    const instr = isPic ? 'ดูภาพ แล้วเติมสระให้เป็นคำที่ถูก 🖼️'
+                        : 'เติมสระที่หายไปให้ถูกต้อง ✏️';
+    body.innerHTML=`<div class="instr">${instr}</div>
+      <div class="stage">
+        <div class="${isPic?'bigemoji':'smemoji'}">${q.e}</div>
+        <div class="wordline" id="wordline">${blankedHTML(q)}</div>
+      </div>
+      <div class="choices four" id="choiceBox"></div>`;
+    const vids=shuffle([q.vid,...distractVids(q.vid,3)]);
+    renderChoices(vids,q.vid,'fill',q);
+    say(isPic ? 'นี่คือรูปอะไร' : word);
+  }
+}
+function renderChoices(vids, correct, kind, item){
+  const box=document.getElementById('choiceBox'); box.innerHTML='';
+  vids.forEach(v=>{
+    const b=document.createElement('button');
+    b.className='choice'+(kind==='name'?' nm':'');
+    b.textContent = kind==='name' ? V[v].name : V[v].form;
+    b.onclick=()=>pickAnswer(b,v,correct,kind,item);
+    box.appendChild(b);
+  });
+}
+function pickAnswer(btn, chosen, correct, kind, item){
+  const box=document.getElementById('choiceBox');
+  box.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('quizFb');
+  const word=wordOf(item);
+  const reveal=()=>{ const wl=document.getElementById('wordline'); if(wl) wl.innerHTML=fullWordHTML(item,true); };
+  if(chosen===correct){
+    btn.classList.add('correct'); quiz.score++; addStar();
+    fb.textContent=`ถูกต้อง! "${word}" ใช้${V[correct].name} 🌟`; fb.className='feedback good';
+    reveal(); say(word); miniConfetti();
+  } else {
+    btn.classList.add('wrong');
+    box.querySelectorAll('.choice').forEach(b=>{
+      const lbl = kind==='name'?V[correct].name:V[correct].form;
+      if(b.textContent===lbl) b.classList.add('correct');
+    });
+    fb.textContent=`คำนี้คือ "${word}" ใช้${V[correct].name}`; fb.className='feedback bad';
+    reveal(); say(word);
+  }
+  document.getElementById('nextBtn').classList.add('show');
+}
+function nextQuestion(){
+  if(quiz.idx < quiz.list.length-1){ quiz.idx++; renderQuestion(); }
+  else {
+    if(window.P18Auth) P18Auth.saveScore('thai-vowels', quiz.mode, quiz.score, quiz.list.length);
+    showResult(quiz.score, quiz.list.length, ()=>startQuiz(quiz.mode));
+  }
+}
+
+/* ---------- RESULT ---------- */
+function showResult(score,total,againFn){
+  show('result');
+  const pct=score/total;
+  document.getElementById('rScore').textContent=score+' / '+total;
+  document.getElementById('rEmoji').textContent = pct===1?'🏆':pct>=.7?'🎉':'💪';
+  document.getElementById('rTitle').textContent = pct===1?'เก่งมาก! เต็ม!':pct>=.7?'เยี่ยมมาก!':'สู้ๆ ฝึกอีกนิด!';
+  document.getElementById('rStars').textContent = pct===1?'⭐⭐⭐':pct>=.7?'⭐⭐':'⭐';
+  document.getElementById('rAgain').onclick=againFn;
+  if(pct>=.7) bigConfetti();
+  say(pct===1?'เก่งมาก ทำได้เต็ม':pct>=.7?'เยี่ยมมาก':'สู้ๆ นะ ฝึกอีกนิดเดียว');
+}
+
+/* ---------- Confetti ---------- */
+const COLORS=['#FFD23F','#FF7A6B','#41C9A0','#9B6DD6','#3FA9F5'];
+function miniConfetti(){ burst(14); }
+function bigConfetti(){ burst(60); }
+function burst(n){
+  for(let i=0;i<n;i++){
+    const c=document.createElement('div'); c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=COLORS[i%COLORS.length];
+    c.style.animation=`fall ${1+Math.random()*1.2}s ${Math.random()*.3}s linear forwards`;
+    c.style.transform=`rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),2600);
+  }
+}
+
+/* warm up speech on first interaction */
+document.body.addEventListener('click',function once(){ try{ say(' '); }catch(e){}; document.body.removeEventListener('click',once); }, {once:true});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../auth.js"></script>
+</body>
+</html>

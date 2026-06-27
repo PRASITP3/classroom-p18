@@ -120,10 +120,19 @@ const GAMES = [
     file: 'chinese-numbers.html',
     ready: true,
   },
+  {
+    title: 'สระไทย',
+    desc: 'ฝึกก่อนสอบ · เติมสระ · บอกสระ · ดูภาพเติมสระ',
+    subject: 'ภาษาไทย',
+    emoji: '🇹🇭',
+    color: 'linear-gradient(135deg,#5BD9B2,#41C9A0)',
+    file: 'thai-vowels.html',
+    ready: true,
+  },
 ];
 
 /* ไอคอนประจำหมวดวิชา (เรียงตามที่เจอครั้งแรกใน GAMES) */
-const SUBJECT_ICON = { 'English':'🇬🇧', 'ภาษาจีน':'🇨🇳' };
+const SUBJECT_ICON = { 'English':'🇬🇧', 'ภาษาจีน':'🇨🇳', 'ภาษาไทย':'🇹🇭' };
 
 function cardHTML(g){
   const inner = `
