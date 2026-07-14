@@ -263,28 +263,111 @@
 const SUBJECTS = [
   /* ==================== คณิตศาสตร์ (แยก 3 วิชาตามตาราง) ==================== */
   {
-    id:'math-ep', group:'คณิตศาสตร์', name:'MATH', sub:'Mathematics (EP)', teacher:'Ms. Fretzie',
+    id:'math-ep', group:'คณิตศาสตร์', name:'MATH', sub:'Numbers 0–10 · Addition within 9 · Ms. Fretzie', teacher:'Ms. Fretzie',
     emoji:'🔢', color:'linear-gradient(135deg,#5BC8F0,#3FA9F5)', lang:'en', ready:true,
     chapters:[
-      { id:'c1', name:'Unit 1 · Numbers & Counting', q:[
-        {q:'How many apples? 🍎🍎🍎🍎', a:'4', x:['3','5','6']},
-        {q:'Count the stars ⭐⭐⭐⭐⭐', a:'5', x:['3','4','6']},
-        {q:'What comes after 6?', a:'7', x:['5','6','8']},
-        {q:'The word for 9 is…', a:'nine', x:['seven','eight','ten']},
-        {q:'Which number is the biggest?', a:'8', x:['3','5','1']},
+      { id:'c1', name:'Chapter 1 · Numbers 0 to 10', q:[
+        /* Count & number words */
+        {q:'How many cows? 🐄🐄🐄', a:'3', x:['2','4','5']},
+        {q:'The word for 5 is…', a:'five', x:['four','six','three']},
+        {q:'"seven" is which number?', a:'7', x:['6','8','9']},
+        {q:'"ten" is which number?', a:'10', x:['9','8','11']},
+        {q:'Thai numeral ๗ is…', a:'7', x:['5','6','8']},
+        {q:'Count the flowers 🌸🌸🌸🌸🌸🌸🌸', a:'7', x:['6','8','5']},
+        {q:'Count 🥪🥪🥪', a:'3', x:['2','4','5']},
+        {q:'How many cookies? 🍪🍪🍪🍪🍪🍪', a:'6', x:['5','7','8']},
+        {q:'How many eggs? 🥚🥚🥚🥚🥚🥚🥚🥚🥚🥚', a:'10', x:['8','9','11']},
+        /* Comparing */
+        {q:'4 ___ 8', a:'smaller than', x:['greater than','equal to','not equal to']},
+        {q:'7 ___ 7', a:'equal to', x:['greater than','smaller than','not equal to']},
+        {q:'6 ___ 5', a:'greater than', x:['smaller than','equal to','not equal to']},
+        {q:'3 ___ 6', a:'smaller than', x:['greater than','equal to','not equal to']},
+        {q:'"=" means…', a:'equal to', x:['greater than','smaller than','not equal to']},
+        {q:'"≠" means…', a:'not equal to', x:['equal to','greater than','smaller than']},
+        {q:'Mali has 3 mangoes. Ying has 5. Who has more?', a:'Ying', x:['Mali','same','no one']},
+        /* Counting forward/backward */
+        {q:'Count on: 0, 1, 2, 3, ___', a:'4', x:['3','5','6']},
+        {q:'Count on: 6, 7, 8, 9, ___', a:'10', x:['9','11','8']},
+        {q:'Count back: 10, 9, 8, ___', a:'7', x:['6','9','5']},
+        {q:'Count back: 6, 5, 4, ___', a:'3', x:['2','5','1']},
+        /* Greatest / smallest */
+        {q:'Which is the greatest? 5, 9, 1, 7', a:'9', x:['7','5','1']},
+        {q:'Which is the smallest? 5, 9, 1, 7', a:'1', x:['5','7','9']},
+        {q:'The greatest of 4, 7, 8, 1?', a:'8', x:['7','4','1']},
+        {q:'The smallest of 3, 2, 5, 9?', a:'2', x:['3','5','9']},
+        {q:'Order from greatest: 8, 6, 3 → first is…', a:'8', x:['6','3','9']},
+        /* Ordinal */
+        {q:'The 1st is also…', a:'First', x:['Second','Third','Fourth']},
+        {q:'"Third" is…', a:'3rd', x:['2nd','4th','5th']},
+        {q:'5th is…', a:'Fifth', x:['Fourth','Sixth','Seventh']},
+        {q:'"Seventh" is…', a:'7th', x:['6th','8th','9th']},
+        {q:'สิ่งที่อยู่ "ซ้ายสุด" (leftmost) คือลำดับที่เท่าไร?', a:'1st (First)', x:['2nd','3rd','last']},
       ]},
-      { id:'c2', name:'Unit 2 · Addition & Subtraction', q:[
-        {q:'2 + 3 = ?', a:'5', x:['4','6','7']},
-        {q:'5 − 2 = ?', a:'3', x:['2','4','1']},
-        {q:'4 + 4 = ?', a:'8', x:['6','7','9']},
-        {q:'10 − 5 = ?', a:'5', x:['3','4','6']},
+      { id:'c2', name:'Chapter 2 · Addition within 9', q:[
+        /* Meaning of addition */
+        {q:'🐝🐝 + 🐝 = ?', a:'3', x:['2','4','1']},
+        {q:'2 + 1 = ?', a:'3', x:['2','4','1']},
+        {q:'"two plus one equals ___"', a:'three', x:['two','four','one']},
+        /* Add (counting on / number line / bonds) */
+        {q:'5 + 3 = ?', a:'8', x:['7','9','6']},
+        {q:'1 + 4 = ?', a:'5', x:['4','6','3']},
+        {q:'3 + 2 = ?', a:'5', x:['4','6','3']},
+        {q:'6 + 3 = ?', a:'9', x:['8','7','10']},
+        {q:'4 + 4 = ?', a:'8', x:['7','9','6']},
+        {q:'2 + 4 = ?', a:'6', x:['5','7','4']},
+        {q:'6 + 1 = ?', a:'7', x:['6','8','5']},
+        {q:'3 + 5 = ?', a:'8', x:['7','9','6']},
+        {q:'4 + 3 = ?', a:'7', x:['6','8','5']},
+        {q:'4 + 5 = ?', a:'9', x:['8','7','10']},
+        {q:'1 + 5 = ?', a:'6', x:['5','7','4']},
+        /* Number bonds */
+        {q:'2 + 2 = ?', a:'4', x:['3','5','2']},
+        {q:'8 + 1 = ?', a:'9', x:['8','7','10']},
+        {q:'7 + 2 = ?', a:'9', x:['8','7','10']},
+        {q:'5 + 2 = ?', a:'7', x:['6','8','5']},
+        /* Vertical */
+        {q:'1 + 7 = ?', a:'8', x:['7','9','6']},
+        {q:'3 + 6 = ?', a:'9', x:['8','7','10']},
+        {q:'3 + 3 = ?', a:'6', x:['5','7','4']},
+        {q:'6 + 2 = ?', a:'8', x:['7','9','6']},
+        /* Adding 0 */
+        {q:'6 + 0 = ?', a:'6', x:['0','7','5']},
+        {q:'0 + 4 = ?', a:'4', x:['0','5','3']},
+        {q:'8 + 0 = ?', a:'8', x:['0','9','7']},
+        {q:'0 + 9 = ?', a:'9', x:['0','8','10']},
+        /* Commutative (4+5 = 5+4) */
+        {q:'4 + 5 = 5 + ___', a:'4', x:['5','9','1']},
+        {q:'1 + 6 = 6 + ___', a:'1', x:['6','7','5']},
+        {q:'3 + 6 = ___ + 3', a:'6', x:['3','9','1']},
+        /* Missing numbers */
+        {q:'4 + ___ = 9', a:'5', x:['4','3','6']},
+        {q:'___ + 2 = 6', a:'4', x:['3','5','2']},
+        {q:'___ + 4 = 5', a:'1', x:['2','0','3']},
+        {q:'2 + ___ = 7', a:'5', x:['4','6','3']},
+        /* Word problems */
+        {q:'4 birds. 3 more come. How many altogether?', a:'7', x:['6','8','5']},
+        {q:'Mother has 6 oranges. Aunt gives 3 more. How many now?', a:'9', x:['8','7','10']},
+        {q:'Somrak has 4 cupcakes. Somjit has 4 more. How many does Somjit have?', a:'8', x:['4','7','9']},
+        {q:'5 girls in class. 4 boys walk in. How many pupils now?', a:'9', x:['8','7','10']},
       ]},
-      { id:'c3', name:'Unit 3 · Shapes', q:[
-        {q:'Which shape is this?', big:'🔺', a:'Triangle', x:['Circle','Square','Star']},
-        {q:'A ball ⚽ is a…', a:'Circle', x:['Square','Triangle','Star']},
-        {q:'How many corners does a square ⬛ have?', a:'4', x:['3','5','6']},
+    ],
+    games:[
+      { id:'match', name:'เกมจับคู่', emoji:'🔗', desc:'ตัวเลข-คำ · เลขไทย · ลำดับที่ · ผลบวก', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
+        {type:'match', q:'จับคู่ตัวเลขกับคำอังกฤษ', pairs:[['3','three'],['5','five'],['7','seven'],['9','nine']]},
+        {type:'match', q:'จับคู่เลขอารบิกกับเลขไทย', pairs:[['1','๑'],['4','๔'],['7','๗'],['10','๑๐']]},
+        {type:'match', q:'จับคู่ลำดับที่', pairs:[['1st','First'],['3rd','Third'],['6th','Sixth'],['10th','Tenth']]},
+        {type:'match', q:'จับคู่โจทย์บวกกับผลลัพธ์', pairs:[['2+2','4'],['5+3','8'],['6+1','7'],['4+5','9']]},
       ]},
-      { id:'c4', name:'Unit 4 · (เพิ่มภายหลัง)', ready:false },
+      { id:'fill', name:'เกมเติมคำ', emoji:'⌨️', desc:'เขียนเลขเป็นคำภาษาอังกฤษ', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', q:[
+        {type:'fill', q:'เขียนเลข 0 เป็นคำอังกฤษ', a:'zero', ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนเลข 4 เป็นคำอังกฤษ', a:'four', ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนเลข 6 เป็นคำอังกฤษ', a:'six', ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนเลข 7 เป็นคำอังกฤษ', a:'seven', ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนเลข 8 เป็นคำอังกฤษ', a:'eight', ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนเลข 9 เป็นคำอังกฤษ', a:'nine', ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนเลข 10 เป็นคำอังกฤษ', a:'ten', ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'5 + 3 = ? (เขียนผลลัพธ์เป็นคำ)', a:'eight', ph:'พิมพ์ (a–z)'},
+      ]},
     ],
   },
   {
@@ -560,7 +643,7 @@ const SUBJECTS = [
         {q:'รูปบ้าน 🏠 กับคำว่า "my house" — ตรงกันไหม?', a:'✓ ตรง', x:['✗ ไม่ตรง']},
         /* Get Ready C: เรื่องเกี่ยวกับอะไร */
         {q:'เรื่องนี้เกี่ยวกับอะไร? (This is my classroom. It has posters…)', a:'my classroom', x:['my backpack','my cupboard']},
-        {q:'ดูรูปก่อนอ่าน รูปบอกว่าเรื่องนี้เกี่ยวกับ…', a:'what the text is about', x:['the color','the price']},
+        {q:'รูปภาพในหนังสือ ช่วยบอกเราว่า…', a:'เรื่องนี้เกี่ยวกับอะไร', x:['ราคาเท่าไร','สีอะไร']},
         /* Key Words: desk / bookcase / chair / wastebasket */
         {q:'เรานั่งบนอะไร? 🪑', a:'chair', x:['desk','bookcase','wastebasket']},
         {q:'หนังสือเก็บไว้ที่ไหน?', a:'bookcase', x:['chair','wastebasket','desk']},
@@ -613,7 +696,7 @@ const SUBJECTS = [
         /* Reading Check (Units 1&2 · A New School) */
         {q:'Yasin has four crayons. — ใช่ไหม?', a:'✓ Yes', x:['✗ No']},
         {q:'What is in Yasin\'s pencil case?', a:'a marker', x:['a pen']},
-        {q:'How many desks are in the picture?', a:'two', x:['one','three']},
+        {q:'"A New School": How many crayons does Yasin have? ("I have four crayons")', a:'four', x:['two','three']},
         /* จับคู่จำนวนของ Mi-Jin */
         {type:'match', q:'จับคู่ของกับจำนวนของ Mi-Jin', pairs:[['pencils','two'],['markers','three'],['crayons','six'],['pencil case','one']]},
       ]},
@@ -809,7 +892,7 @@ const SUBJECTS = [
 
 /* วิชาที่ยังไม่มีหนังสือยืนยันจากครู — ซ่อนไว้ก่อน (เก็บดราฟต์ไว้ในโค้ด รอครูส่งเนื้อหาจริง)
    ปลดล็อกเมื่อพร้อม: ลบ id ออกจากลิสต์นี้ */
-['math-ep','math-th','math-mental','sci-th','sci-ep','thai','chinese','social','history']
+['math-th','math-mental','sci-th','sci-ep','thai','chinese','social','history']
   .forEach(id=>{ const s=SUBJECTS.find(x=>x.id===id); if(s) s.ready=false; });
 
 /* ============ helpers ============ */

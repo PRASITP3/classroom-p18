@@ -96,7 +96,7 @@ const GROUPS = [
 ];
 const GAMES = [
   // ---------- คณิตศาสตร์ ----------
-  { group:'คณิตศาสตร์', title:'MATH', desc:'Mathematics (EP) · Ms. Fretzie', emoji:'🔢', color:'linear-gradient(135deg,#5BC8F0,#3FA9F5)', href:'exam.html?subj=math-ep', tag:'ทบทวน' },
+  { group:'คณิตศาสตร์', title:'MATH', desc:'Numbers 0–10 · Addition within 9 · Ms. Fretzie', emoji:'🔢', color:'linear-gradient(135deg,#5BC8F0,#3FA9F5)', href:'exam.html?subj=math-ep', tag:'ทบทวน' },
   { group:'คณิตศาสตร์', title:'คณิต', desc:'คณิตศาสตร์ (ไทย) · ครูเฉลิมศักดิ์', emoji:'➕', color:'linear-gradient(135deg,#8E7BEF,#6C5CE7)', href:'exam.html?subj=math-th', tag:'ทบทวน' },
   { group:'คณิตศาสตร์', title:'จินตคณิต', desc:'คิดเลขเร็ว · ครูดนิตา', emoji:'🧠', color:'linear-gradient(135deg,#FF9F68,#FF7A6B)', href:'exam.html?subj=math-mental', tag:'ทบทวน' },
   // ---------- วิทยาศาสตร์ ----------
@@ -125,7 +125,7 @@ const GAMES = [
 
 /* วิชาที่ยังไม่มีหนังสือยืนยัน — พักไว้ (ติดป้าย "รอเนื้อหาจากครู")
    เปิดใช้เมื่อครูส่งหนังสือ: ลบชื่อออกจากลิสต์นี้ + ปลดล็อกใน exam.html */
-const WAIT_CONTENT = new Set(['MATH','คณิต','จินตคณิต','วิทย์','SCI','ทบทวนภาษาไทย','ทบทวนภาษาจีน','สังคมฯ','ประวัติศาสตร์']);
+const WAIT_CONTENT = new Set(['คณิต','จินตคณิต','วิทย์','SCI','ทบทวนภาษาไทย','ทบทวนภาษาจีน','สังคมฯ','ประวัติศาสตร์']);
 GAMES.forEach(g => { if(WAIT_CONTENT.has(g.title)) g.ready = false; });
 
 function cardHTML(g){
