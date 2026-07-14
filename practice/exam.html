@@ -526,23 +526,27 @@ const SUBJECTS = [
         {q:'👉 (ชี้ไปที่เพื่อน) → ใช้สรรพนามใด?', a:'You', x:['He','She','It']},
       ]},
     ],
-    /* เกมจับคู่/เติมคำ — โผล่เฉพาะโหมด 🎯 รวมทุกบท (ให้แต่ละบทเป็น 4 ตัวเลือกล้วน) */
-    mixQ:[
-      {type:'match', q:'จับคู่คำที่เป็นชนิดเดียวกัน (คน/สถานที่/สิ่งของ/สัตว์)', pairs:[['dog','monkey'],['aunt','sister'],['sea','farm'],['ball','chair']]},
-      {type:'match', q:'จับคู่คำที่เป็นชนิดเดียวกัน', pairs:[['zoo','city'],['Mom','Dad'],['bird','horse'],['flower','table']]},
-      {type:'match', q:'จับคู่เอกพจน์กับพหูพจน์', pairs:[['box','boxes'],['dog','dogs'],['bench','benches'],['fox','foxes']]},
-      {type:'match', q:'จับคู่คำนามกับสรรพนาม', pairs:[['Sarah','She'],['the dog','It'],['the boy','He'],['my mother','She']]},
-      {type:'fill', q:'แก้ให้ถูก: "She eats a egg." → She eats ___ egg.', a:'an', ph:'พิมพ์ a หรือ an'},
-      {type:'fill', q:'แก้ให้ถูก: "He has an dog." → He has ___ dog.', a:'a', ph:'พิมพ์ a หรือ an'},
-      {type:'fill', q:'แก้ให้ถูก: "They ride in a airplane." → in ___ airplane.', a:'an', ph:'พิมพ์ a หรือ an'},
-      {type:'fill', q:'แก้ให้ถูก: "We live on a Earth." → on ___ Earth.', a:'the', ph:'พิมพ์ a/an/the'},
-      {type:'fill', q:'แก้ให้ถูก: "A sun is very hot." → ___ sun is very hot.', a:'the', ph:'พิมพ์ a/an/the'},
-      {type:'fill', q:'เขียนพหูพจน์ของ "box" 📦', a:'boxes', ph:'พิมพ์ (a–z)'},
-      {type:'fill', q:'เขียนพหูพจน์ของ "church" ⛪', a:'churches', ph:'พิมพ์ (a–z)'},
-      {type:'fill', q:'เขียนพหูพจน์ของ "boy" 👦', a:'boys', ph:'พิมพ์ (a–z)'},
-      {type:'fill', q:'แก้ให้ถูก: "He is my mother." → ___ is my mother.', a:'She', ph:'พิมพ์สรรพนาม'},
-      {type:'fill', q:'แก้ให้ถูก: "You am Lucas." → ___ am Lucas.', a:'I', ph:'พิมพ์สรรพนาม'},
-      {type:'fill', q:'แก้ให้ถูก: "I is an elephant." → ___ is an elephant.', a:'It', ph:'พิมพ์สรรพนาม'},
+    /* เกมสนุก — แยกเป็นเกมๆ (โผล่เป็นการ์ดแยกในหน้าเลือกบท เลือกเล่นทีละเกม) */
+    games:[
+      { id:'match', name:'เกมจับคู่', emoji:'🔗', desc:'ชนิดคำ · พหูพจน์ · สรรพนาม', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
+        {type:'match', q:'จับคู่คำที่เป็นชนิดเดียวกัน (คน/สถานที่/สิ่งของ/สัตว์)', pairs:[['dog','monkey'],['aunt','sister'],['sea','farm'],['ball','chair']]},
+        {type:'match', q:'จับคู่คำที่เป็นชนิดเดียวกัน', pairs:[['zoo','city'],['Mom','Dad'],['bird','horse'],['flower','table']]},
+        {type:'match', q:'จับคู่เอกพจน์กับพหูพจน์', pairs:[['box','boxes'],['dog','dogs'],['bench','benches'],['fox','foxes']]},
+        {type:'match', q:'จับคู่คำนามกับสรรพนาม', pairs:[['Sarah','She'],['the dog','It'],['the boy','He'],['my mother','She']]},
+      ]},
+      { id:'fill', name:'เกมเติมคำ', emoji:'⌨️', desc:'a/an/the · พหูพจน์ · สรรพนาม', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', q:[
+        {type:'fill', q:'แก้ให้ถูก: "She eats a egg." → She eats ___ egg.', a:'an', ph:'พิมพ์ a หรือ an'},
+        {type:'fill', q:'แก้ให้ถูก: "He has an dog." → He has ___ dog.', a:'a', ph:'พิมพ์ a หรือ an'},
+        {type:'fill', q:'แก้ให้ถูก: "They ride in a airplane." → in ___ airplane.', a:'an', ph:'พิมพ์ a หรือ an'},
+        {type:'fill', q:'แก้ให้ถูก: "We live on a Earth." → on ___ Earth.', a:'the', ph:'พิมพ์ a/an/the'},
+        {type:'fill', q:'แก้ให้ถูก: "A sun is very hot." → ___ sun is very hot.', a:'the', ph:'พิมพ์ a/an/the'},
+        {type:'fill', q:'เขียนพหูพจน์ของ "box" 📦', a:'boxes', ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์ของ "church" ⛪', a:'churches', ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์ของ "boy" 👦', a:'boys', ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'แก้ให้ถูก: "He is my mother." → ___ is my mother.', a:'She', ph:'พิมพ์สรรพนาม'},
+        {type:'fill', q:'แก้ให้ถูก: "You am Lucas." → ___ am Lucas.', a:'I', ph:'พิมพ์สรรพนาม'},
+        {type:'fill', q:'แก้ให้ถูก: "I is an elephant." → ___ is an elephant.', a:'It', ph:'พิมพ์สรรพนาม'},
+      ]},
     ],
   },
   {
@@ -870,14 +874,13 @@ function renderChapters(subj){
   document.getElementById('chSub').textContent=subj.sub+' · '+subj.teacher;
   const list=document.getElementById('chapterlist');
   const ready=readyChapters(subj);
-  const allQ=ready.reduce((arr,c)=>arr.concat(c.q),[]).concat(subj.mixQ||[]);
+  const allQ=ready.reduce((arr,c)=>arr.concat(c.q),[]);
   let html='';
-  // การ์ด "รวมทุกบท" — คละทุกบท + เกมจับคู่/เติมคำ (mixQ)
+  // การ์ด "รวมทุกบท" — คละ MC ทุกบท
   if(ready.length>1){
-    const games = (subj.mixQ && subj.mixQ.length) ? ' · มีเกมจับคู่/เติมคำ 🎲' : '';
     html+=`<button class="scard allcard chip-arrow" onclick="startAll('${subj.id}')">
       <span class="ic">🎯</span>
-      <span><span class="t">รวมทุกบท</span><br><span class="d">เล่นคละทุกบท${games}</span>
+      <span><span class="t">รวมทุกบท</span><br><span class="d">ทบทวนคละทุกบท · สุ่ม</span>
       <br><span class="meta">${allQ.length} ข้อ</span></span></button>`;
   }
   // การ์ดแต่ละบท
@@ -890,6 +893,13 @@ function renderChapters(subj){
       <span class="ic">📘</span>
       <span><span class="t">${c.name}</span><br><span class="meta">${c.q.length} ข้อ</span></span></button>`;
   }).join('');
+  // เกมสนุก — แยกเป็นเกมๆ (เลือกเล่นทีละเกม)
+  if(subj.games && subj.games.length){
+    html+=`<div class="subjgroup"><span>🎲 เกมสนุก</span><span class="ln"></span></div>`;
+    html+=subj.games.map(g=>`<button class="scard chip-arrow" style="background:${g.color||'linear-gradient(135deg,#5BD9B2,#41C9A0)'}" onclick="startGame('${subj.id}','${g.id}')">
+      <span class="ic">${g.emoji}</span>
+      <span><span class="t">${g.name}</span><br><span class="d">${g.desc||''}</span><br><span class="meta">${g.q.length} ข้อ</span></span></button>`).join('');
+  }
   list.innerHTML=html;
 }
 function startChapter(subjId, chId){
@@ -899,9 +909,13 @@ function startChapter(subjId, chId){
 }
 function startAll(subjId){
   const subj=SUBJECTS.find(s=>s.id===subjId);
-  let allQ=readyChapters(subj).reduce((arr,c)=>arr.concat(c.q),[]);
-  if(subj.mixQ && subj.mixQ.length) allQ=allQ.concat(subj.mixQ);  // เพิ่มเกมจับคู่/เติมคำเฉพาะโหมดรวมทุกบท
+  const allQ=readyChapters(subj).reduce((arr,c)=>arr.concat(c.q),[]);
   startExam(subj, allQ, 'รวมทุกบท', 'all');
+}
+function startGame(subjId, gameId){
+  const subj=SUBJECTS.find(s=>s.id===subjId);
+  const g=(subj.games||[]).find(x=>x.id===gameId);
+  if(g) startExam(subj, g.q, g.name, 'game-'+gameId);
 }
 
 /* ============ EXAM ============ */
