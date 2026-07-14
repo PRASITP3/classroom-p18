@@ -247,7 +247,7 @@
        chapters:[
          { id:'c1', name:'บทที่ 1 · ...', q:[ ...ข้อสอบ... ] },
          { id:'c2', name:'บทที่ 2 · ...', q:[ ... ] },
-         { id:'c3', name:'บทที่ 3 · ...', ready:false },   // บทเปล่า = "รอครูเพิ่มข้อสอบ"
+         { id:'c3', name:'บทที่ 3 · ...', ready:false },   // บทเปล่า = "รอเพิ่มข้อมูล"
        ] }
      → หน้าเลือกบทจะมีปุ่ม "รวมทุกบท" (ซ้อมสอบจริง) ให้อัตโนมัติ
 
@@ -857,7 +857,7 @@ const SUBJECTS = [
   },
 ];
 
-/* วิชาที่ยังไม่มีหนังสือยืนยันจากครู — ซ่อนไว้ก่อน (เก็บดราฟต์ไว้ในโค้ด รอครูส่งเนื้อหาจริง)
+/* วิชาที่ยังไม่มีหนังสือยืนยัน — ซ่อนไว้ก่อน (เก็บดราฟต์ไว้ในโค้ด รอเพิ่มเนื้อหาจริง)
    ปลดล็อกเมื่อพร้อม: ลบ id ออกจากลิสต์นี้ */
 ['math-th','math-mental','sci-th','sci-ep','thai','chinese','social','history']
   .forEach(id=>{ const s=SUBJECTS.find(x=>x.id===id); if(s) s.ready=false; });
@@ -894,7 +894,7 @@ function renderHome(){
       if(!s.ready){
         return `<div class="scard soon"><span class="ic">${s.emoji}</span>
           <span><span class="t">${s.name}</span><br><span class="d">${s.sub}</span>
-          <br><span class="meta">รอครูเพิ่มข้อสอบ</span></span></div>`;
+          <br><span class="meta">รอเพิ่มข้อมูล</span></span></div>`;
       }
       const nCh = s.chapters ? readyChapters(s).length : 0;
       const nQ  = s.chapters ? readyChapters(s).reduce((n,c)=>n+c.q.length,0) : s.q.length;
@@ -938,7 +938,7 @@ function renderChapters(subj){
   html+=(subj.chapters||[]).map(c=>{
     if(c.ready===false || !c.q || !c.q.length){
       return `<div class="scard soon"><span class="ic">📄</span>
-        <span><span class="t">${c.name}</span><br><span class="meta">รอครูเพิ่มข้อสอบ</span></span></div>`;
+        <span><span class="t">${c.name}</span><br><span class="meta">รอเพิ่มข้อมูล</span></span></div>`;
     }
     return `<button class="scard chip-arrow" style="background:${subj.color}" onclick="startChapter('${subj.id}','${c.id}')">
       <span class="ic">📘</span>
