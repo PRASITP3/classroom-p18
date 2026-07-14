@@ -404,17 +404,14 @@ const SUBJECTS = [
     emoji:'📖', color:'linear-gradient(135deg,#A988E0,#9B6DD6)', lang:'en', ready:true,
     chapters:[
       { id:'u1', name:'Unit 1 · Types of Nouns', q:[
-        /* A. Circle the correct type (person/place/thing/animal) — 2 ตัวเลือกตามหนังสือ */
-        {q:'A fish 🐟 is a…', a:'animal', x:['thing']},
-        {q:'Broccoli 🥦 is a…', a:'thing', x:['place']},
-        {q:'A park 🏞️ is a…', a:'place', x:['person']},
-        {q:'A horse 🐴 is a…', a:'animal', x:['person']},
-        {q:'A doctor 🧑‍⚕️ is a…', a:'person', x:['animal']},
-        {q:'A library 🏛️ is a…', a:'place', x:['animal']},
-        /* B. Match the same type of noun */
-        {type:'match', q:'จับคู่คำที่เป็นชนิดเดียวกัน', pairs:[['dog','monkey'],['aunt','sister'],['sea','farm'],['ball','chair']]},
-        {type:'match', q:'จับคู่คำที่เป็นชนิดเดียวกัน', pairs:[['zoo','city'],['Mom','Dad'],['bird','horse'],['flower','table']]},
-        /* C. Write the noun in the correct box */
+        /* A. What type of noun? (Person / Place / Thing / Animal) — 4 ตัวเลือก */
+        {q:'A fish 🐟 is a…', a:'Animal', x:['Person','Place','Thing']},
+        {q:'Broccoli 🥦 is a…', a:'Thing', x:['Person','Place','Animal']},
+        {q:'A park 🏞️ is a…', a:'Place', x:['Person','Thing','Animal']},
+        {q:'A horse 🐴 is a…', a:'Animal', x:['Person','Place','Thing']},
+        {q:'A doctor 🧑‍⚕️ is a…', a:'Person', x:['Place','Thing','Animal']},
+        {q:'A library 🏛️ is a…', a:'Place', x:['Person','Thing','Animal']},
+        /* C/D. Which group is the word in? */
         {q:'"egg" 🥚 อยู่กลุ่มไหน?', a:'Things', x:['People','Places','Animals']},
         {q:'"girl" 👧 อยู่กลุ่มไหน?', a:'People', x:['Places','Things','Animals']},
         {q:'"park" 🏞️ อยู่กลุ่มไหน?', a:'Places', x:['People','Things','Animals']},
@@ -423,7 +420,6 @@ const SUBJECTS = [
         {q:'"umbrella" ☂️ อยู่กลุ่มไหน?', a:'Things', x:['People','Places','Animals']},
         {q:'"city" 🏙️ อยู่กลุ่มไหน?', a:'Places', x:['People','Things','Animals']},
         {q:'"frog" 🐸 อยู่กลุ่มไหน?', a:'Animals', x:['People','Places','Things']},
-        /* D. Label the boxes and fill in — คำใน word bank */
         {q:'"sister" อยู่กลุ่มไหน?', a:'People', x:['Places','Things','Animals']},
         {q:'"king" 👑 อยู่กลุ่มไหน?', a:'People', x:['Places','Things','Animals']},
         {q:'"teacher" 👩‍🏫 อยู่กลุ่มไหน?', a:'People', x:['Places','Things','Animals']},
@@ -438,112 +434,83 @@ const SUBJECTS = [
         {q:'"dog" 🐶 อยู่กลุ่มไหน?', a:'Animals', x:['People','Places','Things']},
       ]},
       { id:'u2', name:'Unit 2 · A / An', q:[
-        /* A. Write the correct article and match */
-        {q:'___ ice cream bar 🍦', a:'an', x:['a']},
-        {q:'___ horse 🐴', a:'a', x:['an']},
-        {q:'___ octopus 🐙', a:'an', x:['a']},
-        {q:'___ dog 🐶', a:'a', x:['an']},
-        {q:'___ book 📖', a:'a', x:['an']},
-        {q:'___ owl 🦉', a:'an', x:['a']},
-        /* B. Complete the sentences with a or an */
-        {q:'The girl eats ___ orange 🍊.', a:'an', x:['a']},
-        {q:'He lives in ___ house 🏠.', a:'a', x:['an']},
-        {q:'She lives in ___ igloo.', a:'an', x:['a']},
-        {q:'He sits in ___ chair 🪑.', a:'a', x:['an']},
-        {q:'___ alligator 🐊 lives in the river.', a:'An', x:['A']},
-        /* C. Rewrite the sentences correctly (เติม a/an ให้ถูก) */
-        {type:'fill', q:'แก้ให้ถูก: "She eats a egg." → She eats ___ egg.', a:'an', ph:'พิมพ์ a หรือ an'},
-        {type:'fill', q:'แก้ให้ถูก: "They ride in a airplane." → in ___ airplane.', a:'an', ph:'พิมพ์ a หรือ an'},
-        {type:'fill', q:'แก้ให้ถูก: "He has an dog." → He has ___ dog.', a:'a', ph:'พิมพ์ a หรือ an'},
-        {type:'fill', q:'แก้ให้ถูก: "The squirrel has an nut." → has ___ nut.', a:'a', ph:'พิมพ์ a หรือ an'},
-        {type:'fill', q:'แก้ให้ถูก: "It is an birthday card." → is ___ birthday card.', a:'a', ph:'พิมพ์ a หรือ an'},
-        /* D. Fill in the blanks (A + consonant / An + vowel) */
-        {q:'___ police officer 👮', a:'a', x:['an']},
-        {q:'___ umbrella ☂️', a:'an', x:['a']},
-        {q:'___ cat 🐱', a:'a', x:['an']},
-        {q:'___ alligator 🐊', a:'an', x:['a']},
-        {q:'___ doctor 🧑‍⚕️', a:'a', x:['an']},
-        {q:'___ owl 🦉', a:'an', x:['a']},
-        {q:'___ girl 👧', a:'a', x:['an']},
-        {q:'___ iguana 🦎', a:'an', x:['a']},
-        {q:'___ horse 🐴', a:'a', x:['an']},
-        {q:'___ orange 🍊', a:'an', x:['a']},
-        {q:'___ soccer ball ⚽', a:'a', x:['an']},
-        {q:'___ airplane ✈️', a:'an', x:['a']},
+        /* A/B/D. เลือก a หรือ an (4 ตัวเลือก: a / an / the / some) */
+        {q:'___ ice cream bar 🍦', a:'an', x:['a','the','some']},
+        {q:'___ horse 🐴', a:'a', x:['an','the','some']},
+        {q:'___ octopus 🐙', a:'an', x:['a','the','some']},
+        {q:'___ dog 🐶', a:'a', x:['an','the','some']},
+        {q:'___ book 📖', a:'a', x:['an','the','some']},
+        {q:'___ owl 🦉', a:'an', x:['a','the','some']},
+        {q:'The girl eats ___ orange 🍊.', a:'an', x:['a','the','some']},
+        {q:'He lives in ___ house 🏠.', a:'a', x:['an','the','some']},
+        {q:'She lives in ___ igloo.', a:'an', x:['a','the','some']},
+        {q:'He sits in ___ chair 🪑.', a:'a', x:['an','the','some']},
+        {q:'___ alligator 🐊 lives in the river.', a:'An', x:['A','The','Some']},
+        {q:'___ police officer 👮', a:'a', x:['an','the','some']},
+        {q:'___ umbrella ☂️', a:'an', x:['a','the','some']},
+        {q:'___ cat 🐱', a:'a', x:['an','the','some']},
+        {q:'___ alligator 🐊', a:'an', x:['a','the','some']},
+        {q:'___ doctor 🧑‍⚕️', a:'a', x:['an','the','some']},
+        {q:'___ owl 🦉', a:'an', x:['a','the','some']},
+        {q:'___ girl 👧', a:'a', x:['an','the','some']},
+        {q:'___ iguana 🦎', a:'an', x:['a','the','some']},
+        {q:'___ horse 🐴', a:'a', x:['an','the','some']},
+        {q:'___ orange 🍊', a:'an', x:['a','the','some']},
+        {q:'___ soccer ball ⚽', a:'a', x:['an','the','some']},
+        {q:'___ airplane ✈️', a:'an', x:['a','the','some']},
       ]},
       { id:'u3', name:'Unit 3 · The', q:[
-        /* A. Write the correct article and match (a / an / the) */
-        {q:'___ airplane ✈️', a:'an', x:['a','the']},
-        {q:'___ sky 🌤️ (มีท้องฟ้าเดียว)', a:'the', x:['a','an']},
-        {q:'___ fish 🐟', a:'a', x:['an','the']},
-        {q:'___ tree 🌳', a:'a', x:['an','the']},
-        {q:'___ umbrella ☂️', a:'an', x:['a','the']},
-        {q:'___ sun ☀️ (มีดวงเดียว)', a:'the', x:['a','an']},
-        /* B. Write a, an, or the */
-        {q:'___ egg 🥚', a:'an', x:['a','the']},
-        {q:'___ bike 🚲', a:'a', x:['an','the']},
-        {q:'___ sun ☀️', a:'the', x:['a','an']},
-        {q:'___ arrow 🏹', a:'an', x:['a','the']},
-        /* C. Rewrite the sentences correctly (เติม a/an/the) */
-        {type:'fill', q:'แก้ให้ถูก: "We live on a Earth." → on ___ Earth.', a:'the', ph:'พิมพ์ a/an/the'},
-        {type:'fill', q:'แก้ให้ถูก: "They swim in a sea." → in ___ sea.', a:'the', ph:'พิมพ์ a/an/the'},
-        {type:'fill', q:'แก้ให้ถูก: "A sky is blue." → ___ sky is blue.', a:'the', ph:'พิมพ์ a/an/the'},
-        {type:'fill', q:'แก้ให้ถูก: "I have an cat." → I have ___ cat.', a:'a', ph:'พิมพ์ a/an/the'},
-        {type:'fill', q:'แก้ให้ถูก: "There is a iguana." → There is ___ iguana.', a:'an', ph:'พิมพ์ a/an/the'},
-        {type:'fill', q:'แก้ให้ถูก: "A sun is very hot." → ___ sun is very hot.', a:'the', ph:'พิมพ์ a/an/the'},
-        /* D. Fill in the blanks (a/an any one · only one thing · specific thing) */
-        {q:'___ desk 🪑 (สิ่งใดสิ่งหนึ่ง)', a:'a', x:['an','the']},
-        {q:'___ tree 🌳 (สิ่งใดสิ่งหนึ่ง)', a:'a', x:['an','the']},
-        {q:'___ apple 🍎 (สิ่งใดสิ่งหนึ่ง)', a:'an', x:['a','the']},
-        {q:'___ sky 🌤️ (มีเดียว)', a:'the', x:['a','an']},
-        {q:'___ sea 🌊 (มีเดียว)', a:'the', x:['a','an']},
-        {q:'___ Earth 🌍 (มีเดียว)', a:'the', x:['a','an']},
-        {q:'___ chair 🪑 (ตัวที่เจาะจง)', a:'the', x:['a','an']},
-        {q:'___ pencil ✏️ (แท่งที่เจาะจง)', a:'the', x:['a','an']},
-        {q:'___ elephant 🐘 (ตัวที่เจาะจง)', a:'the', x:['a','an']},
+        /* เลือก a / an / the (4 ตัวเลือก: a / an / the / some) */
+        {q:'___ airplane ✈️', a:'an', x:['a','the','some']},
+        {q:'___ sky 🌤️ (มีท้องฟ้าเดียว)', a:'the', x:['a','an','some']},
+        {q:'___ fish 🐟', a:'a', x:['an','the','some']},
+        {q:'___ tree 🌳', a:'a', x:['an','the','some']},
+        {q:'___ umbrella ☂️', a:'an', x:['a','the','some']},
+        {q:'___ sun ☀️ (มีดวงเดียว)', a:'the', x:['a','an','some']},
+        {q:'___ egg 🥚', a:'an', x:['a','the','some']},
+        {q:'___ bike 🚲', a:'a', x:['an','the','some']},
+        {q:'___ sun ☀️', a:'the', x:['a','an','some']},
+        {q:'___ arrow 🏹', a:'an', x:['a','the','some']},
+        {q:'___ desk 🪑 (สิ่งใดสิ่งหนึ่ง)', a:'a', x:['an','the','some']},
+        {q:'___ tree 🌳 (สิ่งใดสิ่งหนึ่ง)', a:'a', x:['an','the','some']},
+        {q:'___ apple 🍎 (สิ่งใดสิ่งหนึ่ง)', a:'an', x:['a','the','some']},
+        {q:'___ sky 🌤️ (มีเดียว)', a:'the', x:['a','an','some']},
+        {q:'___ sea 🌊 (มีเดียว)', a:'the', x:['a','an','some']},
+        {q:'___ Earth 🌍 (มีเดียว)', a:'the', x:['a','an','some']},
+        {q:'___ chair 🪑 (ตัวที่เจาะจง)', a:'the', x:['a','an','some']},
+        {q:'___ pencil ✏️ (แท่งที่เจาะจง)', a:'the', x:['a','an','some']},
+        {q:'___ elephant 🐘 (ตัวที่เจาะจง)', a:'the', x:['a','an','some']},
       ]},
       { id:'u4', name:'Unit 4 · Plural Nouns', q:[
-        /* A. Write the correct plural form (พิมพ์เอง เช็กอัตโนมัติ) */
-        {type:'fill', q:'เขียนพหูพจน์ของ "owl" 🦉', a:'owls', ph:'พิมพ์พหูพจน์ (a–z)'},
-        {type:'fill', q:'เขียนพหูพจน์ของ "bus" 🚌', a:'buses', ph:'พิมพ์พหูพจน์ (a–z)'},
-        {type:'fill', q:'เขียนพหูพจน์ของ "bench"', a:'benches', ph:'พิมพ์พหูพจน์ (a–z)'},
-        {type:'fill', q:'เขียนพหูพจน์ของ "dish" 🍽️', a:'dishes', ph:'พิมพ์พหูพจน์ (a–z)'},
-        {type:'fill', q:'เขียนพหูพจน์ของ "teacher" 👩‍🏫', a:'teachers', ph:'พิมพ์พหูพจน์ (a–z)'},
-        {type:'fill', q:'เขียนพหูพจน์ของ "girl" 👧', a:'girls', ph:'พิมพ์พหูพจน์ (a–z)'},
-        /* B. Rewrite correctly (แก้พหูพจน์ที่ผิด) */
-        {type:'fill', q:'แก้ให้ถูก: "five boyes" → five ___', a:'boys', ph:'พิมพ์ให้ถูก'},
-        {type:'fill', q:'แก้ให้ถูก: "four boxs" → four ___', a:'boxes', ph:'พิมพ์ให้ถูก'},
-        {type:'fill', q:'แก้ให้ถูก: "two penciles" → two ___', a:'pencils', ph:'พิมพ์ให้ถูก'},
-        {type:'fill', q:'แก้ให้ถูก: "two churchs" → two ___', a:'churches', ph:'พิมพ์ให้ถูก'},
-        {type:'fill', q:'แก้ให้ถูก: "four paint brushs" → four paint ___', a:'brushes', ph:'พิมพ์ให้ถูก'},
-        /* C. Circle the correct plural form (เลือก 2 ตัวเลือก) */
-        {q:'The ___ run to the house.', a:'dogs', x:['doges']},
-        {q:'There are three ___ at the zoo.', a:'foxes', x:['foxs']},
-        {q:'They make ___ for the picnic.', a:'sandwiches', x:['sandwichs']},
-        {q:'He has four blue ___ in his backpack.', a:'pens', x:['penes']},
-        {q:'My friend has five ___!', a:'cats', x:['cates']},
-        {q:'There are nine ___ on my street.', a:'houses', x:['houseses']},
-        /* D. Fill in the blanks (-s / -es) */
-        {type:'fill', q:'one worm → two ___', a:'worms', ph:'พิมพ์พหูพจน์ (a–z)'},
-        {type:'fill', q:'one castle → two ___', a:'castles', ph:'พิมพ์พหูพจน์ (a–z)'},
-        {type:'fill', q:'one brush → two ___', a:'brushes', ph:'พิมพ์พหูพจน์ (a–z)'},
-        {type:'fill', q:'one box → four ___', a:'boxes', ph:'พิมพ์พหูพจน์ (a–z)'},
-        {type:'fill', q:'one church → three ___', a:'churches', ph:'พิมพ์พหูพจน์ (a–z)'},
-        {type:'fill', q:'one sandwich → five ___', a:'sandwiches', ph:'พิมพ์พหูพจน์ (a–z)'},
+        /* พหูพจน์ที่ถูกต้องคือข้อใด? (4 ตัวเลือก) */
+        {q:'พหูพจน์ของ "owl" 🦉 คือ?', a:'owls', x:['owles','owlz','owl']},
+        {q:'พหูพจน์ของ "bus" 🚌 คือ?', a:'buses', x:['buss','busses','busies']},
+        {q:'พหูพจน์ของ "bench" คือ?', a:'benches', x:['benchs','benchies','bench']},
+        {q:'พหูพจน์ของ "dish" 🍽️ คือ?', a:'dishes', x:['dishs','dishies','dish']},
+        {q:'พหูพจน์ของ "teacher" 👩‍🏫 คือ?', a:'teachers', x:['teacheres','teacherz','teacher']},
+        {q:'พหูพจน์ของ "girl" 👧 คือ?', a:'girls', x:['girles','girlz','girl']},
+        {q:'พหูพจน์ของ "box" 📦 คือ?', a:'boxes', x:['boxs','boxies','box']},
+        {q:'พหูพจน์ของ "fox" 🦊 คือ?', a:'foxes', x:['foxs','foxies','fox']},
+        {q:'พหูพจน์ของ "church" ⛪ คือ?', a:'churches', x:['churchs','churchies','church']},
+        {q:'พหูพจน์ของ "house" 🏠 คือ?', a:'houses', x:['houseses','housies','house']},
+        {q:'พหูพจน์ของ "sandwich" 🥪 คือ?', a:'sandwiches', x:['sandwichs','sandwichies','sandwich']},
+        {q:'พหูพจน์ของ "pencil" ✏️ คือ?', a:'pencils', x:['penciles','pencilz','pencil']},
+        /* Circle the correct plural in the sentence */
+        {q:'The ___ run to the house.', a:'dogs', x:['doges','dogz','dog']},
+        {q:'There are three ___ at the zoo.', a:'foxes', x:['foxs','foxies','fox']},
+        {q:'They make ___ for the picnic.', a:'sandwiches', x:['sandwichs','sandwichies','sandwich']},
+        {q:'He has four blue ___ in his backpack.', a:'pens', x:['penes','pennes','pen']},
+        {q:'My friend has five ___!', a:'cats', x:['cates','catz','cat']},
+        {q:'There are nine ___ on my street.', a:'houses', x:['houseses','housies','house']},
       ]},
       { id:'u5', name:'Unit 5 · Subject Pronouns', q:[
-        /* A. Circle the correct word (2 ตัวเลือกตามหนังสือ) */
-        {q:'👉 (ชี้ไปที่เพื่อน) ใช้คำใด?', a:'you', x:['she']},
-        {q:'👨 (ผู้ชาย 1 คน) ใช้คำใด?', a:'he', x:['you']},
-        {q:'🙋 (พูดถึงตัวเอง กำลังอ่านหนังสือ) ใช้คำใด?', a:'I', x:['it']},
-        {q:'🐜 (มด 1 ตัว) ใช้คำใด?', a:'it', x:['you']},
-        {q:'🚲 (จักรยาน) ใช้คำใด?', a:'it', x:['he']},
-        {q:'👩‍⚕️ (ผู้หญิง 1 คน) ใช้คำใด?', a:'she', x:['he']},
-        /* B. Rewrite the sentences correctly (เติมสรรพนามให้ถูก) */
-        {type:'fill', q:'แก้ให้ถูก: "He is my mother." → ___ is my mother.', a:'She', ph:'พิมพ์สรรพนาม (a–z)'},
-        {type:'fill', q:'แก้ให้ถูก: "She is my brother." → ___ is my brother.', a:'He', ph:'พิมพ์สรรพนาม (a–z)'},
-        {type:'fill', q:'แก้ให้ถูก: "You am Lucas." → ___ am Lucas.', a:'I', ph:'พิมพ์สรรพนาม (a–z)'},
-        {type:'fill', q:'แก้ให้ถูก: "I is an elephant." → ___ is an elephant.', a:'It', ph:'พิมพ์สรรพนาม (a–z)'},
+        /* A. Circle the correct pronoun (4 ตัวเลือก) */
+        {q:'👉 ชี้ไปที่เพื่อน ใช้สรรพนามใด?', a:'You', x:['He','She','It']},
+        {q:'👨 ผู้ชาย 1 คน ใช้สรรพนามใด?', a:'He', x:['She','It','You']},
+        {q:'🙋 พูดถึงตัวเอง ใช้สรรพนามใด?', a:'I', x:['He','She','It']},
+        {q:'🐜 มด 1 ตัว ใช้สรรพนามใด?', a:'It', x:['He','She','You']},
+        {q:'🚲 จักรยาน ใช้สรรพนามใด?', a:'It', x:['He','She','You']},
+        {q:'👩‍⚕️ ผู้หญิง 1 คน ใช้สรรพนามใด?', a:'She', x:['He','It','You']},
         /* C. Change the underlined words to pronouns */
         {q:'เปลี่ยนเป็นสรรพนาม: "Sarah" lives in England. →', a:'She', x:['He','It','You']},
         {q:'เปลี่ยนเป็นสรรพนาม: "The dog" 🐶 runs fast. →', a:'It', x:['He','She','You']},
@@ -558,6 +525,24 @@ const SUBJECTS = [
         {q:'⚽ girl (นักฟุตบอลหญิง) → ใช้สรรพนามใด?', a:'She', x:['He','It','You']},
         {q:'👉 (ชี้ไปที่เพื่อน) → ใช้สรรพนามใด?', a:'You', x:['He','She','It']},
       ]},
+    ],
+    /* เกมจับคู่/เติมคำ — โผล่เฉพาะโหมด 🎯 รวมทุกบท (ให้แต่ละบทเป็น 4 ตัวเลือกล้วน) */
+    mixQ:[
+      {type:'match', q:'จับคู่คำที่เป็นชนิดเดียวกัน (คน/สถานที่/สิ่งของ/สัตว์)', pairs:[['dog','monkey'],['aunt','sister'],['sea','farm'],['ball','chair']]},
+      {type:'match', q:'จับคู่คำที่เป็นชนิดเดียวกัน', pairs:[['zoo','city'],['Mom','Dad'],['bird','horse'],['flower','table']]},
+      {type:'match', q:'จับคู่เอกพจน์กับพหูพจน์', pairs:[['box','boxes'],['dog','dogs'],['bench','benches'],['fox','foxes']]},
+      {type:'match', q:'จับคู่คำนามกับสรรพนาม', pairs:[['Sarah','She'],['the dog','It'],['the boy','He'],['my mother','She']]},
+      {type:'fill', q:'แก้ให้ถูก: "She eats a egg." → She eats ___ egg.', a:'an', ph:'พิมพ์ a หรือ an'},
+      {type:'fill', q:'แก้ให้ถูก: "He has an dog." → He has ___ dog.', a:'a', ph:'พิมพ์ a หรือ an'},
+      {type:'fill', q:'แก้ให้ถูก: "They ride in a airplane." → in ___ airplane.', a:'an', ph:'พิมพ์ a หรือ an'},
+      {type:'fill', q:'แก้ให้ถูก: "We live on a Earth." → on ___ Earth.', a:'the', ph:'พิมพ์ a/an/the'},
+      {type:'fill', q:'แก้ให้ถูก: "A sun is very hot." → ___ sun is very hot.', a:'the', ph:'พิมพ์ a/an/the'},
+      {type:'fill', q:'เขียนพหูพจน์ของ "box" 📦', a:'boxes', ph:'พิมพ์ (a–z)'},
+      {type:'fill', q:'เขียนพหูพจน์ของ "church" ⛪', a:'churches', ph:'พิมพ์ (a–z)'},
+      {type:'fill', q:'เขียนพหูพจน์ของ "boy" 👦', a:'boys', ph:'พิมพ์ (a–z)'},
+      {type:'fill', q:'แก้ให้ถูก: "He is my mother." → ___ is my mother.', a:'She', ph:'พิมพ์สรรพนาม'},
+      {type:'fill', q:'แก้ให้ถูก: "You am Lucas." → ___ am Lucas.', a:'I', ph:'พิมพ์สรรพนาม'},
+      {type:'fill', q:'แก้ให้ถูก: "I is an elephant." → ___ is an elephant.', a:'It', ph:'พิมพ์สรรพนาม'},
     ],
   },
   {
@@ -818,6 +803,11 @@ const SUBJECTS = [
   },
 ];
 
+/* วิชาที่ยังไม่มีหนังสือยืนยันจากครู — ซ่อนไว้ก่อน (เก็บดราฟต์ไว้ในโค้ด รอครูส่งเนื้อหาจริง)
+   ปลดล็อกเมื่อพร้อม: ลบ id ออกจากลิสต์นี้ */
+['math-ep','math-th','math-mental','sci-th','sci-ep','thai','chinese','social','history']
+  .forEach(id=>{ const s=SUBJECTS.find(x=>x.id===id); if(s) s.ready=false; });
+
 /* ============ helpers ============ */
 function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);}
 function stripEmoji(s){ return s.replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}️]/gu,'').replace(/\s+/g,' ').trim(); }
@@ -880,13 +870,14 @@ function renderChapters(subj){
   document.getElementById('chSub').textContent=subj.sub+' · '+subj.teacher;
   const list=document.getElementById('chapterlist');
   const ready=readyChapters(subj);
-  const allQ=ready.reduce((arr,c)=>arr.concat(c.q),[]);
+  const allQ=ready.reduce((arr,c)=>arr.concat(c.q),[]).concat(subj.mixQ||[]);
   let html='';
-  // การ์ด "รวมทุกบท" (ซ้อมสอบจริง)
+  // การ์ด "รวมทุกบท" — คละทุกบท + เกมจับคู่/เติมคำ (mixQ)
   if(ready.length>1){
+    const games = (subj.mixQ && subj.mixQ.length) ? ' · มีเกมจับคู่/เติมคำ 🎲' : '';
     html+=`<button class="scard allcard chip-arrow" onclick="startAll('${subj.id}')">
       <span class="ic">🎯</span>
-      <span><span class="t">รวมทุกบท</span><br><span class="d">เล่นรวมทุกบท · สุ่มคละ</span>
+      <span><span class="t">รวมทุกบท</span><br><span class="d">เล่นคละทุกบท${games}</span>
       <br><span class="meta">${allQ.length} ข้อ</span></span></button>`;
   }
   // การ์ดแต่ละบท
@@ -908,7 +899,8 @@ function startChapter(subjId, chId){
 }
 function startAll(subjId){
   const subj=SUBJECTS.find(s=>s.id===subjId);
-  const allQ=readyChapters(subj).reduce((arr,c)=>arr.concat(c.q),[]);
+  let allQ=readyChapters(subj).reduce((arr,c)=>arr.concat(c.q),[]);
+  if(subj.mixQ && subj.mixQ.length) allQ=allQ.concat(subj.mixQ);  // เพิ่มเกมจับคู่/เติมคำเฉพาะโหมดรวมทุกบท
   startExam(subj, allQ, 'รวมทุกบท', 'all');
 }
 
