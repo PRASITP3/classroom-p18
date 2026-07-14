@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>📊 สถิติการใช้งาน · ป.1/8 (admin)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Sarabun:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F172A; --panel:#1E293B; --panel2:#273449; --line:#334155;
+    --ink:#E7EDF5; --ink-soft:#94A3B8; --accent:#5BC8F0; --good:#41C9A0; --warn:#FFB23F; --bad:#FF7A6B; --grape:#A988E0;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;}
+  body{font-family:'Sarabun',sans-serif; color:var(--ink); background:var(--bg); min-height:100dvh; padding:18px 14px 60px;}
+  .wrap{max-width:1000px; margin:0 auto;}
+  .head{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:18px;}
+  .head h1{font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.4rem; margin:0;}
+  .head .sub{color:var(--ink-soft); font-weight:700; font-size:.9rem;}
+  .head .spacer{flex:1;}
+  .btn{border:0; background:var(--panel2); color:var(--ink); border-radius:12px; padding:9px 16px; font-family:'Sarabun'; font-weight:800; cursor:pointer; font-size:.9rem;}
+  .btn:active{transform:translateY(1px);} .btn.accent{background:var(--accent); color:#06263A;}
+
+  .tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:20px;}
+  .tile{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:15px 16px;}
+  .tile .n{font-family:'Fredoka',sans-serif; font-weight:700; font-size:2rem; line-height:1;}
+  .tile .l{color:var(--ink-soft); font-weight:700; font-size:.85rem; margin-top:6px;}
+  .tile .sm{color:var(--ink-soft); font-weight:600; font-size:.75rem; margin-top:3px;}
+  .tile.hi .n{color:var(--accent);}
+
+  .sec{margin:22px 0 10px; font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.1rem; display:flex; align-items:center; gap:8px;}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:6px 4px; overflow-x:auto;}
+  table{border-collapse:collapse; width:100%; min-width:480px; font-size:.88rem;}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); white-space:nowrap;}
+  th{color:var(--ink-soft); font-weight:800; font-size:.78rem; text-transform:uppercase; letter-spacing:.03em;}
+  tr:last-child td{border-bottom:0;}
+  td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
+  .pill{display:inline-block; background:var(--panel2); border-radius:999px; padding:2px 9px; font-size:.72rem; font-weight:800; margin:1px 2px;}
+  .pill.g{background:rgba(65,201,160,.18); color:var(--good);}
+  .bar{height:8px; background:var(--panel2); border-radius:999px; overflow:hidden; min-width:80px; display:inline-block; vertical-align:middle; width:120px;}
+  .bar i{display:block; height:100%; background:var(--accent); border-radius:999px;}
+  .name{font-weight:800;} .muted{color:var(--ink-soft);}
+  .score-good{color:var(--good); font-weight:800;} .score-mid{color:var(--warn); font-weight:800;} .score-low{color:var(--bad); font-weight:800;}
+  .empty{color:var(--ink-soft); text-align:center; padding:26px; font-weight:700;}
+  .note{color:var(--ink-soft); font-size:.8rem; margin-top:22px; line-height:1.6; border-top:1px solid var(--line); padding-top:14px;}
+
+  /* passcode gate */
+  #gate{position:fixed; inset:0; z-index:99; display:grid; place-items:center; background:var(--bg); padding:20px;}
+  #gate .box{background:var(--panel); border:1px solid var(--line); border-radius:22px; padding:30px 26px; width:100%; max-width:340px; text-align:center;}
+  #gate h2{font-family:'Fredoka'; margin:8px 0 4px;} #gate p{color:var(--ink-soft); font-weight:700; margin:0 0 18px; font-size:.9rem;}
+  #gate input{width:100%; text-align:center; font-size:1.4rem; letter-spacing:4px; font-weight:800; padding:12px; border:2px solid var(--line); border-radius:14px; background:var(--panel2); color:var(--ink); outline:none; font-family:'Fredoka';}
+  #gate input:focus{border-color:var(--accent);}
+  #gate button{margin-top:14px; width:100%; border:0; border-radius:14px; padding:13px; background:var(--accent); color:#06263A; font-family:'Fredoka'; font-weight:700; font-size:1.1rem; cursor:pointer;}
+  #gate .err{color:var(--bad); font-weight:700; min-height:20px; margin-top:8px; font-size:.85rem;}
+  .hidden{display:none !important;}
+  .loading{text-align:center; padding:50px; color:var(--ink-soft); font-weight:700;}
+</style>
+</head>
+<body>
+
+<!-- ล็อกด้วยรหัสเบาๆ (เปลี่ยนรหัสได้ที่ตัวแปร PASSCODE ด้านล่าง / ตั้ง '' เพื่อปิดล็อก) -->
+<div id="gate">
+  <div class="box">
+    <div style="font-size:2.4rem">📊</div>
+    <h2>สถิติการใช้งาน</h2>
+    <p>ใส่รหัสเพื่อดูข้อมูล</p>
+    <input id="pc" type="password" inputmode="numeric" autocomplete="off" placeholder="รหัส">
+    <button id="pcgo">เข้าดู</button>
+    <div class="err" id="pcerr"></div>
+  </div>
+</div>
+
+<div class="wrap hidden" id="app">
+  <div class="head">
+    <div>
+      <h1>📊 สถิติการใช้งาน ป.1/8</h1>
+      <div class="sub" id="updated">กำลังโหลด…</div>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn accent" onclick="loadAll()">↻ รีเฟรช</button>
+  </div>
+
+  <div id="content"><div class="loading">⏳ กำลังดึงข้อมูลจาก Supabase…</div></div>
+
+  <div class="note" id="note"></div>
+</div>
+
+<script>
+/* ============================================================
+   Admin dashboard — ดึงสถิติจาก Supabase (REST + anon key เดียวกับ auth.js)
+   ล็อกด้วยรหัสฝั่ง client (กันเปิดมั่ว) — เปลี่ยน/ปิดได้ที่ PASSCODE
+   หมายเหตุความปลอดภัย: anon key เป็นสาธารณะอยู่แล้ว (อยู่ใน auth.js)
+   รหัสนี้แค่กันคนเปิดมั่ว ไม่ใช่การป้องกันจริง
+   ============================================================ */
+const PASSCODE = '2569';   // ← เปลี่ยนรหัสตรงนี้ (ตั้ง '' เพื่อไม่ต้องใส่รหัส)
+
+const SUPABASE_URL = 'https://qznafcgkzlcfjyyrdqhk.supabase.co';
+const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6bmFmY2dremxjZmp5eXJkcWhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1NTExNDMsImV4cCI6MjA5MTEyNzE0M30.v29uJG7HFjE7G9-wvw0TpovEtwsnXCu9CGFKapV7wT0';
+
+/* ---------- ชื่อวิชา/เกม สำหรับแสดงผล ---------- */
+const SUBJ = { grammar:'Grammar', 'math-ep':'MATH', reading:'Reading', writing:'Writing',
+  'math-th':'คณิต', 'math-mental':'จินตคณิต', 'sci-th':'วิทย์', 'sci-ep':'SCI',
+  thai:'ภาษาไทย', chinese:'ภาษาจีน', social:'สังคมฯ', history:'ประวัติศาสตร์' };
+const GAMENAME = { exam:'เกมติวรายวิชา', 'thai-vowels':'สระไทย', vocabulary:'Vocabulary',
+  phonics:'ABC Phonics', 'body-senses':'Body & Senses', numbers:'Numbers · Unit 2', 'chinese-numbers':'ภาษาจีน · ตัวเลข' };
+
+/* ---------- helpers ---------- */
+async function q(path){
+  const r = await fetch(SUPABASE_URL+'/rest/v1/'+path, { headers:{ apikey:ANON, Authorization:'Bearer '+ANON } });
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  return r.json();
+}
+function esc(s){ return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function thaiTime(iso){
+  const d = new Date(iso); const t = new Date(d.getTime()+7*3600*1000); // UTC+7
+  const p=n=>String(n).padStart(2,'0');
+  return `${p(t.getUTCDate())}/${p(t.getUTCMonth()+1)} ${p(t.getUTCHours())}:${p(t.getUTCMinutes())}`;
+}
+function subjOf(mode){ return (mode||'').split('/')[0]; }
+function modeLabel(game, mode){
+  if(game==='exam'){
+    const p=(mode||'').split('/'); const subj=SUBJ[p[0]]||p[0]; const sub=p[1]||'';
+    let lab = sub==='all' ? 'รวมทุกบท' : sub.indexOf('game-')===0 ? ('เกม '+sub.slice(5)) : ('บท '+sub);
+    return subj+' · '+lab;
+  }
+  return (GAMENAME[game]||game) + (mode?(' · '+mode):'');
+}
+function scoreClass(s,t){ const p=t?s/t:0; return p>=.8?'score-good':p>=.5?'score-mid':'score-low'; }
+
+/* ---------- โหลด + คำนวณ ---------- */
+async function loadAll(){
+  document.getElementById('content').innerHTML = '<div class="loading">⏳ กำลังดึงข้อมูล…</div>';
+  try{
+    const [students, logins, scores] = await Promise.all([
+      q('registry_students?select=id,number,nickname,name'),
+      q('student_logins?select=created_at,student_id&order=created_at.desc&limit=2000'),
+      q('game_scores?select=created_at,student_id,game,mode,score,total&order=created_at.desc&limit=5000'),
+    ]);
+    render(students, logins, scores);
+    const now=new Date(); const nt=new Date(now.getTime()+7*3600*1000); const p=n=>String(n).padStart(2,'0');
+    document.getElementById('updated').textContent = `อัปเดตล่าสุด ${p(nt.getUTCDate())}/${p(nt.getUTCMonth()+1)} ${p(nt.getUTCHours())}:${p(nt.getUTCMinutes())} · นักเรียน ${students.length} คน`;
+  }catch(e){
+    document.getElementById('content').innerHTML = '<div class="empty">❌ ดึงข้อมูลไม่สำเร็จ — '+esc(e.message)+'</div>';
+  }
+}
+
+function render(students, logins, scores){
+  const byId={}; students.forEach(s=>byId[s.id]=s);
+  const nameOf = id => { const s=byId[id]; return s ? (s.nickname||s.name||('#'+s.number)) : '(ไม่พบ #'+id+')'; };
+  const numOf  = id => byId[id] ? byId[id].number : '?';
+
+  const loginIds = new Set(logins.map(l=>l.student_id));
+  const playIds  = new Set(scores.map(s=>s.student_id));
+  const exam = scores.filter(s=>s.game==='exam');
+  const examIds = new Set(exam.map(s=>s.student_id));
+
+  /* tiles */
+  const tiles = `
+    <div class="tiles">
+      <div class="tile"><div class="n">${students.length}</div><div class="l">นักเรียนทั้งหมด</div></div>
+      <div class="tile"><div class="n">${loginIds.size}</div><div class="l">เคยเข้าระบบ</div><div class="sm">${pct(loginIds.size,students.length)}</div></div>
+      <div class="tile"><div class="n">${playIds.size}</div><div class="l">เคยเล่นเกม</div><div class="sm">${pct(playIds.size,students.length)}</div></div>
+      <div class="tile hi"><div class="n">${examIds.size}</div><div class="l">เล่นเกมติวรายวิชา</div><div class="sm">${exam.length} ครั้ง</div></div>
+      <div class="tile"><div class="n">${scores.length}</div><div class="l">เล่นเกมรวม (ครั้ง)</div></div>
+    </div>`;
+
+  /* เกมติว แยกรายวิชา */
+  const bySubj={};
+  exam.forEach(s=>{ const k=subjOf(s.mode); (bySubj[k]=bySubj[k]||{plays:0,ids:new Set(),sum:0,tot:0}); bySubj[k].plays++; bySubj[k].ids.add(s.student_id); bySubj[k].sum+=s.score; bySubj[k].tot+=s.total; });
+  const subjKeys=Object.keys(bySubj).sort((a,b)=>bySubj[b].plays-bySubj[a].plays);
+  const maxPlays=Math.max(1,...subjKeys.map(k=>bySubj[k].plays));
+  const subjRows = subjKeys.length ? subjKeys.map(k=>{
+    const d=bySubj[k]; const acc=d.tot?Math.round(d.sum/d.tot*100):0;
+    return `<tr><td class="name">${esc(SUBJ[k]||k)}</td>
+      <td class="num">${d.plays}</td>
+      <td><span class="bar"><i style="width:${Math.round(d.plays/maxPlays*100)}%"></i></span></td>
+      <td class="num">${d.ids.size} คน</td>
+      <td class="num ${acc>=80?'score-good':acc>=50?'score-mid':'score-low'}">${acc}%</td></tr>`;
+  }).join('') : '<tr><td colspan="5" class="empty">ยังไม่มีใครเล่นเกมติวรายวิชา</td></tr>';
+
+  /* กิจกรรมล่าสุด (25) */
+  const recent = scores.slice(0,25).map(s=>`
+    <tr><td class="muted">${thaiTime(s.created_at)}</td>
+      <td><span class="name">${esc(nameOf(s.student_id))}</span> <span class="muted">#${numOf(s.student_id)}</span></td>
+      <td>${esc(modeLabel(s.game,s.mode))}</td>
+      <td class="num ${scoreClass(s.score,s.total)}">${s.score}/${s.total}</td></tr>`).join('')
+    || '<tr><td colspan="4" class="empty">ยังไม่มีการเล่น</td></tr>';
+
+  /* สรุปรายคน (คนที่เคยเล่น) */
+  const perStu={};
+  scores.forEach(s=>{ const st=(perStu[s.student_id]=perStu[s.student_id]||{plays:0,exam:0,subj:new Set(),last:s.created_at});
+    st.plays++; if(s.game==='exam'){ st.exam++; st.subj.add(SUBJ[subjOf(s.mode)]||subjOf(s.mode)); } else { st.subj.add(GAMENAME[s.game]||s.game); }
+    if(s.created_at>st.last) st.last=s.created_at; });
+  const lastLogin={}; logins.forEach(l=>{ if(!lastLogin[l.student_id]||l.created_at>lastLogin[l.student_id]) lastLogin[l.student_id]=l.created_at; });
+  const stuIds=Object.keys(perStu).sort((a,b)=>perStu[b].plays-perStu[a].plays);
+  const stuRows = stuIds.length ? stuIds.map(id=>{
+    const d=perStu[id];
+    const tags=[...d.subj].slice(0,8).map(x=>`<span class="pill">${esc(x)}</span>`).join('');
+    return `<tr><td><span class="name">${esc(nameOf(id))}</span> <span class="muted">#${numOf(id)}</span></td>
+      <td class="num">${d.plays}</td>
+      <td class="num">${d.exam}</td>
+      <td>${tags}</td>
+      <td class="muted">${d.last?thaiTime(d.last):'—'}</td></tr>`;
+  }).join('') : '<tr><td colspan="5" class="empty">ยังไม่มีใครเล่น</td></tr>';
+
+  /* นักเรียนที่ยังไม่เคยเล่นเลย */
+  const neverPlayed = students.filter(s=>!playIds.has(s.id)).sort((a,b)=>a.number-b.number);
+
+  document.getElementById('content').innerHTML = tiles + `
+    <div class="sec">📚 เกมติวรายวิชา — แยกรายวิชา</div>
+    <div class="card"><table>
+      <thead><tr><th>วิชา</th><th class="num">เล่น (ครั้ง)</th><th></th><th class="num">จำนวนคน</th><th class="num">คะแนนเฉลี่ย</th></tr></thead>
+      <tbody>${subjRows}</tbody></table></div>
+
+    <div class="sec">🕒 กิจกรรมล่าสุด</div>
+    <div class="card"><table>
+      <thead><tr><th>เวลา (ไทย)</th><th>นักเรียน</th><th>เล่นอะไร</th><th class="num">คะแนน</th></tr></thead>
+      <tbody>${recent}</tbody></table></div>
+
+    <div class="sec">👧 สรุปรายคน (คนที่เคยเล่น · ${stuIds.length} คน)</div>
+    <div class="card"><table>
+      <thead><tr><th>นักเรียน</th><th class="num">เล่นรวม</th><th class="num">เกมติว</th><th>วิชา/เกมที่เล่น</th><th>เล่นล่าสุด</th></tr></thead>
+      <tbody>${stuRows}</tbody></table></div>
+
+    <div class="sec">💤 ยังไม่เคยเล่น (${neverPlayed.length} คน)</div>
+    <div class="card" style="padding:14px 16px">${
+      neverPlayed.length ? neverPlayed.map(s=>`<span class="pill">#${s.number} ${esc(s.nickname||s.name)}</span>`).join(' ')
+      : '<div class="empty">ทุกคนเคยเล่นแล้ว 🎉</div>'}</div>`;
+
+  document.getElementById('note').innerHTML =
+    'ข้อมูลจาก Supabase (game_scores + student_logins) · เวลาแปลงเป็นเวลาไทย (UTC+7)<br>'+
+    '⚠️ หน้านี้ล็อกด้วยรหัสฝั่ง client เท่านั้น (กันเปิดมั่ว) — ไม่ใช่การป้องกันจริง เพราะ anon key เป็นสาธารณะ ถ้าต้องการล็อกจริงต้องตั้ง RLS/auth ที่ Supabase';
+}
+function pct(a,b){ return b?Math.round(a/b*100)+'%':'0%'; }
+
+/* ---------- passcode gate ---------- */
+function unlock(){ document.getElementById('gate').classList.add('hidden'); document.getElementById('app').classList.remove('hidden'); loadAll(); }
+(function(){
+  const gate=document.getElementById('gate');
+  if(!PASSCODE){ unlock(); return; }
+  if(sessionStorage.getItem('p18admin_ok')==='1'){ unlock(); return; }
+  const inp=document.getElementById('pc'), go=document.getElementById('pcgo'), err=document.getElementById('pcerr');
+  setTimeout(()=>inp.focus(),150);
+  const tryGo=()=>{ if(inp.value===PASSCODE){ sessionStorage.setItem('p18admin_ok','1'); unlock(); } else { err.textContent='รหัสไม่ถูกต้อง'; inp.value=''; inp.focus(); } };
+  go.onclick=tryGo; inp.addEventListener('keydown',e=>{ if(e.key==='Enter') tryGo(); });
+})();
+</script>
+</body>
+</html>
