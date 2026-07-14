@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🎮 เกมติวรายวิชา — ป.1/8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Sarabun:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-1:#8FD3F4; --sky-2:#C7ECFF;
+    --ink:#27384A; --ink-soft:#5A6B7D;
+    --sun:#FFD23F; --coral:#FF7A6B; --mint:#41C9A0; --grape:#9B6DD6; --sky:#3FA9F5;
+    --card:#FFFFFF; --good:#41C9A0; --bad:#FF6B6B;
+    --shadow:0 8px 0 rgba(39,56,74,.12), 0 14px 30px rgba(39,56,74,.18);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; height:100%;}
+  body{
+    font-family:'Sarabun',sans-serif; color:var(--ink);
+    background:linear-gradient(160deg,#A9C7FF,#C7ECFF);
+    min-height:100dvh; display:flex; flex-direction:column; align-items:center;
+    overflow-x:hidden;
+  }
+  .wrap{width:100%; max-width:600px; padding:14px 16px 40px; flex:1; display:flex; flex-direction:column;}
+
+  .top{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;}
+  .brand{font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.12rem; color:var(--ink); display:flex; align-items:center; gap:7px;}
+  .brand .dot{width:14px;height:14px;border-radius:50%;background:var(--sky);box-shadow:0 0 0 4px rgba(63,169,245,.25);}
+  .timer{background:#fff; border-radius:999px; padding:6px 14px; font-weight:800; box-shadow:var(--shadow); display:none; align-items:center; gap:6px; font-size:1rem; font-variant-numeric:tabular-nums;}
+  .timer.show{display:flex;}
+
+  .screen{display:none; flex:1; flex-direction:column;}
+  .screen.active{display:flex; animation:rise .35s ease both;}
+  @keyframes rise{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);}}
+
+  .shead{display:flex; align-items:center; gap:10px; margin-bottom:12px;}
+  .topback{flex:none; text-decoration:none; background:#fff; border-radius:12px; width:42px; height:42px; display:grid; place-items:center; font-size:1.4rem; font-weight:800; color:var(--ink); box-shadow:var(--shadow); border:0; cursor:pointer;}
+  .topback:active{transform:translateY(2px);}
+  .stitle{font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.12rem; line-height:1.1;}
+
+  .hero{background:#fff; border-radius:26px; padding:22px 20px; box-shadow:var(--shadow); text-align:center; margin-bottom:16px;}
+  .hero .emoji{font-size:2.7rem; line-height:1;}
+  .hero h1{font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.55rem; margin:6px 0 2px;}
+  .hero p{margin:0; color:var(--ink-soft); font-weight:700;}
+
+  .subjgroup{margin:20px 2px 2px; display:flex; align-items:center; gap:9px; font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.1rem; color:var(--ink);}
+  .subjgroup:first-of-type{margin-top:6px;}
+  .subjgroup .ln{flex:1; height:3px; border-radius:3px; background:rgba(39,56,74,.12);}
+
+  .menu{display:flex; flex-direction:column; gap:12px; margin-top:8px;}
+  .scard{border:0; cursor:pointer; text-align:left; color:#fff; border-radius:20px; padding:16px 16px; display:flex; align-items:center; gap:14px; box-shadow:var(--shadow); font-family:'Sarabun',sans-serif; transition:transform .12s; width:100%;}
+  .scard:active{transform:translateY(3px);}
+  .scard .ic{font-size:1.9rem; background:rgba(255,255,255,.25); width:56px; height:56px; border-radius:15px; display:grid; place-items:center; flex:none;}
+  .scard .t{font-size:1.2rem; font-weight:800; line-height:1.15;}
+  .scard .d{font-family:'Sarabun',sans-serif; font-weight:700; opacity:.95; font-size:.85rem;}
+  .scard .meta{display:inline-block; background:rgba(255,255,255,.28); border-radius:999px; padding:1px 9px; font-size:.72rem; font-weight:800; margin-top:5px;}
+  .scard.soon{background:#fff; border:3px dashed #B9CBE0; color:var(--ink-soft); box-shadow:none; opacity:.9; cursor:default;}
+  .scard.soon .ic{background:#EEF3F7;}
+  .scard.chip-arrow::after{content:'›'; margin-left:auto; font-size:1.8rem; font-weight:800; opacity:.8;}
+
+  .allcard{background:linear-gradient(135deg,#3FA9F5,#2E86DE) !important; border:0;}
+
+  /* ---------- QUIZ ---------- */
+  .back{border:0; background:#fff; box-shadow:var(--shadow); border-radius:14px; width:46px; height:46px; font-size:1.3rem; cursor:pointer; flex:none; color:var(--ink); font-weight:800; display:grid; place-items:center;}
+  .back:active{transform:translateY(2px);}
+  .progress{margin-left:auto; font-weight:800; color:var(--ink-soft); background:#fff; padding:6px 12px; border-radius:999px; box-shadow:var(--shadow); font-size:.95rem;}
+
+  .pbar{height:10px; border-radius:999px; background:#E3ECF5; overflow:hidden; margin-bottom:14px;}
+  .pbar .fill{height:100%; border-radius:999px; background:linear-gradient(90deg,#5BC8F0,var(--sky)); transition:width .3s;}
+
+  .panel{background:#fff; border-radius:24px; box-shadow:var(--shadow); padding:20px 16px; flex:1; display:flex; flex-direction:column;}
+  .qnum{text-align:center; color:var(--ink-soft); font-weight:800; font-size:.9rem; margin-bottom:4px;}
+  .qtext{font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.32rem; text-align:center; line-height:1.35; margin:4px 0 6px; color:var(--ink);}
+  .qtext .big{display:block; font-size:2.8rem; margin:6px 0 2px; line-height:1.1;}
+  .readbtn{display:block; margin:8px auto 4px; border:0; background:#EEF4FB; color:var(--sky); font-weight:800; font-family:'Sarabun',sans-serif; font-size:.95rem; padding:7px 16px; border-radius:999px; cursor:pointer;}
+  .readbtn:active{transform:translateY(2px);}
+
+  .choices{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:14px;}
+  .choice{border:3px solid #E7EEF4; background:#fff; border-radius:18px; padding:16px 10px; font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.35rem; cursor:pointer; color:var(--ink); transition:transform .1s, border-color .15s, background .15s; min-height:64px; display:flex; align-items:center; justify-content:center; text-align:center;}
+  .choice.long{font-size:1.08rem;}
+  .choice:active{transform:scale(.97);}
+  .choice.sel{border-color:var(--sky); background:#EAF6FF; color:#1663A6;}
+  .choice.correct{border-color:var(--good); background:#E7FBF3; color:#1E8E6E;}
+  .choice.wrong{border-color:var(--bad); background:#FFECEC; color:#D64545; animation:shake .4s;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+  .choice:disabled{cursor:default;}
+
+  /* ดาวสะสม (มุมขวาบน) */
+  .stars{background:#fff; border-radius:999px; padding:6px 13px; font-weight:800; box-shadow:var(--shadow); display:none; align-items:center; gap:6px; font-size:1rem;}
+  .stars.show{display:flex;}
+  .stars .s{transition:transform .25s;}
+  .stars.pop .s{transform:scale(1.5) rotate(18deg);}
+
+  /* ฟีดแบ็กเฉลยทันที */
+  .feedback{text-align:center; font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.1rem; min-height:26px; margin-top:12px; color:var(--ink-soft);}
+  .feedback.good{color:var(--good);} .feedback.bad{color:var(--bad);}
+
+  .nextbtn{margin-top:16px; border:0; background:linear-gradient(135deg,#5BC8F0,var(--sky)); color:#fff; font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.2rem; padding:15px; border-radius:18px; box-shadow:var(--shadow); cursor:pointer; opacity:.45; pointer-events:none; transition:opacity .2s;}
+  .nextbtn.on{opacity:1; pointer-events:auto;}
+  .nextbtn:active{transform:translateY(3px);}
+
+  /* ---------- RESULT ---------- */
+  .result{background:#fff; border-radius:26px; box-shadow:var(--shadow); padding:26px 20px; text-align:center;}
+  .result .big{font-size:3.4rem;}
+  .result h2{font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.6rem; margin:8px 0 2px;}
+  .result .score{font-weight:800; color:var(--ink); font-size:1.35rem;}
+  .result .pct{color:var(--ink-soft); font-weight:800; margin-top:2px;}
+  .result .grade{display:inline-block; margin-top:12px; padding:6px 18px; border-radius:999px; font-weight:800; font-size:1.05rem; color:#fff;}
+  .result .rstars{font-size:2rem; margin:12px 0 2px; letter-spacing:6px;}
+  .result .rtime{color:var(--ink-soft); font-weight:700; font-size:.95rem; margin-top:6px;}
+  .rbtns{display:flex; flex-direction:column; gap:10px; margin-top:18px;}
+  .rbtns button{border:0; border-radius:18px; padding:15px; font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.12rem; cursor:pointer; box-shadow:var(--shadow); color:#fff;}
+  .r-again{background:linear-gradient(135deg,#5BC8F0,var(--sky));}
+  .r-home{background:#fff !important; color:var(--ink) !important; border:3px solid #EEF3F7 !important; box-shadow:none !important;}
+
+  .reviewhead{font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.05rem; color:var(--ink); margin:22px 2px 8px; display:flex; align-items:center; gap:8px;}
+  .rev{background:#fff; border-radius:16px; box-shadow:var(--shadow); padding:13px 14px; margin-bottom:10px; border-left:6px solid var(--good);}
+  .rev.bad{border-left-color:var(--bad);}
+  .rev .rq{font-weight:800; font-size:.98rem; margin-bottom:5px;}
+  .rev .ra{font-weight:700; font-size:.9rem; color:#1E8E6E;}
+  .rev .yours{font-weight:700; font-size:.88rem; color:var(--bad); margin-top:2px;}
+
+  /* ---------- WRITE (พิมพ์เอง + คีย์บอร์ด a–z) ---------- */
+  .writewrap{display:flex; flex-direction:column; gap:12px; margin-top:6px;}
+  .writebox{min-height:58px; border:3px solid #E7EEF4; border-radius:16px; background:#FAFCFF; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.7rem; color:var(--ink); padding:8px 12px; letter-spacing:1px; word-break:break-word;}
+  .writebox .ph{color:#AEBDCB; font-weight:700; font-size:1.02rem; letter-spacing:0;}
+  .writebox .caret{display:inline-block; width:3px; height:1.5rem; background:var(--sky); margin-left:2px; animation:blink 1s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .kbd{display:grid; grid-template-columns:repeat(7,1fr); gap:7px;}
+  .kbd .key{aspect-ratio:1/1; border-radius:12px; border:3px solid #E7EEF4; background:#fff; font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.3rem; cursor:pointer; color:var(--ink); display:flex; align-items:center; justify-content:center;}
+  .kbd .key:active{transform:scale(.92);}
+  .kbd .kctrl{aspect-ratio:auto; font-family:'Sarabun',sans-serif; font-weight:800; font-size:.92rem; background:#EEF4FB; color:var(--sky);}
+  .parentbar{border:2px dashed #E0C878; background:#FFFBEE; border-radius:16px; padding:12px;}
+  .parentbar.hidden{display:none;}
+  .parentbar .plabel{font-weight:800; color:#9A7B1F; font-size:.92rem; margin-bottom:9px; text-align:center;}
+  .parentbar .pbtns{display:flex; gap:10px;}
+  .parentbar .pbtn{flex:1; border:0; border-radius:14px; padding:12px; font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.05rem; cursor:pointer; color:#fff; transition:transform .1s, opacity .15s;}
+  .parentbar .pbtn:active{transform:translateY(2px);}
+  .pbtn.ok{background:linear-gradient(135deg,#5BD9B2,#41C9A0);}
+  .pbtn.no{background:linear-gradient(135deg,#FF9F8A,#FF6B6B);}
+  .parentbar.marked .pbtn{opacity:.4;}
+  .parentbar.marked .pbtn.chosen{opacity:1; box-shadow:0 0 0 3px rgba(39,56,74,.15);}
+  .checkbtn{background:linear-gradient(135deg,#5BD9B2,#41C9A0) !important;}
+
+  /* ---------- MATCH (จับคู่) ---------- */
+  .matchhint{text-align:center; font-weight:800; color:var(--ink-soft); font-size:.95rem; margin:2px 0 12px;}
+  .matchwrap{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .mcol{display:flex; flex-direction:column; gap:10px;}
+  .mitem{border:3px solid #E7EEF4; background:#fff; border-radius:16px; padding:13px 8px; font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.06rem; color:var(--ink); cursor:pointer; min-height:54px; display:flex; align-items:center; justify-content:center; text-align:center; transition:transform .1s,border-color .15s,background .15s;}
+  .mitem:active{transform:scale(.97);}
+  .mitem.msel{border-color:var(--sky); background:#EAF6FF; color:#1663A6;}
+  .mitem.matched{border-color:var(--good); background:#E7FBF3; color:#1E8E6E; cursor:default; opacity:.85;}
+  .mitem.mwrong{border-color:var(--bad); background:#FFECEC; color:#D64545; animation:shake .4s;}
+
+  .confetti{position:fixed; top:-10px; width:11px; height:18px; z-index:50; pointer-events:none; border-radius:2px;}
+  @keyframes fall{to{transform:translateY(105vh) rotate(540deg); opacity:0;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><span class="dot"></span> เกมติวรายวิชา · ป.1/8</div>
+    <div class="stars" id="starbox"><span class="s">⭐</span><span id="starnum">0</span></div>
+  </div>
+
+  <!-- ============ HOME (เลือกวิชา) ============ -->
+  <section class="screen active" id="home">
+    <div class="shead">
+      <a class="topback" href="index.html" title="กลับไปติวเด็ก">‹</a>
+      <span class="stitle">เลือกวิชาที่จะติว</span>
+    </div>
+    <div class="hero">
+      <div class="emoji">🎮✨</div>
+      <h1>คลังเกมติว รายวิชา</h1>
+      <p>เลือกวิชา · เลือกบท · เล่นสนุก เก็บดาว ⭐</p>
+    </div>
+    <div id="subjlist"></div>
+  </section>
+
+  <!-- ============ CHAPTERS (เลือกบท) ============ -->
+  <section class="screen" id="chapters">
+    <div class="shead">
+      <button class="topback" onclick="goHome()" title="เลือกวิชาอื่น">‹</button>
+      <span class="stitle" id="chSubjTitle">เลือกบท</span>
+    </div>
+    <div class="hero">
+      <div class="emoji" id="chEmoji">📘</div>
+      <h1 id="chName">วิชา</h1>
+      <p id="chSub">เลือกบทที่จะทบทวน</p>
+    </div>
+    <div class="menu" id="chapterlist"></div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="screen" id="quiz">
+    <div class="shead">
+      <button class="back" onclick="quitExam()">‹</button>
+      <span class="stitle" id="quizTitle">วิชา</span>
+      <span class="progress" id="quizProg">1 / 10</span>
+    </div>
+    <div class="pbar"><div class="fill" id="pbarFill" style="width:0%"></div></div>
+    <div class="panel">
+      <div class="qnum" id="qnum"></div>
+      <div class="qtext" id="qtext"></div>
+      <button class="readbtn" id="readBtn">🔊 อ่านโจทย์ให้ฟัง</button>
+      <div class="choices" id="choiceBox"></div>
+      <div class="feedback" id="quizFb"></div>
+      <button class="nextbtn" id="nextBtn" onclick="nextQuestion()">ข้อต่อไป →</button>
+    </div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section class="screen" id="result">
+    <div class="shead">
+      <button class="back" onclick="backFromResult()">‹</button>
+      <span class="stitle" id="rSubjTitle">ผลสอบ</span>
+    </div>
+    <div class="result">
+      <div class="big" id="rEmoji">🎉</div>
+      <h2 id="rTitle">เก่งมาก!</h2>
+      <div class="score" id="rScore">10 / 10</div>
+      <div class="pct" id="rPct">100%</div>
+      <div class="grade" id="rGrade">ดีเยี่ยม</div>
+      <div class="rstars" id="rStars">⭐⭐⭐</div>
+      <div class="rtime" id="rTime"></div>
+      <div class="rbtns">
+        <button class="r-again" id="rAgain">ทำอีกครั้ง</button>
+        <button class="r-home" id="rOther">เลือกบท/วิชาอื่น</button>
+      </div>
+    </div>
+    <div class="reviewhead">🔎 เฉลยรายข้อ</div>
+    <div id="reviewBox"></div>
+  </section>
+</div>
+
+<script>
+/* ============================================================
+   ข้อสอบกลางภาค ป.1/8 — โรงเรียนวิเชียรชม (EP)
+   จัดตามรายวิชาในตารางเรียน (แยกทุกวิชา) และเก็บเนื้อหาเป็น "บท"
+
+   โครงสร้างข้อมูล (แก้ที่อาเรย์ SUBJECTS ด้านล่าง):
+   -----------------------------------------------------------
+   วิชาที่ "แยกเป็นบท":
+     { id, group, name, sub, teacher, emoji, color, lang, ready:true,
+       chapters:[
+         { id:'c1', name:'บทที่ 1 · ...', q:[ ...ข้อสอบ... ] },
+         { id:'c2', name:'บทที่ 2 · ...', q:[ ... ] },
+         { id:'c3', name:'บทที่ 3 · ...', ready:false },   // บทเปล่า = "รอครูเพิ่มข้อสอบ"
+       ] }
+     → หน้าเลือกบทจะมีปุ่ม "รวมทุกบท" (ซ้อมสอบจริง) ให้อัตโนมัติ
+
+   วิชาที่ "ไม่แยกเป็นบท" (ชุดเดียว):
+     { id, group, name, sub, teacher, emoji, color, lang, ready:true,
+       q:[ ...ข้อสอบ... ] }
+
+   รูปแบบ 1 ข้อ:
+     { q:'โจทย์ (ใส่ emoji ได้)', a:'คำตอบที่ถูก', x:['ตัวลวง1','ตัวลวง2','ตัวลวง3'], big:'emoji ใหญ่ (ถ้ามี)' }
+     * ตัวลวง (x) ต้องมี 3 ตัว → รวมเป็น 4 ตัวเลือก
+   lang = 'th' | 'en' | 'zh'  (ใช้กับปุ่มอ่านโจทย์ 🔊)
+   ============================================================ */
+const SUBJECTS = [
+  /* ==================== คณิตศาสตร์ (แยก 3 วิชาตามตาราง) ==================== */
+  {
+    id:'math-ep', group:'คณิตศาสตร์', name:'MATH', sub:'Mathematics (EP)', teacher:'Ms. Fretzie',
+    emoji:'🔢', color:'linear-gradient(135deg,#5BC8F0,#3FA9F5)', lang:'en', ready:true,
+    chapters:[
+      { id:'c1', name:'Unit 1 · Numbers & Counting', q:[
+        {q:'How many apples? 🍎🍎🍎🍎', a:'4', x:['3','5','6']},
+        {q:'Count the stars ⭐⭐⭐⭐⭐', a:'5', x:['3','4','6']},
+        {q:'What comes after 6?', a:'7', x:['5','6','8']},
+        {q:'The word for 9 is…', a:'nine', x:['seven','eight','ten']},
+        {q:'Which number is the biggest?', a:'8', x:['3','5','1']},
+      ]},
+      { id:'c2', name:'Unit 2 · Addition & Subtraction', q:[
+        {q:'2 + 3 = ?', a:'5', x:['4','6','7']},
+        {q:'5 − 2 = ?', a:'3', x:['2','4','1']},
+        {q:'4 + 4 = ?', a:'8', x:['6','7','9']},
+        {q:'10 − 5 = ?', a:'5', x:['3','4','6']},
+      ]},
+      { id:'c3', name:'Unit 3 · Shapes', q:[
+        {q:'Which shape is this?', big:'🔺', a:'Triangle', x:['Circle','Square','Star']},
+        {q:'A ball ⚽ is a…', a:'Circle', x:['Square','Triangle','Star']},
+        {q:'How many corners does a square ⬛ have?', a:'4', x:['3','5','6']},
+      ]},
+      { id:'c4', name:'Unit 4 · (เพิ่มภายหลัง)', ready:false },
+    ],
+  },
+  {
+    id:'math-th', group:'คณิตศาสตร์', name:'คณิต', sub:'คณิตศาสตร์ (ไทย)', teacher:'ครูเฉลิมศักดิ์',
+    emoji:'➕', color:'linear-gradient(135deg,#8E7BEF,#6C5CE7)', lang:'th', ready:true,
+    chapters:[
+      { id:'c1', name:'บทที่ 1 · จำนวนและการนับ', q:[
+        {q:'นับดูสิ มีกี่ดวง ⭐⭐⭐⭐⭐⭐', a:'6', x:['5','7','8']},
+        {q:'จำนวนที่อยู่ก่อนหน้า 8 คือ?', a:'7', x:['6','9','10']},
+        {q:'เลขไทย ๗ ตรงกับเลขใด?', a:'7', x:['5','6','8']},
+        {q:'นับต่อ: 2, 4, 6, ___', a:'8', x:['7','9','10']},
+      ]},
+      { id:'c2', name:'บทที่ 2 · การบวกและการลบ', q:[
+        {q:'3 + 4 = ?', a:'7', x:['6','8','9']},
+        {q:'9 − 4 = ?', a:'5', x:['4','6','3']},
+        {q:'5 + 5 = ?', a:'10', x:['8','9','11']},
+      ]},
+      { id:'c3', name:'บทที่ 3 · เปรียบเทียบและรูปเรขาคณิต', q:[
+        {q:'เลขใดมากที่สุด?', a:'15', x:['12','8','6']},
+        {q:'จำนวนใด "น้อยกว่า" 8?', a:'5', x:['9','10','12']},
+        {q:'รูปใดคือสามเหลี่ยม?', a:'🔺', x:['🔵','⬛','⭐']},
+      ]},
+      { id:'c4', name:'บทที่ 4 · (เพิ่มภายหลัง)', ready:false },
+    ],
+  },
+  {
+    id:'math-mental', group:'คณิตศาสตร์', name:'จินตคณิต', sub:'คิดเลขเร็ว (ชุดเดียว)', teacher:'ครูดนิตา',
+    emoji:'🧠', color:'linear-gradient(135deg,#FF9F68,#FF7A6B)', lang:'th', ready:true,
+    q:[
+      {q:'คิดเร็ว! 6 + 3 = ?', a:'9', x:['8','10','7']},
+      {q:'คิดเร็ว! 10 − 7 = ?', a:'3', x:['2','4','5']},
+      {q:'จับคู่ให้ครบ 10 → 4 กับ ?', a:'6', x:['5','7','4']},
+      {q:'คิดเร็ว! 7 + 2 = ?', a:'9', x:['8','10','11']},
+      {q:'คิดเร็ว! 8 − 5 = ?', a:'3', x:['2','4','5']},
+      {q:'3 + 3 + 3 = ?', a:'9', x:['6','12','3']},
+      {q:'นับเพิ่มทีละ 2: 2, 4, 6, 8, ___', a:'10', x:['9','11','12']},
+      {q:'จับคู่ให้ครบ 10 → 8 กับ ?', a:'2', x:['1','3','4']},
+      {q:'คิดเร็ว! 5 + 4 = ?', a:'9', x:['8','10','7']},
+      {q:'คิดเร็ว! 9 − 6 = ?', a:'3', x:['2','4','5']},
+    ],
+  },
+
+  /* ==================== วิทยาศาสตร์ (แยก 2 วิชาตามตาราง) ==================== */
+  {
+    id:'sci-th', group:'วิทยาศาสตร์', name:'วิทย์', sub:'วิทยาศาสตร์ (ไทย)', teacher:'ครูกวีวรรณ',
+    emoji:'🔬', color:'linear-gradient(135deg,#41C9A0,#2FB58C)', lang:'th', ready:true,
+    chapters:[
+      { id:'c1', name:'บทที่ 1 · สิ่งมีชีวิต–ไม่มีชีวิต', q:[
+        {q:'ข้อใดเป็น "สิ่งมีชีวิต"?', a:'🌳 ต้นไม้', x:['🪨 ก้อนหิน','✏️ ดินสอ','🚗 รถ']},
+        {q:'ข้อใดเป็น "สิ่งไม่มีชีวิต"?', a:'⛰️ ภูเขา', x:['🐶 หมา','🌺 ดอกไม้','🐟 ปลา']},
+        {q:'สิ่งใดจำเป็นต่อการมีชีวิต?', a:'อาหารและน้ำ', x:['ของเล่น','โทรทัศน์','รองเท้า']},
+      ]},
+      { id:'c2', name:'บทที่ 2 · ร่างกายและประสาทสัมผัส', q:[
+        {q:'เรามองเห็นด้วยอวัยวะใด?', a:'👁️ ตา', x:['👂 หู','👃 จมูก','✋ มือ']},
+        {q:'เราได้กลิ่นด้วยอวัยวะใด?', a:'👃 จมูก', x:['👅 ลิ้น','👁️ ตา','👂 หู']},
+        {q:'เราใช้ "ลิ้น" ทำอะไร?', a:'ชิมรสชาติ', x:['ดมกลิ่น','มองเห็น','ฟังเสียง']},
+        {q:'ประสาทสัมผัสของคนเรามีกี่อย่าง?', a:'5', x:['3','4','6']},
+      ]},
+      { id:'c3', name:'บทที่ 3 · พืชและสัตว์', q:[
+        {q:'ส่วนใดของพืชอยู่ใต้ดิน?', a:'ราก', x:['ใบ','ดอก','ผล']},
+        {q:'สัตว์ข้อใดบินได้?', a:'🐦 นก', x:['🐟 ปลา','🐘 ช้าง','🐍 งู']},
+        {q:'ข้อใดเป็นสัตว์เลี้ยงในบ้าน?', a:'🐕 สุนัข', x:['🐅 เสือ','🦁 สิงโต','🐊 จระเข้']},
+      ]},
+      { id:'c4', name:'บทที่ 4 · (เพิ่มภายหลัง)', ready:false },
+    ],
+  },
+  {
+    id:'sci-ep', group:'วิทยาศาสตร์', name:'SCI', sub:'Science (EP)', teacher:'Mr. Baguinang',
+    emoji:'🧪', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', lang:'en', ready:true,
+    chapters:[
+      { id:'c1', name:'Unit 1 · Living & Non-living', q:[
+        {q:'Which one is living?', a:'🌳 tree', x:['🪨 rock','🚗 car','✏️ pencil']},
+        {q:'Which one is non-living?', a:'⛰️ mountain', x:['🐶 dog','🌺 flower','🐝 bee']},
+        {q:'What do living things need?', a:'food and water', x:['toys','a TV','shoes']},
+      ]},
+      { id:'c2', name:'Unit 2 · My Body & Senses', q:[
+        {q:'We see with our…', a:'👁️ eyes', x:['👂 ears','👃 nose','✋ hands']},
+        {q:'We smell with our…', a:'👃 nose', x:['👅 tongue','👁️ eyes','👂 ears']},
+        {q:'We hear with our…', a:'👂 ears', x:['👃 nose','👅 tongue','👁️ eyes']},
+        {q:'How many senses do we have?', a:'5', x:['3','4','6']},
+      ]},
+      { id:'c3', name:'Unit 3 · Plants & Animals', q:[
+        {q:'Which part of a plant is under the ground?', a:'root', x:['leaf','flower','fruit']},
+        {q:'Which animal can fly?', a:'🐦 bird', x:['🐟 fish','🐘 elephant','🐍 snake']},
+        {q:'A baby dog is called a…', a:'puppy', x:['kitten','calf','chick']},
+      ]},
+      { id:'c4', name:'Unit 4 · (เพิ่มภายหลัง)', ready:false },
+    ],
+  },
+
+  /* ==================== ภาษา (ไทย/จีน) ==================== */
+  {
+    id:'thai', group:'ภาษา (ไทย/จีน)', name:'ภาษาไทย', sub:'พยัญชนะ · สระ · อ่านคำ', teacher:'ครูวรรณภา',
+    emoji:'🇹🇭', color:'linear-gradient(135deg,#FF8E7A,#FF7A6B)', lang:'th', ready:true,
+    chapters:[
+      { id:'c1', name:'บทที่ 1 · พยัญชนะ', q:[
+        {q:'พยัญชนะตัวแรกของคำว่า "ไก่" 🐔 คือ?', a:'ก', x:['ข','ค','ง']},
+        {q:'พยัญชนะ "จ" มาจากคำว่า "จ______"?', a:'จาน', x:['ไก่','ปลา','งู']},
+        {q:'ตัวใดเป็น "พยัญชนะ"?', a:'บ', x:['ะ','เ','ิ']},
+      ]},
+      { id:'c2', name:'บทที่ 2 · สระ', q:[
+        {q:'คำว่า "ปลา" 🐟 ใช้สระอะไร?', a:'สระอา', x:['สระอี','สระอู','สระเอ']},
+        {q:'คำว่า "แมว" 🐈 ใช้สระอะไร?', a:'สระแอ', x:['สระเอ','สระอา','สระไอ']},
+        {q:'ข้อใดเป็น "สระ"?', a:'า', x:['ก','ม','ด']},
+        {q:'คำว่า "ตา" 👁️ ใช้สระอะไร?', a:'สระอา', x:['สระอี','สระอือ','สระอุ']},
+        {q:'คำว่า "ใจ" ❤️ ใช้สระอะไร?', a:'สระใอ (ไม้ม้วน)', x:['สระไอ (ไม้มลาย)','สระอา','สระอี']},
+      ]},
+      { id:'c3', name:'บทที่ 3 · อ่านคำ', q:[
+        {q:'ภาพนี้ 🐘 อ่านว่าอะไร?', a:'ช้าง', x:['ม้า','วัว','หมู']},
+        {q:'คำว่า "หมู" 🐷 มีกี่พยางค์?', a:'1', x:['2','3','4']},
+      ]},
+      { id:'c4', name:'บทที่ 4 · (เพิ่มภายหลัง)', ready:false },
+    ],
+  },
+  {
+    id:'grammar', group:'อังกฤษ (EP)', name:'Grammar', sub:'Nouns · Articles · Plurals · Pronouns', teacher:'Teacher JJ',
+    emoji:'📖', color:'linear-gradient(135deg,#A988E0,#9B6DD6)', lang:'en', ready:true,
+    chapters:[
+      { id:'u1', name:'Unit 1 · Types of Nouns', q:[
+        /* A. Circle the correct type (person/place/thing/animal) — 2 ตัวเลือกตามหนังสือ */
+        {q:'A fish 🐟 is a…', a:'animal', x:['thing']},
+        {q:'Broccoli 🥦 is a…', a:'thing', x:['place']},
+        {q:'A park 🏞️ is a…', a:'place', x:['person']},
+        {q:'A horse 🐴 is a…', a:'animal', x:['person']},
+        {q:'A doctor 🧑‍⚕️ is a…', a:'person', x:['animal']},
+        {q:'A library 🏛️ is a…', a:'place', x:['animal']},
+        /* B. Match the same type of noun */
+        {type:'match', q:'จับคู่คำที่เป็นชนิดเดียวกัน', pairs:[['dog','monkey'],['aunt','sister'],['sea','farm'],['ball','chair']]},
+        {type:'match', q:'จับคู่คำที่เป็นชนิดเดียวกัน', pairs:[['zoo','city'],['Mom','Dad'],['bird','horse'],['flower','table']]},
+        /* C. Write the noun in the correct box */
+        {q:'"egg" 🥚 อยู่กลุ่มไหน?', a:'Things', x:['People','Places','Animals']},
+        {q:'"girl" 👧 อยู่กลุ่มไหน?', a:'People', x:['Places','Things','Animals']},
+        {q:'"park" 🏞️ อยู่กลุ่มไหน?', a:'Places', x:['People','Things','Animals']},
+        {q:'"boy" 👦 อยู่กลุ่มไหน?', a:'People', x:['Places','Things','Animals']},
+        {q:'"turtle" 🐢 อยู่กลุ่มไหน?', a:'Animals', x:['People','Places','Things']},
+        {q:'"umbrella" ☂️ อยู่กลุ่มไหน?', a:'Things', x:['People','Places','Animals']},
+        {q:'"city" 🏙️ อยู่กลุ่มไหน?', a:'Places', x:['People','Things','Animals']},
+        {q:'"frog" 🐸 อยู่กลุ่มไหน?', a:'Animals', x:['People','Places','Things']},
+        /* D. Label the boxes and fill in — คำใน word bank */
+        {q:'"sister" อยู่กลุ่มไหน?', a:'People', x:['Places','Things','Animals']},
+        {q:'"king" 👑 อยู่กลุ่มไหน?', a:'People', x:['Places','Things','Animals']},
+        {q:'"teacher" 👩‍🏫 อยู่กลุ่มไหน?', a:'People', x:['Places','Things','Animals']},
+        {q:'"farm" 🚜 อยู่กลุ่มไหน?', a:'Places', x:['People','Things','Animals']},
+        {q:'"school" 🏫 อยู่กลุ่มไหน?', a:'Places', x:['People','Things','Animals']},
+        {q:'"library" 🏛️ อยู่กลุ่มไหน?', a:'Places', x:['People','Things','Animals']},
+        {q:'"pen" 🖊️ อยู่กลุ่มไหน?', a:'Things', x:['People','Places','Animals']},
+        {q:'"guitar" 🎸 อยู่กลุ่มไหน?', a:'Things', x:['People','Places','Animals']},
+        {q:'"phone" 📱 อยู่กลุ่มไหน?', a:'Things', x:['People','Places','Animals']},
+        {q:'"lion" 🦁 อยู่กลุ่มไหน?', a:'Animals', x:['People','Places','Things']},
+        {q:'"cow" 🐄 อยู่กลุ่มไหน?', a:'Animals', x:['People','Places','Things']},
+        {q:'"dog" 🐶 อยู่กลุ่มไหน?', a:'Animals', x:['People','Places','Things']},
+      ]},
+      { id:'u2', name:'Unit 2 · A / An', q:[
+        {q:'___ apple 🍎', a:'an', x:['a','the','is']},
+        {q:'___ horse 🐴', a:'a', x:['an','the','is']},
+        {q:'___ octopus 🐙', a:'an', x:['a','the','is']},
+        {q:'___ dog 🐶', a:'a', x:['an','the','is']},
+        {q:'___ owl 🦉', a:'an', x:['a','the','is']},
+        {q:'___ book 📖', a:'a', x:['an','the','is']},
+        {q:'The girl eats ___ orange 🍊.', a:'an', x:['a','the','is']},
+        {q:'He lives in ___ house 🏠.', a:'a', x:['an','the','is']},
+        {q:'She lives in ___ igloo.', a:'an', x:['a','the','is']},
+        {q:'___ alligator 🐊 lives in the river.', a:'An', x:['A','The','Is']},
+        {q:'Fix it: "She eats a egg." → She eats ___ egg.', a:'an', x:['a','the','one']},
+        {q:'Fix it: "He has an dog." → He has ___ dog.', a:'a', x:['an','the','one']},
+      ]},
+      { id:'u3', name:'Unit 3 · The', q:[
+        {q:'___ sun ☀️ (there is only one)', a:'the', x:['a','an','one']},
+        {q:'___ moon 🌙 (only one)', a:'the', x:['a','an','two']},
+        {q:'We live on ___ Earth 🌍.', a:'the', x:['a','an','one']},
+        {q:'___ sky is blue.', a:'The', x:['A','An','One']},
+        {q:'___ egg 🥚 (any one)', a:'an', x:['a','the','two']},
+        {q:'___ bike 🚲 (any one)', a:'a', x:['an','the','two']},
+        {q:'___ arrow (any one)', a:'an', x:['a','the','two']},
+        {q:'She sees ___ fox 🦊 in the story. (that one)', a:'the', x:['a','an','some']},
+        {q:'Fix it: "There is a iguana." → There is ___ iguana.', a:'an', x:['a','the','one']},
+        {q:'Fix it: "A sun is very hot." → ___ sun is very hot.', a:'The', x:['A','An','One']},
+      ]},
+      { id:'u4', name:'Unit 4 · Plural Nouns', q:[
+        /* A. Write the correct plural form (พิมพ์เอง เช็กอัตโนมัติ) */
+        {type:'fill', q:'เขียนพหูพจน์ของ "owl" 🦉', a:'owls', ph:'พิมพ์พหูพจน์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์ของ "bus" 🚌', a:'buses', ph:'พิมพ์พหูพจน์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์ของ "bench"', a:'benches', ph:'พิมพ์พหูพจน์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์ของ "dish" 🍽️', a:'dishes', ph:'พิมพ์พหูพจน์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์ของ "teacher" 👩‍🏫', a:'teachers', ph:'พิมพ์พหูพจน์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์ของ "girl" 👧', a:'girls', ph:'พิมพ์พหูพจน์ (a–z)'},
+        /* B. Rewrite correctly (แก้พหูพจน์ที่ผิด) */
+        {type:'fill', q:'แก้ให้ถูก: "five boyes" → five ___', a:'boys', ph:'พิมพ์ให้ถูก'},
+        {type:'fill', q:'แก้ให้ถูก: "four boxs" → four ___', a:'boxes', ph:'พิมพ์ให้ถูก'},
+        {type:'fill', q:'แก้ให้ถูก: "two penciles" → two ___', a:'pencils', ph:'พิมพ์ให้ถูก'},
+        {type:'fill', q:'แก้ให้ถูก: "two churchs" → two ___', a:'churches', ph:'พิมพ์ให้ถูก'},
+        {type:'fill', q:'แก้ให้ถูก: "four paint brushs" → four paint ___', a:'brushes', ph:'พิมพ์ให้ถูก'},
+        /* C. Circle the correct plural form (เลือก 2 ตัวเลือก) */
+        {q:'The ___ run to the house.', a:'dogs', x:['doges']},
+        {q:'There are three ___ at the zoo.', a:'foxes', x:['foxs']},
+        {q:'They make ___ for the picnic.', a:'sandwiches', x:['sandwichs']},
+        {q:'He has four blue ___ in his backpack.', a:'pens', x:['penes']},
+        {q:'My friend has five ___!', a:'cats', x:['cates']},
+        {q:'There are nine ___ on my street.', a:'houses', x:['houseses']},
+        /* D. Fill in the blanks (-s / -es) */
+        {type:'fill', q:'one worm → two ___', a:'worms', ph:'พิมพ์พหูพจน์ (a–z)'},
+        {type:'fill', q:'one castle → two ___', a:'castles', ph:'พิมพ์พหูพจน์ (a–z)'},
+        {type:'fill', q:'one brush → two ___', a:'brushes', ph:'พิมพ์พหูพจน์ (a–z)'},
+        {type:'fill', q:'one box → four ___', a:'boxes', ph:'พิมพ์พหูพจน์ (a–z)'},
+        {type:'fill', q:'one church → three ___', a:'churches', ph:'พิมพ์พหูพจน์ (a–z)'},
+        {type:'fill', q:'one sandwich → five ___', a:'sandwiches', ph:'พิมพ์พหูพจน์ (a–z)'},
+      ]},
+      { id:'u5', name:'Unit 5 · Subject Pronouns', q:[
+        {q:'Change to a pronoun: "Sarah" →', a:'She', x:['He','It','You']},
+        {q:'Change to a pronoun: "The dog" 🐶 →', a:'It', x:['He','She','They']},
+        {q:'Change to a pronoun: "The boy" 👦 →', a:'He', x:['She','It','You']},
+        {q:'Change to a pronoun: "My mother" →', a:'She', x:['He','It','We']},
+        {q:'Change to a pronoun: "My brother" →', a:'He', x:['She','It','They']},
+        {q:'Change to a pronoun: "The chair" 🪑 →', a:'It', x:['He','She','You']},
+        {q:'Fix it: "He is my mother." → ___ is my mother.', a:'She', x:['He','It','You']},
+        {q:'Fix it: "You am Lucas." → ___ am Lucas.', a:'I', x:['You','He','It']},
+        {q:'Fix it: "I is an elephant." → ___ is an elephant.', a:'It', x:['I','He','She']},
+        {q:'A queen 👑 is a woman. We say…', a:'She', x:['He','It','You']},
+        {q:'When you talk about yourself, you say…', a:'I', x:['You','He','She']},
+        {q:'When you talk to your friend, you say…', a:'You', x:['I','He','It']},
+      ]},
+    ],
+  },
+  {
+    id:'reading', group:'อังกฤษ (EP)', name:'Reading', sub:'อ่านจับใจความ (Get Ready to Read)', teacher:'Teacher Einas',
+    emoji:'📕', color:'linear-gradient(135deg,#5C9DF5,#3B7DE0)', lang:'en', ready:true,
+    chapters:[
+      { id:'u1', name:'Unit 1 · Ben\'s Picture (My Classroom)', q:[
+        {q:'What do you sit on? 🪑', a:'a chair', x:['a desk','a bookcase','a wastebasket']},
+        {q:'Where do you put your books?', a:'bookcase', x:['chair','wastebasket','desk']},
+        {q:'Where do you throw trash? 🗑️', a:'wastebasket', x:['desk','chair','bookcase']},
+        {q:'You read and write at your…', a:'desk', x:['chair','wastebasket','bookcase']},
+        {q:'"Is this your desk?" — "Yes, ___."', a:'it is', x:['I do','it isn\'t','I am']},
+        {q:'"Do you have a backpack?" — "Yes, ___."', a:'I do', x:['it is','I am','it does']},
+        {q:'What is "Ben\'s Picture" about?', a:'his classroom', x:['his friends','his house','his dog']},
+        {q:'"This ___ my chair."', a:'is', x:['are','am','be']},
+        {q:'We look at the pictures first. They show what the text is ___.', a:'about', x:['color','big','funny']},
+        {q:'"Is this a wastebasket?" — "Yes, ___."', a:'it is', x:['I do','I am','it has']},
+      ]},
+      { id:'u2', name:'Unit 2 · The Pencil Case (Find the Numbers)', q:[
+        {q:'What holds your pencils and crayons? ✏️', a:'pencil case', x:['backpack','bookcase','wastebasket']},
+        {q:'How many pencils does Mi-Jin have?', a:'two', x:['three','four','six']},
+        {q:'How many crayons does Mi-Jin have?', a:'six', x:['two','three','five']},
+        {q:'How many markers does Mi-Jin have?', a:'three', x:['two','four','six']},
+        {q:'How many pens does Lily have?', a:'two', x:['three','six','one']},
+        {q:'Does Mi-Jin have a pen?', a:'No, she doesn\'t', x:['Yes, she does','Yes, she is','No, she isn\'t']},
+        {q:'"I ___ two pencils."', a:'have', x:['has','is','am']},
+        {q:'"She ___ two pens."', a:'has', x:['have','is','are']},
+        {q:'"He ___ five markers."', a:'has', x:['have','is','am']},
+        {q:'Where is the pencil case?', a:'on the bookcase', x:['on the desk','in the bag','on the chair']},
+        {q:'Numbers in a text tell us ___.', a:'how many', x:['the color','the name','the place']},
+        {q:'"I have three ___ and five pens," says Hugo.', a:'books', x:['pens','bags','desks']},
+      ]},
+      { id:'u3', name:'Unit 3 · Four Fun Pets (Read the Title)', q:[
+        {q:'"Four Fun Pets" is about ___.', a:'pet animals', x:['big animals','food','toys']},
+        {q:'Dogs ___ run and jump.', a:'can', x:['can\'t','is','are']},
+        {q:'What can cats do well at night?', a:'see well', x:['fly','talk','swim']},
+        {q:'Some birds can ___.', a:'talk', x:['swim','read','cook']},
+        {q:'Hamsters have ___ ears.', a:'little', x:['big','long','no']},
+        {q:'Hamsters ___ see well.', a:'can\'t', x:['can','do','are']},
+        {q:'Cats sleep ___.', a:'a lot', x:['never','at school','in water']},
+        {q:'Which pet can fly? 🐦', a:'bird', x:['dog','cat','hamster']},
+        {q:'Which pet is clean and sleeps a lot?', a:'cat', x:['dog','bird','hamster']},
+        {q:'The title tells what the text is ___.', a:'about', x:['color','big','funny']},
+        {q:'Which pet can run and jump? 🐶', a:'dog', x:['fish','bird','hamster']},
+        {q:'"Big Giraffes" — Giraffes are ___.', a:'big', x:['small','fast','slow']},
+      ]},
+    ],
+  },
+  {
+    id:'writing', group:'อังกฤษ (EP)', name:'Writing', sub:'การเขียน (Me · Family · Home)', teacher:'Teacher Tina',
+    emoji:'✍️', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', lang:'en', ready:true,
+    chapters:[
+      { id:'u1', name:'Unit 1 · Me — I Am Nine', q:[
+        {q:'When you meet a friend, you say…', a:'Hello', x:['Goodbye','Thank you','Sorry']},
+        {q:'"What is your ___?" — "My name is Dan."', a:'name', x:['age','home','dog']},
+        {q:'"How old are you?" asks about your…', a:'age', x:['name','home','family']},
+        {q:'Simon is 6 years old. He is…', a:'six', x:['seven','eight','nine']},
+        {q:'Lucy is 8. She is ___ years old.', a:'eight', x:['six','seven','nine']},
+        {q:'The title is "I Am ___." (the reader is 9)', a:'Nine', x:['Six','Seven','Eight']},
+        {q:'Which word is a greeting?', a:'hello', x:['name','age','book']},
+        {q:'Dan is 7. What is the number word?', a:'seven', x:['six','eight','nine']},
+        {type:'write', q:'✍️ My name is ___.  (เขียนชื่อของหนู)', ph:'พิมพ์ชื่อ (a–z)'},
+        {type:'write', q:'✍️ I am ___ years old.  (อายุของหนู)', ph:'เช่น seven'},
+      ]},
+      { id:'u2', name:'Unit 2 · People — I Love My Family', q:[
+        {q:'Your mom is also called your…', a:'mother', x:['sister','aunt','brother']},
+        {q:'Your dad is also called your…', a:'father', x:['uncle','brother','son']},
+        {q:'A boy with the same parents as you is your…', a:'brother', x:['sister','mother','father']},
+        {q:'A girl with the same parents as you is your…', a:'sister', x:['brother','father','uncle']},
+        {q:'"mom" is a short word for…', a:'mother', x:['sister','aunt','friend']},
+        {q:'"dad" is a short word for…', a:'father', x:['brother','uncle','son']},
+        {q:'Many family words end in…', a:'-er', x:['-ing','-ed','-s']},
+        {q:'"I have no brothers or sisters." I am an…', a:'only child', x:['big family','twin','baby']},
+        {q:'Jacob is Dan\'s…', a:'brother', x:['sister','father','friend']},
+        {q:'Which word is a family word?', a:'mother', x:['table','apple','house']},
+        {type:'write', q:'✍️ I have ___ brothers or sisters.', ph:'เช่น one, two, zero'},
+        {type:'write', q:'✍️ A family word I know is ___.', ph:'เช่น mother, father'},
+      ]},
+      { id:'u3', name:'Unit 3 · Home — The Kitchen Is Big', q:[
+        {q:'Where do you cook food? 🍳', a:'kitchen', x:['bedroom','bathroom','garden']},
+        {q:'Where do you sleep? 🛏️', a:'bedroom', x:['kitchen','bathroom','garage']},
+        {q:'Where do you take a bath? 🛁', a:'bathroom', x:['kitchen','bedroom','garage']},
+        {q:'Where does the family sit together?', a:'living room', x:['kitchen','bathroom','bedroom']},
+        {q:'"big" and "large" mean…', a:'the same', x:['opposite','colors','numbers']},
+        {q:'The opposite of "big" is…', a:'small', x:['large','tall','long']},
+        {q:'A building where people live is a…', a:'house', x:['kitchen','car','tree']},
+        {q:'The place where you live with your family is your…', a:'home', x:['school','park','shop']},
+        {q:'"big" is the same as…', a:'large', x:['small','little','tiny']},
+        {q:'A castle is a very ___ house.', a:'big', x:['small','little','tiny']},
+        {type:'write', q:'✍️ My home is ___.', ph:'big หรือ small'},
+        {type:'write', q:'✍️ My favorite room is the ___.', ph:'เช่น bedroom, kitchen'},
+      ]},
+    ],
+  },
+  {
+    id:'speech', group:'อังกฤษ (EP)', name:'Speech', sub:'การพูด/ออกเสียง', teacher:'Teacher Einas',
+    emoji:'🗣️', color:'linear-gradient(135deg,#8FB4FF,#5C86E6)', lang:'en', ready:false,
+  },
+
+  /* ==================== ภาษาจีน ==================== */
+  {
+    id:'chinese', group:'ภาษา (ไทย/จีน)', name:'ภาษาจีน', sub:'ตัวเลข · คำทักทาย · สี', teacher:'ครูชัญญานุช',
+    emoji:'🇨🇳', color:'linear-gradient(135deg,#FF7A6B,#E8453C)', lang:'zh', ready:true,
+    chapters:[
+      { id:'c1', name:'บทที่ 1 · ตัวเลข 数字', q:[
+        {q:'一 อ่านพินอินว่าอะไร?', a:'yī (หนึ่ง)', x:['èr','sān','sì']},
+        {q:'二 คือเลขอะไร?', a:'2', x:['1','3','4']},
+        {q:'เลข 3 ภาษาจีนเขียนอย่างไร?', a:'三', x:['一','二','四']},
+        {q:'五 คือเลขอะไร?', a:'5', x:['3','4','6']},
+        {q:'เลข 4 ภาษาจีนเขียนอย่างไร?', a:'四', x:['五','六','七']},
+        {q:'六 คือเลขอะไร?', a:'6', x:['4','5','7']},
+        {q:'十 (สิบ) อ่านพินอินว่าอะไร?', a:'shí', x:['sì','sān','shén']},
+      ]},
+      { id:'c2', name:'บทที่ 2 · คำทักทายและสี', q:[
+        {q:'"你好" แปลว่าอะไร?', a:'สวัสดี', x:['ขอบคุณ','ลาก่อน','สบายดี']},
+        {q:'"谢谢" แปลว่าอะไร?', a:'ขอบคุณ', x:['สวัสดี','ขอโทษ','ลาก่อน']},
+        {q:'红色 🔴 คือสีอะไร?', a:'สีแดง', x:['สีเขียว','สีน้ำเงิน','สีเหลือง']},
+      ]},
+      { id:'c3', name:'บทที่ 3 · (เพิ่มภายหลัง)', ready:false },
+    ],
+  },
+
+  /* ==================== สังคมศึกษา ==================== */
+  {
+    id:'social', group:'สังคมศึกษา', name:'สังคมฯ', sub:'ครอบครัว · ชุมชน · หน้าที่พลเมือง', teacher:'ครูฐายิกา',
+    emoji:'🌏', color:'linear-gradient(135deg,#FFB23F,#FF9F1C)', lang:'th', ready:true,
+    chapters:[
+      { id:'c1', name:'บทที่ 1 · ครอบครัวและมารยาท', q:[
+        {q:'"พ่อของแม่" เราเรียกว่าอะไร?', a:'ตา', x:['ปู่','ลุง','น้า']},
+        {q:'เมื่อรับของจากผู้ใหญ่ ควรทำอย่างไร?', a:'ไหว้และกล่าวขอบคุณ', x:['วิ่งหนีไป','เฉย ๆ','หัวเราะเสียงดัง']},
+        {q:'เมื่อทำผิดกับเพื่อน ควรพูดว่าอะไร?', a:'ขอโทษ', x:['ขอบคุณ','สวัสดี','ลาก่อน']},
+      ]},
+      { id:'c2', name:'บทที่ 2 · ชุมชนและอาชีพ', q:[
+        {q:'อาชีพใดทำหน้าที่รักษาคนป่วย?', a:'หมอ 🩺', x:['ครู','ตำรวจ','ชาวนา']},
+        {q:'อาชีพใดทำหน้าที่จับผู้ร้าย?', a:'ตำรวจ 👮', x:['ครู','หมอ','พ่อครัว']},
+        {q:'สถานที่สำหรับมาเรียนหนังสือคือที่ใด?', a:'โรงเรียน 🏫', x:['โรงพยาบาล','ตลาด','สนามบิน']},
+      ]},
+      { id:'c3', name:'บทที่ 3 · พลเมืองดีและเงิน', q:[
+        {q:'เราควรทิ้งขยะที่ไหน?', a:'ถังขยะ 🗑️', x:['บนพื้น','ในแม่น้ำ','ข้างถนน']},
+        {q:'วันสำคัญที่เราระลึกถึงพระคุณ "แม่" คือวันใด?', a:'วันแม่', x:['วันเด็ก','วันครู','วันปีใหม่']},
+        {q:'ดวงอาทิตย์ขึ้นทางทิศใด?', a:'ทิศตะวันออก', x:['ทิศเหนือ','ทิศใต้','ทิศตะวันตก']},
+        {q:'เหรียญ 10 บาท มีค่าเท่ากับกี่บาท?', a:'10 บาท', x:['1 บาท','5 บาท','20 บาท']},
+      ]},
+      { id:'c4', name:'บทที่ 4 · (เพิ่มภายหลัง)', ready:false },
+    ],
+  },
+  {
+    id:'history', group:'สังคมศึกษา', name:'ประวัติศาสตร์', sub:'วันเวลา · อดีต-ปัจจุบัน (ชุดเดียว)', teacher:'ครูฐายิกา',
+    emoji:'📜', color:'linear-gradient(135deg,#C98B5E,#A9714A)', lang:'th', ready:true,
+    q:[
+      {q:'หนึ่งสัปดาห์มีกี่วัน?', a:'7 วัน', x:['5 วัน','6 วัน','8 วัน']},
+      {q:'วันนี้เป็นวันจันทร์ พรุ่งนี้เป็นวันอะไร?', a:'วันอังคาร', x:['วันอาทิตย์','วันพุธ','วันศุกร์']},
+      {q:'เหตุการณ์ที่ผ่านไปแล้ว เรียกว่าอะไร?', a:'อดีต', x:['ปัจจุบัน','อนาคต','วันนี้']},
+      {q:'เดือนแรกของปีคือเดือนอะไร?', a:'มกราคม', x:['ธันวาคม','เมษายน','กรกฎาคม']},
+      {q:'หนึ่งปีมีกี่เดือน?', a:'12 เดือน', x:['10 เดือน','11 เดือน','13 เดือน']},
+      {q:'เหตุการณ์ที่ยังมาไม่ถึง เรียกว่าอะไร?', a:'อนาคต', x:['อดีต','ปัจจุบัน','เมื่อวาน']},
+      {q:'เมื่อวานเป็นวันเสาร์ วันนี้เป็นวันอะไร?', a:'วันอาทิตย์', x:['วันศุกร์','วันจันทร์','วันพุธ']},
+      {q:'เราใช้สิ่งใดดู "วันที่"?', a:'ปฏิทิน 📅', x:['แผนที่','ไม้บรรทัด','กระจก']},
+      {q:'เครื่องมือสื่อสารในสมัยนี้คือข้อใด?', a:'โทรศัพท์มือถือ 📱', x:['ม้าเร็ว','กลอง','นกพิราบส่งสาร']},
+      {q:'ประวัติของตัวเราเริ่มนับจากวันใด?', a:'วันเกิด 🎂', x:['วันนี้','พรุ่งนี้','ปีหน้า']},
+    ],
+  },
+];
+
+/* ============ helpers ============ */
+function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);}
+function stripEmoji(s){ return s.replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}️]/gu,'').replace(/\s+/g,' ').trim(); }
+function readyChapters(subj){ return (subj.chapters||[]).filter(c=>c.ready!==false && c.q && c.q.length); }
+
+/* ============ read-aloud (best effort) ============ */
+let voices=[];
+function loadVoices(){ if('speechSynthesis' in window) voices=speechSynthesis.getVoices(); }
+if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
+const LANGMAP={th:'th-TH', en:'en-US', zh:'zh-CN'};
+function readAloud(text, lang){
+  if(!('speechSynthesis' in window)) return;
+  try{ speechSynthesis.cancel(); }catch(e){}
+  const u=new SpeechSynthesisUtterance(stripEmoji(text));
+  const code=LANGMAP[lang]||'th-TH';
+  u.lang=code; u.rate= lang==='th'?.85:.9; u.pitch=1.05;
+  const v=voices.find(v=>v.lang && v.lang.toLowerCase().startsWith(code.slice(0,2).toLowerCase()));
+  if(v) u.voice=v;
+  try{ speechSynthesis.speak(u); }catch(e){}
+}
+
+/* ============ HOME (เลือกวิชา) ============ */
+function renderHome(){
+  const box=document.getElementById('subjlist');
+  const order=[]; const groups={};
+  SUBJECTS.forEach(s=>{ if(!groups[s.group]){ groups[s.group]=[]; order.push(s.group); } groups[s.group].push(s); });
+  box.innerHTML=order.map(g=>{
+    const head=`<div class="subjgroup"><span>${g}</span><span class="ln"></span></div><div class="menu">`;
+    const cards=groups[g].map(s=>{
+      if(!s.ready){
+        return `<div class="scard soon"><span class="ic">${s.emoji}</span>
+          <span><span class="t">${s.name}</span><br><span class="d">${s.sub}</span>
+          <br><span class="meta">รอครูเพิ่มข้อสอบ</span></span></div>`;
+      }
+      const nCh = s.chapters ? readyChapters(s).length : 0;
+      const nQ  = s.chapters ? readyChapters(s).reduce((n,c)=>n+c.q.length,0) : s.q.length;
+      const metaTxt = s.chapters ? `${nCh} บท · ${nQ} ข้อ` : `${nQ} ข้อ`;
+      return `<button class="scard chip-arrow" style="background:${s.color}" onclick="openSubject('${s.id}')">
+        <span class="ic">${s.emoji}</span>
+        <span><span class="t">${s.name}</span><br><span class="d">${s.sub} · ${s.teacher}</span>
+        <br><span class="meta">${metaTxt}</span></span></button>`;
+    }).join('');
+    return head+cards+`</div>`;
+  }).join('');
+}
+
+/* ============ เลือกวิชา → เลือกบท หรือ เริ่มสอบเลย ============ */
+let curSubj=null;
+function openSubject(id){
+  const subj=SUBJECTS.find(s=>s.id===id);
+  if(!subj||!subj.ready) return;
+  curSubj=subj;
+  if(subj.chapters){ renderChapters(subj); show('chapters'); }
+  else { startExam(subj, subj.q, subj.name, 'all'); }
+}
+function renderChapters(subj){
+  document.getElementById('chSubjTitle').textContent=subj.name;
+  document.getElementById('chEmoji').textContent=subj.emoji;
+  document.getElementById('chName').textContent=subj.name;
+  document.getElementById('chSub').textContent=subj.sub+' · '+subj.teacher;
+  const list=document.getElementById('chapterlist');
+  const ready=readyChapters(subj);
+  const allQ=ready.reduce((arr,c)=>arr.concat(c.q),[]);
+  let html='';
+  // การ์ด "รวมทุกบท" (ซ้อมสอบจริง)
+  if(ready.length>1){
+    html+=`<button class="scard allcard chip-arrow" onclick="startAll('${subj.id}')">
+      <span class="ic">🎯</span>
+      <span><span class="t">รวมทุกบท</span><br><span class="d">เล่นรวมทุกบท · สุ่มคละ</span>
+      <br><span class="meta">${allQ.length} ข้อ</span></span></button>`;
+  }
+  // การ์ดแต่ละบท
+  html+=(subj.chapters||[]).map(c=>{
+    if(c.ready===false || !c.q || !c.q.length){
+      return `<div class="scard soon"><span class="ic">📄</span>
+        <span><span class="t">${c.name}</span><br><span class="meta">รอครูเพิ่มข้อสอบ</span></span></div>`;
+    }
+    return `<button class="scard chip-arrow" style="background:${subj.color}" onclick="startChapter('${subj.id}','${c.id}')">
+      <span class="ic">📘</span>
+      <span><span class="t">${c.name}</span><br><span class="meta">${c.q.length} ข้อ</span></span></button>`;
+  }).join('');
+  list.innerHTML=html;
+}
+function startChapter(subjId, chId){
+  const subj=SUBJECTS.find(s=>s.id===subjId);
+  const ch=subj.chapters.find(c=>c.id===chId);
+  startExam(subj, ch.q, ch.name, chId);
+}
+function startAll(subjId){
+  const subj=SUBJECTS.find(s=>s.id===subjId);
+  const allQ=readyChapters(subj).reduce((arr,c)=>arr.concat(c.q),[]);
+  startExam(subj, allQ, 'รวมทุกบท', 'all');
+}
+
+/* ============ EXAM ============ */
+let exam=null; // {subj, pool, label, modeId, list, idx, answers, startTs, timerInt}
+
+function startExam(subj, pool, label, modeId){
+  const list=shuffle(pool.slice()).map(item=>{
+    if(item.type==='write') return { type:'write', q:item.q, big:item.big||'', ph:item.ph||'พิมพ์คำตอบ (a–z)' };
+    if(item.type==='fill')  return { type:'fill',  q:item.q, big:item.big||'', ph:item.ph||'พิมพ์คำตอบ (a–z)', correct:item.a };
+    if(item.type==='match') return { type:'match', q:item.q, pairs:item.pairs.slice() };
+    return { q:item.q, big:item.big||'', choices:shuffle([item.a, ...item.x]), correct:item.a };
+  });
+  exam={ subj, pool, label, modeId, list, idx:0,
+    answers:new Array(list.length).fill(null),   // MC:ค่าที่เลือก | write/fill:ข้อความ | match:สรุป
+    parentOk:new Array(list.length).fill(null),  // write: ผู้ปกครองตรวจ true/false
+    gotOk:new Array(list.length).fill(null),     // fill/match: ถูกไหม (true/false)
+    done:new Array(list.length).fill(false),     // ตอบครบพร้อมไปข้อต่อไปหรือยัง
+    score:0 };
+  stars=0; document.getElementById('starnum').textContent='0';
+  document.getElementById('starbox').classList.add('show');
+  document.getElementById('quizTitle').textContent=subj.name;
+  show('quiz'); renderQuestion();
+}
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function renderQuestion(){
+  const total=exam.list.length, q=exam.list[exam.idx];
+  document.getElementById('quizProg').textContent=`${exam.idx+1} / ${total}`;
+  document.getElementById('pbarFill').style.width=((exam.idx)/total*100)+'%';
+  document.getElementById('qnum').textContent=`ข้อ ${exam.idx+1}`;
+  document.getElementById('qtext').innerHTML=(q.big?`<span class="big">${q.big}</span>`:'')+q.q;
+  const nb=document.getElementById('nextBtn');
+  nb.textContent= exam.idx===total-1 ? 'ดูผลคะแนน ✓' : 'ข้อต่อไป →';
+  nb.classList.remove('on');
+  const fb=document.getElementById('quizFb'); fb.textContent=''; fb.className='feedback';
+  const box=document.getElementById('choiceBox'); box.innerHTML='';
+
+  if(q.type==='write'){ renderWrite(q, box); }
+  else if(q.type==='fill'){ renderFill(q, box); }
+  else if(q.type==='match'){ renderMatch(q, box); }
+  else {
+    q.choices.forEach(c=>{
+      const b=document.createElement('button');
+      b.className='choice'+(c.length>10?' long':'');
+      b.textContent=c;
+      b.onclick=()=>pickAnswer(b,c);
+      box.appendChild(b);
+    });
+  }
+}
+// เกมติว: เฉลยทันที + ได้ดาว (นับถูกจากครั้งแรกที่เลือก)
+function pickAnswer(btn,val){
+  const q=exam.list[exam.idx];
+  const box=document.getElementById('choiceBox');
+  box.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('quizFb');
+  exam.answers[exam.idx]=val; exam.done[exam.idx]=true;
+  if(val===q.correct){
+    btn.classList.add('correct'); exam.score++; addStar(); miniConfetti();
+    fb.textContent='ถูกต้อง! 🌟'; fb.className='feedback good';
+  } else {
+    btn.classList.add('wrong');
+    box.querySelectorAll('.choice').forEach(b=>{ if(b.textContent===q.correct) b.classList.add('correct'); });
+    fb.textContent='คำตอบที่ถูกคือ  "'+q.correct+'"'; fb.className='feedback bad';
+  }
+  if(exam.subj.lang!=='th') readAloud(q.correct, exam.subj.lang);
+  document.getElementById('nextBtn').classList.add('on');
+}
+function nextQuestion(){
+  if(!exam.done[exam.idx]) return;
+  if(exam.idx < exam.list.length-1){ exam.idx++; renderQuestion(); }
+  else finishExam();
+}
+let stars=0;
+function addStar(){
+  stars++; const el=document.getElementById('starnum'); if(el) el.textContent=stars;
+  const sb=document.getElementById('starbox'); if(sb){ sb.classList.add('pop'); setTimeout(()=>sb.classList.remove('pop'),260); }
+}
+
+/* ---------- WRITE / FILL: พิมพ์เองด้วยคีย์บอร์ด a–z ---------- */
+function keyboardHTML(){
+  const keys='abcdefghijklmnopqrstuvwxyz'.split('')
+    .map(l=>`<button class="key" onclick="typeLetter('${l}')">${l}</button>`).join('');
+  return `<div class="kbd">${keys}
+      <button class="key kctrl" style="grid-column:span 4" onclick="typeSpace()">␣ เว้นวรรค</button>
+      <button class="key kctrl" style="grid-column:span 3" onclick="typeBack()">⌫ ลบ</button>
+    </div>`;
+}
+// write = ข้อมูลส่วนตัว ไม่มีถูก/ผิด → ผู้ปกครองตรวจ
+function renderWrite(q, box){
+  box.innerHTML=`<div class="writewrap">
+      <div class="writebox" id="writeDisp"></div>
+      ${keyboardHTML()}
+      <div class="parentbar hidden" id="parentBar">
+        <div class="plabel">👨‍👩‍👧 ให้คุณพ่อคุณแม่ช่วยตรวจ — ตอบถูกไหม?</div>
+        <div class="pbtns">
+          <button class="pbtn ok" onclick="parentMark(true)">✓ ถูกต้อง</button>
+          <button class="pbtn no" onclick="parentMark(false)">✗ ยังไม่ถูก</button>
+        </div>
+      </div>
+    </div>`;
+  refreshWrite();
+}
+// fill = เติมคำที่มีคำตอบตายตัว → ตรวจอัตโนมัติ
+function renderFill(q, box){
+  box.innerHTML=`<div class="writewrap">
+      <div class="writebox" id="writeDisp"></div>
+      ${keyboardHTML()}
+      <button class="nextbtn checkbtn" id="checkBtn" onclick="checkFill()">ตรวจคำตอบ ✓</button>
+    </div>`;
+  refreshWrite();
+}
+function refreshWrite(){
+  const q=exam.list[exam.idx];
+  const disp=document.getElementById('writeDisp'); if(!disp) return;
+  const t=exam.answers[exam.idx]||'';
+  disp.innerHTML = (t ? esc(t) : `<span class="ph">${esc(q.ph)}</span>`) + '<span class="caret"></span>';
+  const bar=document.getElementById('parentBar');
+  if(bar){
+    bar.classList.toggle('hidden', t.length===0);
+    bar.classList.remove('marked');
+    bar.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('chosen'));
+    const mk=exam.parentOk[exam.idx];
+    if(mk!==null && t.length){ bar.classList.add('marked'); bar.querySelector(mk?'.pbtn.ok':'.pbtn.no').classList.add('chosen'); }
+  }
+  const cb=document.getElementById('checkBtn');
+  if(cb && !cb.disabled) cb.classList.toggle('on', t.length>0);
+}
+function typeLetter(l){
+  const ty=exam.list[exam.idx].type;
+  if(ty!=='write'&&ty!=='fill') return;
+  exam.answers[exam.idx]=(exam.answers[exam.idx]||'')+l;
+  exam.parentOk[exam.idx]=null; exam.gotOk[exam.idx]=null; exam.done[exam.idx]=false;
+  document.getElementById('nextBtn').classList.remove('on');
+  refreshWrite();
+}
+function typeSpace(){ if((exam.answers[exam.idx]||'').length) typeLetter(' '); }
+function typeBack(){
+  const t=exam.answers[exam.idx]||'';
+  exam.answers[exam.idx]=t.slice(0,-1);
+  exam.parentOk[exam.idx]=null; exam.gotOk[exam.idx]=null; exam.done[exam.idx]=false;
+  document.getElementById('nextBtn').classList.remove('on');
+  refreshWrite();
+}
+function parentMark(ok){
+  if(!(exam.answers[exam.idx]||'').length) return;
+  exam.parentOk[exam.idx]=ok; exam.done[exam.idx]=true;
+  const fb=document.getElementById('quizFb');
+  if(ok){ addStar(); miniConfetti(); fb.textContent='เก่งมาก! 🌟'; fb.className='feedback good'; }
+  else { fb.textContent='ลองฝึกเขียนอีกครั้งนะ 💪'; fb.className='feedback bad'; }
+  document.getElementById('nextBtn').classList.add('on');
+  refreshWrite();
+}
+function norm(s){ return String(s).toLowerCase().replace(/[^a-z0-9ก-๙]/g,''); }
+function checkFill(){
+  const q=exam.list[exam.idx];
+  const t=(exam.answers[exam.idx]||'').trim();
+  if(!t) return;
+  document.querySelectorAll('.kbd .key').forEach(k=>k.disabled=true);
+  const cb=document.getElementById('checkBtn'); if(cb){ cb.classList.remove('on'); cb.disabled=true; cb.style.display='none'; }
+  exam.done[exam.idx]=true;
+  const ok = norm(t)===norm(q.correct);
+  exam.gotOk[exam.idx]=ok;
+  const fb=document.getElementById('quizFb');
+  if(ok){ addStar(); miniConfetti(); fb.textContent='ถูกต้อง! 🌟'; fb.className='feedback good'; }
+  else { fb.textContent='คำตอบที่ถูกคือ  "'+q.correct+'"'; fb.className='feedback bad'; }
+  document.getElementById('nextBtn').classList.add('on');
+}
+
+/* ---------- MATCH: จับคู่ (แตะซ้าย→แตะขวา) ---------- */
+let matchState=null;
+function renderMatch(q, box){
+  const lefts=q.pairs.map(p=>p[0]);
+  const rights=shuffle(q.pairs.map(p=>p[1]));
+  const map={}; q.pairs.forEach(p=>map[p[0]]=p[1]);
+  matchState={ map, sel:null, done:0, wrong:0, total:q.pairs.length };
+  const col=(arr,side)=>arr.map(v=>`<button class="mitem" onclick="matchTap('${side}',this)" data-v="${esc(v)}">${esc(v)}</button>`).join('');
+  box.innerHTML=`<div class="matchhint">แตะฝั่งซ้าย แล้วแตะคู่ที่ถูกฝั่งขวา 👉</div>
+    <div class="matchwrap"><div class="mcol">${col(lefts,'L')}</div><div class="mcol">${col(rights,'R')}</div></div>`;
+}
+function matchTap(side, btn){
+  if(btn.classList.contains('matched')) return;
+  const st=matchState; const val=btn.dataset.v;
+  if(!st.sel){ st.sel={side,val,btn}; btn.classList.add('msel'); return; }
+  if(st.sel.side===side){ st.sel.btn.classList.remove('msel'); st.sel={side,val,btn}; btn.classList.add('msel'); return; }
+  const leftVal = side==='L'?val:st.sel.val;
+  const rightVal = side==='R'?val:st.sel.val;
+  const other=st.sel.btn; other.classList.remove('msel'); st.sel=null;
+  if(st.map[leftVal]===rightVal){
+    btn.classList.add('matched'); other.classList.add('matched'); btn.disabled=true; other.disabled=true;
+    st.done++;
+    if(st.done===st.total){
+      exam.done[exam.idx]=true; exam.gotOk[exam.idx]=(st.wrong===0); exam.answers[exam.idx]='จับคู่ครบ '+st.total+' คู่';
+      const fb=document.getElementById('quizFb');
+      if(st.wrong===0){ addStar(); miniConfetti(); fb.textContent='จับคู่ครบ ถูกหมดเลย! 🌟'; fb.className='feedback good'; }
+      else { fb.textContent='จับคู่ครบแล้ว เก่งมาก 👍'; fb.className='feedback good'; }
+      document.getElementById('nextBtn').classList.add('on');
+    }
+  } else {
+    st.wrong++;
+    btn.classList.add('mwrong'); other.classList.add('mwrong');
+    setTimeout(()=>{ btn.classList.remove('mwrong'); other.classList.remove('mwrong'); }, 480);
+  }
+}
+function quitExam(){
+  if(confirm('ออกจากเกม? ดาวรอบนี้จะยังไม่ถูกบันทึก')){
+    document.getElementById('starbox').classList.remove('show');
+    if(exam.subj.chapters){ renderChapters(exam.subj); show('chapters'); }
+    else goHome();
+  }
+}
+
+/* ============ RESULT ============ */
+function finishExam(){
+  document.getElementById('starbox').classList.remove('show');
+  const total=exam.list.length;
+  let score=0;
+  exam.list.forEach((q,i)=>{
+    if(q.type==='write'){ if(exam.parentOk[i]) score++; }
+    else if(q.type==='fill'||q.type==='match'){ if(exam.gotOk[i]) score++; }
+    else if(exam.answers[i]===q.correct) score++;
+  });
+  const pct=Math.round(score/total*100);
+
+  const title = exam.subj.name + (exam.subj.chapters ? ' · '+exam.label : '');
+  document.getElementById('rSubjTitle').textContent='สรุปผล · '+title;
+  document.getElementById('rScore').textContent=score+' / '+total+' ข้อ';
+  document.getElementById('rPct').textContent=pct+'%';
+  document.getElementById('rTime').textContent=`⭐ เก็บดาวได้ ${score} ดวง`;
+
+  let grade, gcolor, emoji, rtitle, rstars;
+  if(pct>=80){ grade='เยี่ยมไปเลย'; gcolor='#2FB58C'; emoji='🏆'; rtitle='เก่งมาก!'; rstars='⭐⭐⭐'; }
+  else if(pct>=60){ grade='เก่งมาก'; gcolor='#3FA9F5'; emoji='🎉'; rtitle='ทำได้ดีมาก!'; rstars='⭐⭐'; }
+  else if(pct>=50){ grade='ดีขึ้นเรื่อยๆ'; gcolor='#FF9F1C'; emoji='💪'; rtitle='เกือบแล้ว สู้ๆ!'; rstars='⭐'; }
+  else { grade='ฝึกอีกนิด'; gcolor='#FF6B6B'; emoji='📚'; rtitle='ลองเล่นอีกครั้งนะ'; rstars='⭐'; }
+  const g=document.getElementById('rGrade'); g.textContent=grade; g.style.background=gcolor;
+  document.getElementById('rEmoji').textContent=emoji;
+  document.getElementById('rTitle').textContent=rtitle;
+  document.getElementById('rStars').textContent=rstars;
+
+  document.getElementById('reviewBox').innerHTML=exam.list.map((q,i)=>{
+    if(q.type==='write'){
+      const ok=exam.parentOk[i]===true;
+      const mk = exam.parentOk[i]===null ? '—' : (ok?'ถูก ✓':'ยังไม่ถูก ✗');
+      return `<div class="rev${ok?'':' bad'}">
+        <div class="rq">${ok?'✅':'❌'} ข้อ ${i+1}. ${esc(q.q)}</div>
+        <div class="ra">✍️ คำตอบของหนู: ${esc(exam.answers[i]||'—')}</div>
+        <div class="yours" style="color:#5A6B7D">👨‍👩‍👧 ผู้ปกครองตรวจ: ${mk}</div></div>`;
+    }
+    if(q.type==='fill'){
+      const ok=exam.gotOk[i]===true;
+      return `<div class="rev${ok?'':' bad'}">
+        <div class="rq">${ok?'✅':'❌'} ข้อ ${i+1}. ${esc(q.q)}</div>
+        <div class="ra">✓ คำตอบที่ถูก: ${esc(q.correct)}</div>
+        ${ok?'':`<div class="yours">✍️ หนูพิมพ์: ${esc(exam.answers[i]||'—')}</div>`}</div>`;
+    }
+    if(q.type==='match'){
+      const ok=exam.gotOk[i]===true;
+      const pairsTxt=q.pairs.map(p=>`${esc(p[0])} – ${esc(p[1])}`).join(' · ');
+      return `<div class="rev${ok?'':' bad'}">
+        <div class="rq">${ok?'✅':'⭕'} ข้อ ${i+1}. ${esc(q.q)}</div>
+        <div class="ra">✓ คู่ที่ถูก: ${pairsTxt}</div></div>`;
+    }
+    const ok=exam.answers[i]===q.correct;
+    const yours = ok ? '' : `<div class="yours">✗ คำตอบของหนู: ${exam.answers[i]||'—'}</div>`;
+    return `<div class="rev${ok?'':' bad'}">
+      <div class="rq">${ok?'✅':'❌'} ข้อ ${i+1}. ${q.q}</div>
+      <div class="ra">✓ คำตอบที่ถูก: ${q.correct}</div>${yours}</div>`;
+  }).join('');
+
+  document.getElementById('rAgain').onclick=()=>startExam(exam.subj, exam.pool, exam.label, exam.modeId);
+  document.getElementById('rOther').textContent = exam.subj.chapters ? 'เลือกบทอื่น' : 'เลือกวิชาอื่น';
+  if(window.P18Auth) P18Auth.saveScore('exam', exam.subj.id+'/'+exam.modeId, score, total);
+  show('result');
+  if(pct>=60) bigConfetti();
+}
+function backFromResult(){
+  if(exam && exam.subj.chapters){ renderChapters(exam.subj); show('chapters'); }
+  else goHome();
+}
+
+/* ============ nav ============ */
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('readBtn').style.display = (id==='quiz')?'block':'none';
+  window.scrollTo(0,0);
+}
+function goHome(){
+  if('speechSynthesis' in window){ try{ speechSynthesis.cancel(); }catch(e){} }
+  document.getElementById('starbox').classList.remove('show');
+  show('home');
+}
+document.getElementById('readBtn').onclick=()=>{
+  if(!exam) return;
+  const q=exam.list[exam.idx];
+  const txt = q.choices ? (q.q + '. ' + q.choices.join(', ')) : q.q;
+  readAloud(txt, exam.subj.lang);
+};
+// ปุ่ม "เลือกบท/วิชาอื่น" บนหน้าผลสอบ
+document.getElementById('rOther').onclick=()=>backFromResult();
+
+/* ============ confetti ============ */
+const COLORS=['#FFD23F','#FF7A6B','#41C9A0','#9B6DD6','#3FA9F5'];
+function miniConfetti(){ confettiBurst(14); }
+function bigConfetti(){ confettiBurst(56); }
+function confettiBurst(n){
+  for(let i=0;i<n;i++){
+    const c=document.createElement('div'); c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=COLORS[i%COLORS.length];
+    c.style.animation=`fall ${1+Math.random()*1.2}s ${Math.random()*.3}s linear forwards`;
+    c.style.transform=`rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),2600);
+  }
+}
+
+/* ปลุก speechSynthesis ครั้งแรก */
+document.body.addEventListener('click',function once(){ try{ if(window.speechSynthesis) speechSynthesis.resume(); }catch(e){}; document.body.removeEventListener('click',once); }, {once:true});
+
+renderHome();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../auth.js"></script>
+</body>
+</html>

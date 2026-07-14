@@ -50,6 +50,16 @@
   .subj:first-child{margin-top:4px;}
   .subj .sj-ic{font-size:1.25rem;}
   .subj .sj-line{flex:1; height:3px; border-radius:3px; background:rgba(39,56,74,.12);}
+
+  /* การ์ดข้อสอบกลางภาค (เด่นที่สุด อยู่บนสุด) */
+  .exam-cta{display:flex; align-items:center; gap:16px; text-decoration:none; color:#fff; border-radius:22px; padding:18px;
+    background:linear-gradient(135deg,#6C5CE7,#8E7BEF); box-shadow:var(--shadow); margin-bottom:6px; position:relative; overflow:hidden;
+    font-family:'Fredoka',sans-serif; transition:transform .12s;}
+  .exam-cta:active{transform:translateY(3px);}
+  .exam-cta .ic{font-size:2.2rem; background:rgba(255,255,255,.25); width:60px; height:60px; border-radius:16px; display:grid; place-items:center; flex:none;}
+  .exam-cta .t{font-size:1.3rem; font-weight:700; line-height:1.15;}
+  .exam-cta .d{font-family:'Sarabun',sans-serif; font-weight:700; opacity:.95; font-size:.9rem;}
+  .exam-cta .tag{display:inline-block; background:#FFD23F; color:#5A3C00; border-radius:999px; padding:1px 10px; font-family:'Nunito'; font-size:.72rem; font-weight:800; margin-top:5px;}
 </style>
 </head>
 <body>
@@ -64,6 +74,15 @@
     <h1>คลังเกมติว ป.1/8</h1>
     <p>เลือกเกมเพื่อเริ่มฝึก</p>
   </div>
+
+  <a class="exam-cta" href="exam.html">
+    <span class="ic">🎮</span>
+    <span>
+      <span class="t">เกมติวรายวิชา</span>
+      <br><span class="d">ทบทวนก่อนสอบ · แยกรายวิชา + เก็บเป็นบท · เล่นสนุก เก็บดาว ⭐</span>
+      <br><span class="tag">รายวิชา ✦ ใหม่</span>
+    </span>
+  </a>
 
   <div class="grid" id="grid"></div>
 </div>
