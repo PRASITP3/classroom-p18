@@ -75,83 +75,53 @@
     <p>เลือกเกมเพื่อเริ่มฝึก</p>
   </div>
 
-  <a class="exam-cta" href="exam.html">
-    <span class="ic">🎮</span>
-    <span>
-      <span class="t">เกมติวรายวิชา</span>
-      <br><span class="d">ทบทวนก่อนสอบ · แยกรายวิชา + เก็บเป็นบท · เล่นสนุก เก็บดาว ⭐</span>
-      <br><span class="tag">รายวิชา ✦ ใหม่</span>
-    </span>
-  </a>
-
   <div class="grid" id="grid"></div>
 </div>
 
 <script>
 /* ============================================================
-   คลังเกม — เพิ่มเกมใหม่: เพิ่ม 1 อ็อบเจกต์ในอาเรย์นี้
-   file  = ชื่อไฟล์ html ในโฟลเดอร์ practice/
-   ready = false → แสดงเป็น "เร็วๆ นี้" (ยังกดเข้าไม่ได้)
+   คลังเกมติว — แยกตามวิชาในตารางเรียน ป.1/8 (EP)
+   การ์ด "ทบทวน" (tag) → เข้าเกมติวรายวิชา exam.html?subj=<id> (มีหลายบท)
+   การ์ด "เกมฝึก" → เกมย่อยไฟล์ของตัวเอง (ฝึกเสริม)
+   เพิ่ม/แก้ได้ที่อาเรย์ GAMES ด้านล่าง (group ต้องตรงกับ GROUPS)
    ============================================================ */
-const GAMES = [
-  {
-    title: 'Vocabulary',
-    desc: 'คลังคำศัพท์ · ฟัง/แปล/จับคู่ (เพิ่มคำเรื่อยๆ)',
-    subject: 'English',
-    emoji: '📚',
-    color: 'linear-gradient(135deg,#FF8E7A,#FF7A6B)',
-    file: 'vocabulary.html',
-    ready: true,
-  },
-  {
-    title: 'Body & Senses',
-    desc: 'ร่างกาย & ประสาทสัมผัส — ฟัง/เลือกคำ/จับคู่',
-    subject: 'English',
-    emoji: '🧒',
-    color: 'linear-gradient(135deg,#FF8E7A,#FF7A6B)',
-    file: 'body-senses.html',
-    ready: true,
-  },
-  {
-    title: 'Numbers · Unit 2',
-    desc: 'นับจำนวน · have/has · คำศัพท์เครื่องเขียน',
-    subject: 'English',
-    emoji: '🔢',
-    color: 'linear-gradient(135deg,#5BC8F0,#3FA9F5)',
-    file: 'numbers.html',
-    ready: true,
-  },
-  {
-    title: 'ABC Phonics',
-    desc: 'เสียงตัวอักษร A–Z · เสียงต้นคำ · ฝึกอ่าน',
-    subject: 'English',
-    emoji: '🔤',
-    color: 'linear-gradient(135deg,#A988E0,#9B6DD6)',
-    file: 'phonics.html',
-    ready: true,
-  },
-  {
-    title: 'ภาษาจีน · ตัวเลข',
-    desc: 'นับเลขจีน 0–100 · 汉字 + พินอิน · มีเสียงพูด',
-    subject: 'ภาษาจีน',
-    emoji: '🔢',
-    color: 'linear-gradient(135deg,#FF8E7A,#E8453C)',
-    file: 'chinese-numbers.html',
-    ready: true,
-  },
-  {
-    title: 'สระไทย',
-    desc: 'ฝึกก่อนสอบ · เติมสระ · บอกสระ · ดูภาพเติมสระ',
-    subject: 'ภาษาไทย',
-    emoji: '🇹🇭',
-    color: 'linear-gradient(135deg,#5BD9B2,#41C9A0)',
-    file: 'thai-vowels.html',
-    ready: true,
-  },
+const GROUPS = [
+  { name:'คณิตศาสตร์',   icon:'🔢' },
+  { name:'วิทยาศาสตร์',  icon:'🔬' },
+  { name:'ภาษาไทย',      icon:'🇹🇭' },
+  { name:'ภาษาจีน',      icon:'🇨🇳' },
+  { name:'อังกฤษ (EP)',  icon:'🇬🇧' },
+  { name:'สังคมศึกษา',   icon:'🌏' },
+  { name:'ฝึกเสริม',     icon:'✨' },
 ];
-
-/* ไอคอนประจำหมวดวิชา (เรียงตามที่เจอครั้งแรกใน GAMES) */
-const SUBJECT_ICON = { 'English':'🇬🇧', 'ภาษาจีน':'🇨🇳', 'ภาษาไทย':'🇹🇭' };
+const GAMES = [
+  // ---------- คณิตศาสตร์ ----------
+  { group:'คณิตศาสตร์', title:'MATH', desc:'Mathematics (EP) · Ms. Fretzie', emoji:'🔢', color:'linear-gradient(135deg,#5BC8F0,#3FA9F5)', href:'exam.html?subj=math-ep', tag:'ทบทวน' },
+  { group:'คณิตศาสตร์', title:'คณิต', desc:'คณิตศาสตร์ (ไทย) · ครูเฉลิมศักดิ์', emoji:'➕', color:'linear-gradient(135deg,#8E7BEF,#6C5CE7)', href:'exam.html?subj=math-th', tag:'ทบทวน' },
+  { group:'คณิตศาสตร์', title:'จินตคณิต', desc:'คิดเลขเร็ว · ครูดนิตา', emoji:'🧠', color:'linear-gradient(135deg,#FF9F68,#FF7A6B)', href:'exam.html?subj=math-mental', tag:'ทบทวน' },
+  // ---------- วิทยาศาสตร์ ----------
+  { group:'วิทยาศาสตร์', title:'วิทย์', desc:'วิทยาศาสตร์ (ไทย) · ครูกวีวรรณ', emoji:'🔬', color:'linear-gradient(135deg,#41C9A0,#2FB58C)', href:'exam.html?subj=sci-th', tag:'ทบทวน' },
+  { group:'วิทยาศาสตร์', title:'SCI', desc:'Science (EP) · Mr. Baguinang', emoji:'🧪', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', href:'exam.html?subj=sci-ep', tag:'ทบทวน' },
+  // ---------- ภาษาไทย ----------
+  { group:'ภาษาไทย', title:'ทบทวนภาษาไทย', desc:'พยัญชนะ · สระ · อ่านคำ · ครูวรรณภา', emoji:'🇹🇭', color:'linear-gradient(135deg,#FF8E7A,#FF7A6B)', href:'exam.html?subj=thai', tag:'ทบทวน' },
+  { group:'ภาษาไทย', title:'สระไทย', desc:'เติมสระ · บอกสระ · ดูภาพเติมสระ', emoji:'📝', color:'linear-gradient(135deg,#5BD9B2,#41C9A0)', href:'thai-vowels.html', tag:'เกมฝึก' },
+  // ---------- ภาษาจีน ----------
+  { group:'ภาษาจีน', title:'ทบทวนภาษาจีน', desc:'ตัวเลข · คำทักทาย · สี · ครูชัญญานุช', emoji:'🇨🇳', color:'linear-gradient(135deg,#FF7A6B,#E8453C)', href:'exam.html?subj=chinese', tag:'ทบทวน' },
+  { group:'ภาษาจีน', title:'ภาษาจีน · ตัวเลข', desc:'นับเลขจีน 0–100 · 汉字 + พินอิน · มีเสียงพูด', emoji:'🔢', color:'linear-gradient(135deg,#FF8E7A,#E8453C)', href:'chinese-numbers.html', tag:'เกมฝึก' },
+  // ---------- อังกฤษ (EP) ----------
+  { group:'อังกฤษ (EP)', title:'Grammar', desc:'Nouns · Articles · Plurals · Pronouns · Teacher JJ', emoji:'📖', color:'linear-gradient(135deg,#A988E0,#9B6DD6)', href:'exam.html?subj=grammar', tag:'ทบทวน' },
+  { group:'อังกฤษ (EP)', title:'Reading', desc:"อ่านจับใจความ · Ben's Picture · Pencil Case · Pets", emoji:'📕', color:'linear-gradient(135deg,#5C9DF5,#3B7DE0)', href:'exam.html?subj=reading', tag:'ทบทวน' },
+  { group:'อังกฤษ (EP)', title:'Writing', desc:'Me · Family · Home · Teacher Tina', emoji:'✍️', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', href:'exam.html?subj=writing', tag:'ทบทวน' },
+  { group:'อังกฤษ (EP)', title:'Speech', desc:'การพูด/ออกเสียง', emoji:'🗣️', ready:false },
+  // ---------- สังคมศึกษา ----------
+  { group:'สังคมศึกษา', title:'สังคมฯ', desc:'ครอบครัว · ชุมชน · หน้าที่พลเมือง · ครูฐายิกา', emoji:'🌏', color:'linear-gradient(135deg,#FFB23F,#FF9F1C)', href:'exam.html?subj=social', tag:'ทบทวน' },
+  { group:'สังคมศึกษา', title:'ประวัติศาสตร์', desc:'วันเวลา · อดีต-ปัจจุบัน · ครูฐายิกา', emoji:'📜', color:'linear-gradient(135deg,#C98B5E,#A9714A)', href:'exam.html?subj=history', tag:'ทบทวน' },
+  // ---------- ฝึกเสริม (อังกฤษ) ----------
+  { group:'ฝึกเสริม', title:'Vocabulary', desc:'คลังคำศัพท์ · ฟัง/แปล/จับคู่', emoji:'📚', color:'linear-gradient(135deg,#FF8E7A,#FF7A6B)', href:'vocabulary.html', tag:'เกมฝึก' },
+  { group:'ฝึกเสริม', title:'ABC Phonics', desc:'เสียงตัวอักษร A–Z · เสียงต้นคำ · ฝึกอ่าน', emoji:'🔤', color:'linear-gradient(135deg,#A988E0,#9B6DD6)', href:'phonics.html', tag:'เกมฝึก' },
+  { group:'ฝึกเสริม', title:'Body & Senses', desc:'ร่างกาย & ประสาทสัมผัส — ฟัง/เลือกคำ/จับคู่', emoji:'🧒', color:'linear-gradient(135deg,#FF8E7A,#FF7A6B)', href:'body-senses.html', tag:'เกมฝึก' },
+  { group:'ฝึกเสริม', title:'Numbers · Unit 2', desc:'นับจำนวน · have/has · คำศัพท์เครื่องเขียน', emoji:'🔢', color:'linear-gradient(135deg,#5BC8F0,#3FA9F5)', href:'numbers.html', tag:'เกมฝึก' },
+];
 
 function cardHTML(g){
   const inner = `
@@ -159,27 +129,18 @@ function cardHTML(g){
     <span>
       <span class="t">${g.title}</span>
       <br><span class="d">${g.desc}</span>
-      <br><span class="tag">${g.ready ? g.subject : 'เร็วๆ นี้'}</span>
+      <br><span class="tag">${g.ready===false ? 'เร็วๆ นี้' : (g.tag||'')}</span>
     </span>`;
-  if(g.ready){
-    return `<a class="gcard" style="background:${g.color}" href="${g.file}">${inner}</a>`;
-  }
-  return `<div class="gcard soon">${inner}</div>`;
+  if(g.ready===false){ return `<div class="gcard soon">${inner}</div>`; }
+  return `<a class="gcard" style="background:${g.color}" href="${g.href}">${inner}</a>`;
 }
 function render(){
   const grid = document.getElementById('grid');
-  if(!GAMES.length){ grid.innerHTML = '<div class="empty">ยังไม่มีเกม — เพิ่มได้ในไฟล์ practice/index.html</div>'; return; }
-  // จัดกลุ่มตามวิชา เรียงหมวดตามลำดับที่เจอครั้งแรก
-  const order = [];
-  const groups = {};
-  GAMES.forEach(g => {
-    const s = g.subject || 'อื่นๆ';
-    if(!groups[s]){ groups[s] = []; order.push(s); }
-    groups[s].push(g);
-  });
-  grid.innerHTML = order.map(s => {
-    const head = `<div class="subj"><span class="sj-ic">${SUBJECT_ICON[s] || '📘'}</span><span>${s}</span><span class="sj-line"></span></div>`;
-    return head + groups[s].map(cardHTML).join('');
+  const byGroup = {};
+  GAMES.forEach(g => { (byGroup[g.group] = byGroup[g.group] || []).push(g); });
+  grid.innerHTML = GROUPS.filter(gr => byGroup[gr.name]).map(gr => {
+    const head = `<div class="subj"><span class="sj-ic">${gr.icon}</span><span>${gr.name}</span><span class="sj-line"></span></div>`;
+    return head + byGroup[gr.name].map(cardHTML).join('');
   }).join('');
 }
 render();

@@ -182,7 +182,7 @@
   <!-- ============ CHAPTERS (เลือกบท) ============ -->
   <section class="screen" id="chapters">
     <div class="shead">
-      <button class="topback" onclick="goHome()" title="เลือกวิชาอื่น">‹</button>
+      <button class="topback" onclick="chaptersBack()" title="เลือกวิชาอื่น">‹</button>
       <span class="stitle" id="chSubjTitle">เลือกบท</span>
     </div>
     <div class="hero">
@@ -1187,8 +1187,12 @@ function finishExam(){
 }
 function backFromResult(){
   if(exam && exam.subj.chapters){ renderChapters(exam.subj); show('chapters'); }
-  else goHome();
+  else exitToHub();
 }
+// มาจากหน้าคลังเกมติว (deep-link) → กลับไปหน้านั้น, ถ้าเปิด exam.html ตรงๆ → กลับหน้าเลือกวิชาในตัว
+let deepLinked=false;
+function exitToHub(){ if(deepLinked) location.href='index.html'; else goHome(); }
+function chaptersBack(){ exitToHub(); }
 
 /* ============ nav ============ */
 function show(id){
@@ -1231,6 +1235,13 @@ function confettiBurst(n){
 document.body.addEventListener('click',function once(){ try{ if(window.speechSynthesis) speechSynthesis.resume(); }catch(e){}; document.body.removeEventListener('click',once); }, {once:true});
 
 renderHome();
+/* deep-link: exam.html?subj=<id> → เปิดวิชานั้นเลย (มาจากการ์ดวิชาในหน้าคลังเกมติว) */
+(function(){
+  const sid=new URLSearchParams(location.search).get('subj');
+  if(!sid) return;
+  const s=SUBJECTS.find(x=>x.id===sid);
+  if(s && s.ready){ deepLinked=true; openSubject(sid); }
+})();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../auth.js"></script>
