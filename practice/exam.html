@@ -421,6 +421,9 @@ const PLANTS = {
   fruit:{ en:'Fruit', th:'ผล' },
   seed:{ en:'Seed', th:'เมล็ด' },
   morningglory:{ en:'Morning glory', th:'ผักบุ้ง/ลำโพง' },
+  sugarcane:{ en:'Sugar cane', th:'อ้อย' },
+  hydrilla:{ en:'Hydrilla', th:'สาหร่ายหางกระรอก' },
+  staghornfern:{ en:'Staghorn fern', th:'เฟินชายผ้าสีดา' },
   /* สัตว์+สิ่งของ (เกมสิ่งมีชีวิต/ไม่มีชีวิต) — รูปอยู่ที่ img/things/ */
   panda:{ en:'Panda', th:'แพนด้า' }, crab:{ en:'Crab', th:'ปู' }, cat:{ en:'Cat', th:'แมว' },
   elephant:{ en:'Elephant', th:'ช้าง' }, worm:{ en:'Worm', th:'ไส้เดือน' },
@@ -759,6 +762,17 @@ const SUBJECTS = [
         {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'orchid',        a:'On trees',   x:['On land','In deserts','In water','In swamps']},
         {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'cucumber',      a:'On land',    x:['On trees','In deserts','In water','In swamps']},
         {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'waterhyacinth', a:'In water',   x:['On land','On trees','In deserts','In swamps']},
+      ]},
+      { id:'plants-places', name:'พืชในที่ต่างๆ', emoji:'🌳', desc:'Different plants in different places · บนบก/ในน้ำ/บนต้นไม้ (9 ข้อ)', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
+        {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'rose',         a:'On land',  x:['In water','On trees']},
+        {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'pineapple',    a:'On land',  x:['In water','On trees']},
+        {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'sugarcane',    a:'On land',  x:['In water','On trees']},
+        {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'waterlily',    a:'In water', x:['On land','On trees']},
+        {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'waterhyacinth', a:'In water', x:['On land','On trees']},
+        {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'hydrilla',     a:'In water', x:['On land','On trees']},
+        {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'orchid',       a:'On trees', x:['On land','In water']},
+        {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'fern',         a:'On trees', x:['On land','In water']},
+        {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'staghornfern', a:'On trees', x:['On land','In water']},
       ]},
       { id:'plants-stem', name:'ลำต้นแข็งหรืออ่อน (woody/soft)', emoji:'🪵', desc:'Woody or soft stem · ดูรูปเลือกชนิดลำต้น (14 ข้อ)', color:'linear-gradient(135deg,#B5834F,#8B5A2B)', q:[
         {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'hibiscus', a:'Woody stem', x:['Soft stem']},
