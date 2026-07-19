@@ -154,6 +154,18 @@
   .mitem.matched{border-color:var(--good); background:#E7FBF3; color:#1E8E6E; cursor:default; opacity:.85;}
   .mitem.mwrong{border-color:var(--bad); background:#FFECEC; color:#D64545; animation:shake .4s;}
   .matchwrap.imgmode{grid-template-columns:1.25fr 1fr;}
+  /* ---------- SCRAMBLE (เรียงตัวอักษร) ---------- */
+  .scslots{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; min-height:60px; margin:4px 0 6px; grid-column:1 / -1;}
+  .scbank, .scramreset{grid-column:1 / -1;}
+  .scslot{min-width:46px; height:58px; padding:0 6px; border:3px dashed #CBD8E6; border-radius:12px; background:#FAFCFF; display:flex; align-items:center; justify-content:center; font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.7rem; color:var(--ink);}
+  .scslot.filled{border-style:solid; border-color:var(--sky); background:#EAF6FF; color:#1663A6;}
+  .scslot.ok{border-color:var(--good); background:#E7FBF3; color:#1E8E6E;}
+  .scslot.bad{border-color:var(--bad); background:#FFECEC; color:#D64545; animation:shake .4s;}
+  .scbank{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;}
+  .sctile{min-width:clamp(52px,14vw,66px); height:clamp(56px,15vw,70px); border:3px solid #E7EEF4; border-radius:14px; background:#fff; font-family:'Fredoka',sans-serif; font-weight:700; font-size:clamp(1.6rem,6vw,2.1rem); color:var(--ink); cursor:pointer; box-shadow:0 3px 0 rgba(39,56,74,.10);}
+  .sctile:active{transform:translateY(2px); box-shadow:none;}
+  .sctile.used{opacity:.22; pointer-events:none;}
+  .scramreset{background:linear-gradient(135deg,#FFB27A,#FF9F68) !important; margin-top:14px;}
   .mitem.pic{padding:8px; min-height:0; background:#F7FBFF;}
   .mitem.pic .pv{width:100%; height:auto; aspect-ratio:1/1;}
   .mcol.pad{justify-content:center;}
@@ -406,6 +418,8 @@ const PLANTS = {
   pine:{ en:'Pine tree', th:'ต้นสน' },
   grass:{ en:'Grass', th:'หญ้า' },
   fern:{ en:'Fern', th:'เฟิร์น' },
+  fruit:{ en:'Fruit', th:'ผล' },
+  seed:{ en:'Seed', th:'เมล็ด' },
   /* สัตว์+สิ่งของ (เกมสิ่งมีชีวิต/ไม่มีชีวิต) — รูปอยู่ที่ img/things/ */
   panda:{ en:'Panda', th:'แพนด้า' }, crab:{ en:'Crab', th:'ปู' }, cat:{ en:'Cat', th:'แมว' },
   elephant:{ en:'Elephant', th:'ช้าง' }, worm:{ en:'Worm', th:'ไส้เดือน' },
@@ -726,6 +740,14 @@ const SUBJECTS = [
         {q:'ส่วนนี้เรียกว่าอะไร? (Name this part)', pic:'flower', a:'Flower', x:['Root','Leaf','Stem','Fruit']},
         {q:'ส่วนนี้เรียกว่าอะไร? (Name this part)', pic:'stem',   a:'Stem',   x:['Root','Leaf','Flower','Fruit']},
         {q:'ส่วนนี้เรียกว่าอะไร? (Name this part)', pic:'peapod', a:'Fruit',  x:['Root','Leaf','Flower','Stem']},
+      ]},
+      { id:'plants-unscramble', name:'เรียงตัวอักษรส่วนพืช', emoji:'🔤', desc:'Rearrange the letters · ดูรูปแล้วเรียงตัวอักษร (6 ข้อ)', color:'linear-gradient(135deg,#A988E0,#9B6DD6)', q:[
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นชื่อส่วนพืช', pic:'fruit',  a:'fruit'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นชื่อส่วนพืช', pic:'seed',   a:'seed'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นชื่อส่วนพืช', pic:'leaf',   a:'leaf'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นชื่อส่วนพืช', pic:'flower', a:'flower'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นชื่อส่วนพืช', pic:'stem',   a:'stem'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นชื่อส่วนพืช', pic:'root',   a:'root'},
       ]},
       { id:'c4', name:'Unit 4 · (เพิ่มภายหลัง)', ready:false },
     ],
@@ -1253,6 +1275,7 @@ function startExam(subj, pool, label, modeId){
     if(item.type==='fill')  return { type:'fill',  q:item.q, big:item.big||'', ph:item.ph||'พิมพ์คำตอบ (a–z)', correct:item.a, pic:item.pic||'' };
     if(item.type==='match') return { type:'match', q:item.q, pairs:item.pairs.slice() };
     if(item.type==='imgmatch') return { type:'imgmatch', q:item.q, items:item.items.slice() };
+    if(item.type==='scramble') return { type:'scramble', q:item.q, pic:item.pic||'', correct:item.a };
     return { q:item.q, big:item.big||'', choices:shuffle([item.a, ...item.x]), correct:item.a, pic:item.pic||'' };
   });
   exam={ subj, pool, label, modeId, list, idx:0,
@@ -1284,6 +1307,7 @@ function renderQuestion(){
   else if(q.type==='fill'){ renderFill(q, box); }
   else if(q.type==='match'){ renderMatch(q, box); }
   else if(q.type==='imgmatch'){ renderImgMatch(q, box); }
+  else if(q.type==='scramble'){ renderScramble(q, box); }
   else {
     q.choices.forEach(c=>{
       const b=document.createElement('button');
@@ -1435,6 +1459,53 @@ function renderImgMatch(q, box){
   box.innerHTML=`<div class="matchhint">แตะรูปพืช แล้วแตะคำที่ถูกต้อง 👉</div>
     <div class="matchwrap imgmode"><div class="mcol">${picCol}</div><div class="mcol pad">${wordCol}</div></div>`;
 }
+// scramble = เรียงตัวอักษรที่สับให้เป็นคำที่ถูกต้อง (แตะทีละตัว)
+let scrambleState=null;
+function renderScramble(q, box){
+  const ans=q.correct;
+  let letters=shuffle(ans.split(''));
+  if(letters.join('')===ans && ans.length>1){ letters=shuffle(letters); } // กันสุ่มได้คำเดิม
+  scrambleState={ ans, letters, placed:[] };
+  box.innerHTML=`<div class="matchhint">แตะตัวอักษรเรียงให้เป็นคำที่ถูกต้อง 🔤</div>
+    <div class="scslots" id="scSlots"></div>
+    <div class="scbank" id="scBank">${letters.map((ch,i)=>`<button class="sctile" data-i="${i}" onclick="scramTap(${i})">${esc(ch)}</button>`).join('')}</div>
+    <button class="nextbtn checkbtn scramreset" id="scReset" onclick="scramReset()">↺ เริ่มเรียงใหม่</button>`;
+  scramDraw();
+}
+function scramDraw(){
+  const st=scrambleState; const slots=document.getElementById('scSlots'); if(!slots) return;
+  let html='';
+  for(let i=0;i<st.ans.length;i++){
+    const idx=st.placed[i];
+    html+=`<span class="scslot${idx!=null?' filled':''}">${idx!=null?esc(st.letters[idx]):''}</span>`;
+  }
+  slots.innerHTML=html;
+  document.querySelectorAll('#scBank .sctile').forEach(b=>{
+    b.classList.toggle('used', st.placed.includes(+b.dataset.i));
+  });
+}
+function scramTap(i){
+  const st=scrambleState; if(st.placed.includes(i)) return;
+  if(st.placed.length>=st.ans.length) return;
+  st.placed.push(i); scramDraw();
+  if(st.placed.length===st.ans.length){
+    const built=st.placed.map(k=>st.letters[k]).join('');
+    const fb=document.getElementById('quizFb');
+    if(built===st.ans){
+      exam.done[exam.idx]=true; exam.gotOk[exam.idx]=true; exam.answers[exam.idx]=built;
+      document.querySelectorAll('#scBank .sctile').forEach(b=>b.disabled=true);
+      document.querySelectorAll('#scSlots .scslot').forEach(s=>s.classList.add('ok'));
+      addStar(); miniConfetti(); fb.textContent='เรียงถูกต้อง! 🌟'; fb.className='feedback good';
+      if(exam.subj.lang!=='th') readAloud(st.ans, exam.subj.lang);
+      document.getElementById('nextBtn').classList.add('on');
+    } else {
+      fb.textContent='ยังไม่ถูก ลองเรียงใหม่นะ'; fb.className='feedback bad';
+      document.querySelectorAll('#scSlots .scslot').forEach(s=>s.classList.add('bad'));
+      setTimeout(()=>{ st.placed=[]; scramDraw(); fb.textContent=''; fb.className='feedback'; }, 700);
+    }
+  }
+}
+function scramReset(){ if(!scrambleState) return; scrambleState.placed=[]; scramDraw(); const fb=document.getElementById('quizFb'); fb.textContent=''; fb.className='feedback'; }
 function matchTap(side, btn){
   if(btn.classList.contains('matched')) return;
   const st=matchState; const val=btn.dataset.v;
@@ -1474,7 +1545,7 @@ function finishExam(){
   let score=0;
   exam.list.forEach((q,i)=>{
     if(q.type==='write'){ if(exam.parentOk[i]) score++; }
-    else if(q.type==='fill'||q.type==='match'||q.type==='imgmatch'){ if(exam.gotOk[i]) score++; }
+    else if(q.type==='fill'||q.type==='match'||q.type==='imgmatch'||q.type==='scramble'){ if(exam.gotOk[i]) score++; }
     else if(exam.answers[i]===q.correct) score++;
   });
   const pct=Math.round(score/total*100);
@@ -1524,6 +1595,12 @@ function finishExam(){
       return `<div class="rev${ok?'':' bad'}">
         <div class="rq">${ok?'✅':'⭕'} ข้อ ${i+1}. ${esc(q.q)}</div>
         <div class="ra">✓ พืชในข้อนี้: ${wordsTxt}</div></div>`;
+    }
+    if(q.type==='scramble'){
+      const ok=exam.gotOk[i]===true;
+      return `<div class="rev${ok?'':' bad'}">
+        <div class="rq">${ok?'✅':'⭕'} ข้อ ${i+1}. ${esc(q.q)}</div>
+        <div class="ra">✓ คำที่ถูก: ${esc(q.correct)}</div></div>`;
     }
     const ok=exam.answers[i]===q.correct;
     const yours = ok ? '' : `<div class="yours">✗ คำตอบของหนู: ${exam.answers[i]||'—'}</div>`;
