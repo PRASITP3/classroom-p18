@@ -744,6 +744,16 @@ const SUBJECTS = [
         {q:'นี่คือพืชอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'grass',        a:'Grass',         x:['Hibiscus','Sunflower','Morning glory','Banana','Papaya','Mango','Coconut','Cactus']},
         {q:'นี่คือพืชอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'cactus',       a:'Cactus',        x:['Hibiscus','Sunflower','Morning glory','Banana','Papaya','Mango','Coconut','Grass']},
       ]},
+      { id:'plants-living-char', name:'ลักษณะของสิ่งมีชีวิต', group:'บทที่ 1 · Plants 🌳', emoji:'🌱', desc:'Characteristics of Living Things · สิ่งมีชีวิตทำอะไรได้บ้าง (8 ข้อ)', color:'linear-gradient(135deg,#41C9A0,#2FB58C)', q:[
+        {q:'สิ่งมีชีวิตต้องการสิ่งใดเพื่ออยู่รอด? (Living things need…)', a:'Food, air, water', x:['Toys','Money','A TV']},
+        {q:'ข้อใดเป็นลักษณะของสิ่งมีชีวิต?', a:'Breathe · หายใจ', x:['ทำจากพลาสติก','ต้องเสียบปลั๊ก','ไม่โตขึ้น']},
+        {q:'เมื่อเวลาผ่านไป สิ่งมีชีวิตจะ…?', a:'Grow · เติบโต', x:['ตัวเท่าเดิมตลอด','ละลายหายไป','กลายเป็นหิน']},
+        {q:'สิ่งมีชีวิตสร้างลูกหลานได้ เรียกว่า?', a:'Reproduce · สืบพันธุ์', x:['Recycle','Repair','Restart']},
+        {q:'สิ่งมีชีวิตเคลื่อนที่แบบใด?', a:'Move by themselves · เคลื่อนที่เอง', x:['ต้องมีคนเข็น','ขยับเองไม่ได้','ต้องใช้รีโมท']},
+        {q:'ต้นไม้กินอาหาร หายใจ และเติบโตได้ → ต้นไม้เป็น?', a:'สิ่งมีชีวิต (Living)', x:['สิ่งไม่มีชีวิต (Non-living)']},
+        {q:'ก้อนหินไม่กินอาหาร ไม่หายใจ ไม่โต → ก้อนหินเป็น?', a:'สิ่งไม่มีชีวิต (Non-living)', x:['สิ่งมีชีวิต (Living)']},
+        {q:'สิ่งมีชีวิตมีลักษณะสำคัญกี่ข้อ (ตามที่เรียน)?', a:'5', x:['3','4','6']},
+      ]},
       { id:'plants-spell', name:'เกมสะกดคำ (พืช)', emoji:'⌨️', desc:'ดูรูปพืช แล้วสะกดชื่อเป็นภาษาอังกฤษ (ครบ 9 ชนิด)', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', q:[
         {type:'fill', q:'สะกดชื่อพืชนี้เป็นภาษาอังกฤษ', pic:'banana', a:'banana', ph:'พิมพ์ (a–z)'},
         {type:'fill', q:'สะกดชื่อพืชนี้เป็นภาษาอังกฤษ', pic:'mango', a:'mango', ph:'พิมพ์ (a–z)'},
@@ -1434,7 +1444,7 @@ function renderQuestion(){
     // โชว์ชื่อใต้รูป ยกเว้นเกมที่ต้องทายชื่อ/สะกดคำ (กันเฉลย)
     const first=(p.en||'').split(/[\s\/]+/)[0];
     const naming=(q.type==='fill'||q.type==='write'||q.type==='scramble')||(q.choices&&(q.choices.includes(p.en)||q.choices.includes(first)))||(q.correct===p.en);
-    const cap=(!naming&&p.en)?`<span class="qcap">${esc(p.en)}${p.th?' · '+esc(p.th):''}</span>`:'';
+    const cap=(!naming&&p.en)?`<span class="qcap">${esc(p.en)}</span>`:'';
     picHtml=`<span class="qpic">${plantVisual(q.pic)}</span>${cap}`;
   }
   document.getElementById('qtext').innerHTML=picHtml+(q.big?`<span class="big">${q.big}</span>`:'')+q.q;
