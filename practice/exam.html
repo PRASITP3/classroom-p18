@@ -412,9 +412,14 @@ const PLANTS = {
   chair:{ en:'Chair', th:'เก้าอี้' }, pencil:{ en:'Pencil', th:'ดินสอ' }, pen:{ en:'Pen', th:'ปากกา' },
   ball:{ en:'Ball', th:'ลูกบอล' }, eraser:{ en:'Eraser', th:'ยางลบ' }, ruler:{ en:'Ruler', th:'ไม้บรรทัด' },
   table:{ en:'Table', th:'โต๊ะ' }, box:{ en:'Box', th:'กล่อง' },
+  /* สัตว์ (เกมตั้งชื่อสัตว์) — รูปอยู่ที่ img/things/ */
+  bird:{ en:'Bird', th:'นก' }, frog:{ en:'Frog', th:'กบ' }, monkey:{ en:'Monkey', th:'ลิง' },
+  deer:{ en:'Deer', th:'กวาง' }, dog:{ en:'Dog', th:'สุนัข' }, rat:{ en:'Rat', th:'หนู' },
+  lion:{ en:'Lion', th:'สิงโต' }, ant:{ en:'Ant', th:'มด' }, goldfish:{ en:'Goldfish', th:'ปลาทอง' },
 };
 // รูปจริง: img/things/<key>.png สำหรับสัตว์+สิ่งของ, ที่เหลือ img/plants/<key>.png
-['panda','crab','cat','elephant','worm','chair','pencil','pen','ball','eraser','ruler','table','box']
+['panda','crab','cat','elephant','worm','chair','pencil','pen','ball','eraser','ruler','table','box',
+ 'bird','frog','monkey','deer','dog','rat','lion','ant','goldfish']
   .forEach(k=>{ if(PLANTS[k]) PLANTS[k].img='img/things/'+k+'.png'; });
 // ถ้ามีไฟล์รูปจริง (เช่น สร้างด้วย Nano Banana) วางไว้ที่ practice/img/plants/<key>.png
 // เกมจะใช้รูปจริงแทน SVG อัตโนมัติ; ถ้าไม่มีไฟล์ จะตกมาใช้ SVG เดิมเป็นตัวสำรอง
@@ -633,6 +638,17 @@ const SUBJECTS = [
         {q:'Which part of a plant is under the ground?', a:'root', x:['leaf','flower','fruit']},
         {q:'Which animal can fly?', a:'🐦 bird', x:['🐟 fish','🐘 elephant','🐍 snake']},
         {q:'A baby dog is called a…', a:'puppy', x:['kitten','calf','chick']},
+      ]},
+      { id:'animals-name', name:'ดูรูป เลือกชื่อสัตว์', emoji:'🦁', desc:'Name the animals · ดูรูปสัตว์เลือกชื่ออังกฤษ (9 ข้อ)', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', q:[
+        {q:'สัตว์นี้เรียกว่าอะไร? (Name this animal)', pic:'bird',     a:'Bird',     x:['Frog','Monkey','Deer','Dog','Rat','Lion','Ant','Goldfish']},
+        {q:'สัตว์นี้เรียกว่าอะไร? (Name this animal)', pic:'frog',     a:'Frog',     x:['Bird','Monkey','Deer','Dog','Rat','Lion','Ant','Goldfish']},
+        {q:'สัตว์นี้เรียกว่าอะไร? (Name this animal)', pic:'monkey',   a:'Monkey',   x:['Bird','Frog','Deer','Dog','Rat','Lion','Ant','Goldfish']},
+        {q:'สัตว์นี้เรียกว่าอะไร? (Name this animal)', pic:'deer',     a:'Deer',     x:['Bird','Frog','Monkey','Dog','Rat','Lion','Ant','Goldfish']},
+        {q:'สัตว์นี้เรียกว่าอะไร? (Name this animal)', pic:'dog',      a:'Dog',      x:['Bird','Frog','Monkey','Deer','Rat','Lion','Ant','Goldfish']},
+        {q:'สัตว์นี้เรียกว่าอะไร? (Name this animal)', pic:'rat',      a:'Rat',      x:['Bird','Frog','Monkey','Deer','Dog','Lion','Ant','Goldfish']},
+        {q:'สัตว์นี้เรียกว่าอะไร? (Name this animal)', pic:'lion',     a:'Lion',     x:['Bird','Frog','Monkey','Deer','Dog','Rat','Ant','Goldfish']},
+        {q:'สัตว์นี้เรียกว่าอะไร? (Name this animal)', pic:'ant',      a:'Ant',      x:['Bird','Frog','Monkey','Deer','Dog','Rat','Lion','Goldfish']},
+        {q:'สัตว์นี้เรียกว่าอะไร? (Name this animal)', pic:'goldfish', a:'Goldfish', x:['Bird','Frog','Monkey','Deer','Dog','Rat','Lion','Ant']},
       ]},
       { id:'plants-match', name:'ดูรูป เลือกชื่อพืช', emoji:'🌿', desc:'Name these plants · ดูรูปแล้วเลือกชื่ออังกฤษ (9 ข้อ)', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
         {q:'นี่คือต้นอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'banana',    a:'Banana',    x:['Mango','Cactus','Coconut','Sunflower','Hibiscus','Pineapple','Rose','Papaya']},
