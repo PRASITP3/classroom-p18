@@ -420,6 +420,7 @@ const PLANTS = {
   fern:{ en:'Fern', th:'เฟิร์น' },
   fruit:{ en:'Fruit', th:'ผล' },
   seed:{ en:'Seed', th:'เมล็ด' },
+  morningglory:{ en:'Morning glory', th:'ผักบุ้ง/ลำโพง' },
   /* สัตว์+สิ่งของ (เกมสิ่งมีชีวิต/ไม่มีชีวิต) — รูปอยู่ที่ img/things/ */
   panda:{ en:'Panda', th:'แพนด้า' }, crab:{ en:'Crab', th:'ปู' }, cat:{ en:'Cat', th:'แมว' },
   elephant:{ en:'Elephant', th:'ช้าง' }, worm:{ en:'Worm', th:'ไส้เดือน' },
@@ -725,6 +726,17 @@ const SUBJECTS = [
         {q:'นี่คือต้นอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'pineapple', a:'Pineapple', x:['Banana','Mango','Cactus','Coconut','Sunflower','Hibiscus','Rose','Papaya']},
         {q:'นี่คือต้นอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'rose',      a:'Rose',      x:['Banana','Mango','Cactus','Coconut','Sunflower','Hibiscus','Pineapple','Papaya']},
         {q:'นี่คือต้นอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'papaya',    a:'Papaya',    x:['Banana','Mango','Cactus','Coconut','Sunflower','Hibiscus','Pineapple','Rose']},
+      ]},
+      { id:'plants-common', name:'พืชรอบตัว (Common plants)', emoji:'🪴', desc:'Common plants around us · ดูรูปเลือกชื่อ (9 ข้อ)', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
+        {q:'นี่คือพืชอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'hibiscus',     a:'Hibiscus',      x:['Sunflower','Morning glory','Banana','Papaya','Mango','Coconut','Grass','Cactus']},
+        {q:'นี่คือพืชอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'sunflower',    a:'Sunflower',     x:['Hibiscus','Morning glory','Banana','Papaya','Mango','Coconut','Grass','Cactus']},
+        {q:'นี่คือพืชอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'morningglory', a:'Morning glory', x:['Hibiscus','Sunflower','Banana','Papaya','Mango','Coconut','Grass','Cactus']},
+        {q:'นี่คือพืชอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'banana',       a:'Banana',        x:['Hibiscus','Sunflower','Morning glory','Papaya','Mango','Coconut','Grass','Cactus']},
+        {q:'นี่คือพืชอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'papaya',       a:'Papaya',        x:['Hibiscus','Sunflower','Morning glory','Banana','Mango','Coconut','Grass','Cactus']},
+        {q:'นี่คือพืชอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'mango',        a:'Mango',         x:['Hibiscus','Sunflower','Morning glory','Banana','Papaya','Coconut','Grass','Cactus']},
+        {q:'นี่คือพืชอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'coconut',      a:'Coconut',       x:['Hibiscus','Sunflower','Morning glory','Banana','Papaya','Mango','Grass','Cactus']},
+        {q:'นี่คือพืชอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'grass',        a:'Grass',         x:['Hibiscus','Sunflower','Morning glory','Banana','Papaya','Mango','Coconut','Cactus']},
+        {q:'นี่คือพืชอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'cactus',       a:'Cactus',        x:['Hibiscus','Sunflower','Morning glory','Banana','Papaya','Mango','Coconut','Grass']},
       ]},
       { id:'plants-spell', name:'เกมสะกดคำ (พืช)', emoji:'⌨️', desc:'ดูรูปพืช แล้วสะกดชื่อเป็นภาษาอังกฤษ (ครบ 9 ชนิด)', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', q:[
         {type:'fill', q:'สะกดชื่อพืชนี้เป็นภาษาอังกฤษ', pic:'banana', a:'banana', ph:'พิมพ์ (a–z)'},
