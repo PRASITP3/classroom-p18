@@ -461,6 +461,8 @@ const PLANTS = {
   tree:{ en:'Tree', th:'ต้นไม้' }, city:{ en:'City', th:'เมือง' }, library:{ en:'Library', th:'ห้องสมุด' },
   park:{ en:'Park', th:'สวนสาธารณะ' }, house:{ en:'House', th:'บ้าน' }, school:{ en:'School', th:'โรงเรียน' },
   farm:{ en:'Farm', th:'ฟาร์ม' }, point:{ en:'Point', th:'ชี้' }, self:{ en:'Self', th:'ตัวเอง' },
+  /* the แบบเจาะจง — หลายชิ้น+ลูกศรชี้ */
+  spfox:{ en:'Fox' }, spchair:{ en:'Chair' }, sppencil:{ en:'Pencil' }, spelephant:{ en:'Elephant' },
 };
 // รูปจริง: img/things/<key>.png สำหรับสัตว์+สิ่งของ, ที่เหลือ img/plants/<key>.png
 ['panda','crab','cat','elephant','worm','chair','pencil','pen','ball','eraser','ruler','table','box',
@@ -469,7 +471,8 @@ const PLANTS = {
  'tapir','turtle','sheep','goose','whale','seaturtle','seahorse','lizard','camel',
  'tail','fin','beak','horn','wing','mouth','leg','scale','nose']
   .forEach(k=>{ if(PLANTS[k]) PLANTS[k].img='img/things/'+k+'.png'; });
-['fish','alligator','octopus','owl','fox','iguana','orange','apple','icecream','egg','broccoli','sandwich','dish','umbrella','airplane','guitar','arrow','book','phone','bus','bike','desk','king','boy','girl','man','teacher','woman','police','doctor','person','sun','church','sea','earth','sky','tree','city','library','park','house','school','farm','point','self']
+['fish','alligator','octopus','owl','fox','iguana','orange','apple','icecream','egg','broccoli','sandwich','dish','umbrella','airplane','guitar','arrow','book','phone','bus','bike','desk','king','boy','girl','man','teacher','woman','police','doctor','person','sun','church','sea','earth','sky','tree','city','library','park','house','school','farm','point','self',
+ 'spfox','spchair','sppencil','spelephant']
   .forEach(k=>{ if(PLANTS[k]) PLANTS[k].img='img/grammar/'+k+'.png'; });
 // ถ้ามีไฟล์รูปจริง (เช่น สร้างด้วย Nano Banana) วางไว้ที่ practice/img/plants/<key>.png
 // เกมจะใช้รูปจริงแทน SVG อัตโนมัติ; ถ้าไม่มีไฟล์ จะตกมาใช้ SVG เดิมเป็นตัวสำรอง
@@ -946,11 +949,11 @@ const SUBJECTS = [
         {q:'___ alligator lives in the river.',    a:'An', x:['A']},
       ]},
       { id:'article-fix', name:'แก้ a / an ในประโยค (C)', group:'บทที่ 2 · A / An 🅰️', emoji:'🛠️', desc:'Rewrite the sentences correctly · เลือก a/an ให้ถูก', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', q:[
-        {q:'แก้ให้ถูก:  She eats ___ egg.',            a:'an', x:['a']},
-        {q:'แก้ให้ถูก:  They ride in ___ airplane.',   a:'an', x:['a']},
-        {q:'แก้ให้ถูก:  He has ___ dog.',              a:'a',  x:['an']},
-        {q:'แก้ให้ถูก:  The squirrel has ___ nut.',    a:'a',  x:['an']},
-        {q:'แก้ให้ถูก:  It is ___ birthday card.',     a:'a',  x:['an']},
+        {q:'ประโยคนี้ผิด เลือกคำที่ถูก:  "She eats a egg."',          a:'an', x:['a']},
+        {q:'ประโยคนี้ผิด เลือกคำที่ถูก:  "They ride in a airplane."', a:'an', x:['a']},
+        {q:'ประโยคนี้ผิด เลือกคำที่ถูก:  "He has an dog."',           a:'a',  x:['an']},
+        {q:'ประโยคนี้ผิด เลือกคำที่ถูก:  "The squirrel has an nut."', a:'a',  x:['an']},
+        {q:'ประโยคนี้ผิด เลือกคำที่ถูก:  "It is an birthday card."',  a:'a',  x:['an']},
       ]},
       { id:'article-sort', name:'a หรือ an? จัดคำ (D)', group:'บทที่ 2 · A / An 🅰️', emoji:'🗂️', desc:'A+Consonant / An+Vowel · อ่านคำเลือกคำนำหน้า', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
         {q:'"boy" ใช้ a หรือ an?', a:'a', x:['an']},
@@ -993,26 +996,29 @@ const SUBJECTS = [
         {q:'___ arrow',           pic:'arrow', a:'an',  x:['a','the']},
       ]},
       { id:'article-the-fix', name:'แก้ a / an / the ในประโยค (C)', group:'บทที่ 3 · The 📗', emoji:'🛠️', desc:'Rewrite the sentences correctly', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', q:[
-        {q:'แก้ให้ถูก:  We live on ___ Earth.', a:'the', x:['a','an']},
-        {q:'แก้ให้ถูก:  They swim in ___ sea.', a:'the', x:['a','an']},
-        {q:'แก้ให้ถูก:  ___ sky is blue.',       a:'The', x:['A','An']},
-        {q:'แก้ให้ถูก:  I have ___ cat.',        a:'a',   x:['an','the']},
-        {q:'แก้ให้ถูก:  There is ___ iguana.',   a:'an',  x:['a','the']},
-        {q:'แก้ให้ถูก:  ___ sun is very hot.',   a:'The', x:['A','An']},
+        {q:'ประโยคนี้ผิด เลือกคำที่ถูก:  "We live on a Earth."', a:'the', x:['a','an']},
+        {q:'ประโยคนี้ผิด เลือกคำที่ถูก:  "They swim in a sea."', a:'the', x:['a','an']},
+        {q:'ประโยคนี้ผิด เลือกคำที่ถูก:  "A sky is blue."',      a:'The', x:['A','An']},
+        {q:'ประโยคนี้ผิด เลือกคำที่ถูก:  "I have an cat."',       a:'a',   x:['an','the']},
+        {q:'ประโยคนี้ผิด เลือกคำที่ถูก:  "There is a iguana."',  a:'an',  x:['a','the']},
+        {q:'ประโยคนี้ผิด เลือกคำที่ถูก:  "A sun is very hot."',  a:'The', x:['A','An']},
       ]},
-      { id:'article-use-sort', name:'จัดกลุ่มการใช้ a/an/the (D)', group:'บทที่ 3 · The 📗', emoji:'🗂️', desc:'A/An=any one · The=only one / specific', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
-        {q:'"a teacher" ใช้แบบไหน?',   a:'a / an (any one)', x:['the (only one)','the (specific)']},
-        {q:'"a desk" ใช้แบบไหน?',      a:'a / an (any one)', x:['the (only one)','the (specific)']},
-        {q:'"a tree" ใช้แบบไหน?',      a:'a / an (any one)', x:['the (only one)','the (specific)']},
-        {q:'"an apple" ใช้แบบไหน?',    a:'a / an (any one)', x:['the (only one)','the (specific)']},
-        {q:'"the moon" ใช้แบบไหน?',    a:'the (only one)',   x:['a / an (any one)','the (specific)']},
-        {q:'"the sky" ใช้แบบไหน?',     a:'the (only one)',   x:['a / an (any one)','the (specific)']},
-        {q:'"the sea" ใช้แบบไหน?',     a:'the (only one)',   x:['a / an (any one)','the (specific)']},
-        {q:'"the Earth" ใช้แบบไหน?',   a:'the (only one)',   x:['a / an (any one)','the (specific)']},
-        {q:'"the fox" ใช้แบบไหน? (ตัวที่พูดถึง)', a:'the (specific)', x:['a / an (any one)','the (only one)']},
-        {q:'"the chair" ใช้แบบไหน? (ตัวที่เจาะจง)', a:'the (specific)', x:['a / an (any one)','the (only one)']},
-        {q:'"the pencil" ใช้แบบไหน? (แท่งที่เจาะจง)', a:'the (specific)', x:['a / an (any one)','the (only one)']},
-        {q:'"the elephant" ใช้แบบไหน? (ตัวที่เจาะจง)', a:'the (specific)', x:['a / an (any one)','the (only one)']},
+      { id:'article-use-sort', name:'เลือก a/an/the จากรูป (D)', group:'บทที่ 3 · The 📗', emoji:'🗂️', desc:'A/An=สิ่งใดก็ได้ · The=มีเดียว/ตัวที่ลูกศรชี้', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
+        /* a/an = สิ่งใดก็ได้ (รูปเดี่ยว) */
+        {q:'___ teacher',  pic:'teacher', a:'a',  x:['an','the']},
+        {q:'___ desk',     pic:'desk',    a:'a',  x:['an','the']},
+        {q:'___ tree',     pic:'tree',    a:'a',  x:['an','the']},
+        {q:'___ apple',    pic:'apple',   a:'an', x:['a','the']},
+        /* the = สิ่งที่มีเดียว */
+        {q:'___ sun',      pic:'sun',     a:'the', x:['a','an']},
+        {q:'___ sky',      pic:'sky',     a:'the', x:['a','an']},
+        {q:'___ sea',      pic:'sea',     a:'the', x:['a','an']},
+        {q:'___ Earth',    pic:'earth',   a:'the', x:['a','an']},
+        /* the = ตัวที่เจาะจง (ลูกศรชี้ 1 ใน 3) */
+        {q:'___ fox  (ตัวที่ลูกศรชี้)',      pic:'spfox',      a:'the', x:['a','an']},
+        {q:'___ chair  (ตัวที่ลูกศรชี้)',    pic:'spchair',    a:'the', x:['a','an']},
+        {q:'___ pencil  (แท่งที่ลูกศรชี้)',  pic:'sppencil',   a:'the', x:['a','an']},
+        {q:'___ elephant  (ตัวที่ลูกศรชี้)', pic:'spelephant', a:'the', x:['a','an']},
       ]},
       { id:'u4', name:'พหูพจน์ (Plurals)', group:'บทที่ 4 · Plural Nouns ➕', emoji:'➕', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
         /* พหูพจน์ที่ถูกต้องคือข้อใด? (4 ตัวเลือก) */
