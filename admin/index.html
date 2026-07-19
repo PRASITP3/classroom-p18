@@ -189,6 +189,13 @@ function render(students, logins, scores){
       <td class="num ${scoreClass(s.score,s.total)}">${s.score}/${s.total}</td></tr>`).join('')
     || '<tr><td colspan="4" class="empty">ยังไม่มีการเล่น</td></tr>';
 
+  /* เข้าระบบล่าสุด (login) — รวมคนที่ login แต่ยังไม่ได้เล่นเกม */
+  const recentLogins = logins.slice(0,25).map(l=>`
+    <tr><td class="muted">${thaiTime(l.created_at)}</td>
+      <td><span class="name">${esc(nameOf(l.student_id))}</span> <span class="muted">#${numOf(l.student_id)}</span></td>
+      <td>${playIds.has(l.student_id)?'<span class="pill">เล่นเกมแล้ว</span>':'<span class="muted">ยังไม่ได้เล่นเกม</span>'}</td></tr>`).join('')
+    || '<tr><td colspan="3" class="empty">ยังไม่มีการเข้าระบบ</td></tr>';
+
   /* สรุปรายคน (คนที่เคยเล่น) */
   const perStu={};
   scores.forEach(s=>{ const st=(perStu[s.student_id]=perStu[s.student_id]||{plays:0,exam:0,subj:new Set(),last:s.created_at});
@@ -215,7 +222,12 @@ function render(students, logins, scores){
       <thead><tr><th>วิชา</th><th class="num">เล่น (ครั้ง)</th><th></th><th class="num">จำนวนคน</th><th class="num">คะแนนเฉลี่ย</th></tr></thead>
       <tbody>${subjRows}</tbody></table></div>
 
-    <div class="sec">🕒 กิจกรรมล่าสุด</div>
+    <div class="sec">🔑 เข้าระบบล่าสุด (login)</div>
+    <div class="card"><table>
+      <thead><tr><th>เวลา (ไทย)</th><th>นักเรียน</th><th>สถานะ</th></tr></thead>
+      <tbody>${recentLogins}</tbody></table></div>
+
+    <div class="sec">🕒 กิจกรรมล่าสุด (เล่นเกม)</div>
     <div class="card"><table>
       <thead><tr><th>เวลา (ไทย)</th><th>นักเรียน</th><th>เล่นอะไร</th><th class="num">คะแนน</th></tr></thead>
       <tbody>${recent}</tbody></table></div>
