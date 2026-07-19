@@ -123,15 +123,15 @@
   .rev .yours{font-weight:700; font-size:.88rem; color:var(--bad); margin-top:2px;}
 
   /* ---------- WRITE (พิมพ์เอง + คีย์บอร์ด a–z) ---------- */
-  .writewrap{display:flex; flex-direction:column; gap:12px; margin-top:6px;}
+  .writewrap{display:flex; flex-direction:column; gap:12px; margin-top:6px; grid-column:1 / -1;}
   .writebox{min-height:58px; border:3px solid #E7EEF4; border-radius:16px; background:#FAFCFF; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.7rem; color:var(--ink); padding:8px 12px; letter-spacing:1px; word-break:break-word;}
   .writebox .ph{color:#AEBDCB; font-weight:700; font-size:1.02rem; letter-spacing:0;}
   .writebox .caret{display:inline-block; width:3px; height:1.5rem; background:var(--sky); margin-left:2px; animation:blink 1s step-end infinite;}
   @keyframes blink{50%{opacity:0;}}
-  .kbd{display:grid; grid-template-columns:repeat(7,1fr); gap:7px;}
-  .kbd .key{aspect-ratio:1/1; border-radius:12px; border:3px solid #E7EEF4; background:#fff; font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.3rem; cursor:pointer; color:var(--ink); display:flex; align-items:center; justify-content:center;}
-  .kbd .key:active{transform:scale(.92);}
-  .kbd .kctrl{aspect-ratio:auto; font-family:'Sarabun',sans-serif; font-weight:800; font-size:.92rem; background:#EEF4FB; color:var(--sky);}
+  .kbd{display:grid; grid-template-columns:repeat(7,1fr); gap:8px;}
+  .kbd .key{min-height:clamp(54px,13.5vw,74px); border-radius:14px; border:3px solid #E7EEF4; background:#fff; font-family:'Fredoka',sans-serif; font-weight:700; font-size:clamp(1.5rem,6vw,2.1rem); cursor:pointer; color:var(--ink); display:flex; align-items:center; justify-content:center; box-shadow:0 3px 0 rgba(39,56,74,.10);}
+  .kbd .key:active{transform:translateY(2px); box-shadow:none;}
+  .kbd .kctrl{min-height:clamp(48px,11vw,62px); font-family:'Sarabun',sans-serif; font-weight:800; font-size:1.05rem; background:#EEF4FB; color:var(--sky); box-shadow:0 3px 0 rgba(63,169,245,.15);}
   .parentbar{border:2px dashed #E0C878; background:#FFFBEE; border-radius:16px; padding:12px;}
   .parentbar.hidden{display:none;}
   .parentbar .plabel{font-weight:800; color:#9A7B1F; font-size:.92rem; margin-bottom:9px; text-align:center;}
