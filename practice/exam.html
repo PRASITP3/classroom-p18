@@ -433,11 +433,15 @@ const PLANTS = {
   tiger:{ en:'Tiger', th:'เสือ' }, chicken:{ en:'Chicken', th:'ไก่' }, cow:{ en:'Cow', th:'วัว' },
   grasshopper:{ en:'Grasshopper', th:'ตั๊กแตน' }, goat:{ en:'Goat', th:'แพะ' },
   horse:{ en:'Horse', th:'ม้า' }, spider:{ en:'Spider', th:'แมงมุม' },
+  tapir:{ en:'Tapir', th:'สมเสร็จ' }, turtle:{ en:'Turtle', th:'เต่า' }, sheep:{ en:'Sheep', th:'แกะ' },
+  goose:{ en:'Goose', th:'ห่าน' }, whale:{ en:'Whale', th:'วาฬ' }, seaturtle:{ en:'Sea turtle', th:'เต่าทะเล' },
+  seahorse:{ en:'Seahorse', th:'ม้าน้ำ' }, lizard:{ en:'Lizard', th:'กิ้งก่า' }, camel:{ en:'Camel', th:'อูฐ' },
 };
 // รูปจริง: img/things/<key>.png สำหรับสัตว์+สิ่งของ, ที่เหลือ img/plants/<key>.png
 ['panda','crab','cat','elephant','worm','chair','pencil','pen','ball','eraser','ruler','table','box',
  'bird','frog','monkey','deer','dog','rat','lion','ant','goldfish',
- 'tiger','chicken','cow','grasshopper','goat','horse','spider']
+ 'tiger','chicken','cow','grasshopper','goat','horse','spider',
+ 'tapir','turtle','sheep','goose','whale','seaturtle','seahorse','lizard','camel']
   .forEach(k=>{ if(PLANTS[k]) PLANTS[k].img='img/things/'+k+'.png'; });
 // ถ้ามีไฟล์รูปจริง (เช่น สร้างด้วย Nano Banana) วางไว้ที่ practice/img/plants/<key>.png
 // เกมจะใช้รูปจริงแทน SVG อัตโนมัติ; ถ้าไม่มีไฟล์ จะตกมาใช้ SVG เดิมเป็นตัวสำรอง
@@ -677,6 +681,23 @@ const SUBJECTS = [
         {type:'fill', q:'สะกดชื่อสัตว์นี้เป็นภาษาอังกฤษ', pic:'goat',        a:'goat', ph:'พิมพ์ (a–z)'},
         {type:'fill', q:'สะกดชื่อสัตว์นี้เป็นภาษาอังกฤษ', pic:'horse',       a:'horse', ph:'พิมพ์ (a–z)'},
         {type:'fill', q:'สะกดชื่อสัตว์นี้เป็นภาษาอังกฤษ', pic:'spider',      a:'spider', ph:'พิมพ์ (a–z)'},
+      ]},
+      { id:'animals-habitat', name:'สัตว์อยู่ที่ไหน (habitat)', emoji:'🌍', desc:'Where do animals live? · ดูรูปเลือกที่อยู่ (15 ข้อ)', color:'linear-gradient(135deg,#5C9DF5,#3B7DE0)', q:[
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'deer',      a:'Forest', x:['Farm','Pond','Sea','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'tiger',     a:'Forest', x:['Farm','Pond','Sea','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'tapir',     a:'Forest', x:['Farm','Pond','Sea','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'frog',      a:'Pond',   x:['Forest','Farm','Sea','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'goldfish',  a:'Pond',   x:['Forest','Farm','Sea','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'turtle',    a:'Pond',   x:['Forest','Farm','Sea','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'horse',     a:'Farm',   x:['Forest','Pond','Sea','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'cow',       a:'Farm',   x:['Forest','Pond','Sea','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'sheep',     a:'Farm',   x:['Forest','Pond','Sea','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'goose',     a:'Farm',   x:['Forest','Pond','Sea','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'whale',     a:'Sea',    x:['Forest','Farm','Pond','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'seaturtle', a:'Sea',    x:['Forest','Farm','Pond','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'seahorse',  a:'Sea',    x:['Forest','Farm','Pond','Desert']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'lizard',    a:'Desert', x:['Forest','Farm','Pond','Sea']},
+        {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'camel',     a:'Desert', x:['Forest','Farm','Pond','Sea']},
       ]},
       { id:'plants-match', name:'ดูรูป เลือกชื่อพืช', emoji:'🌿', desc:'Name these plants · ดูรูปแล้วเลือกชื่ออังกฤษ (9 ข้อ)', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
         {q:'นี่คือต้นอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'banana',    a:'Banana',    x:['Mango','Cactus','Coconut','Sunflower','Hibiscus','Pineapple','Rose','Papaya']},
