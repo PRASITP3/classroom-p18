@@ -639,11 +639,6 @@ const SUBJECTS = [
     id:'sci-ep', group:'วิทยาศาสตร์', name:'SCI', sub:'Science (EP)', teacher:'Mr. Baguinang',
     emoji:'🧪', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', lang:'en', ready:true,
     chapters:[
-      { id:'c1', name:'Unit 1 · Living & Non-living', q:[
-        {q:'Which one is living?', a:'🌳 tree', x:['🪨 rock','🚗 car','✏️ pencil']},
-        {q:'Which one is non-living?', a:'⛰️ mountain', x:['🐶 dog','🌺 flower','🐝 bee']},
-        {q:'What do living things need?', a:'food and water', x:['toys','a TV','shoes']},
-      ]},
       { id:'living-nonliving', name:'สิ่งมีชีวิต / ไม่มีชีวิต', emoji:'🐼', desc:'Living or non-living · ดูรูปเลือกประเภท (13 ข้อ)', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
         {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'panda',    a:'Living',     x:['Non-living']},
         {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'crab',     a:'Living',     x:['Non-living']},
@@ -658,17 +653,6 @@ const SUBJECTS = [
         {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'ruler',    a:'Non-living', x:['Living']},
         {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'table',    a:'Non-living', x:['Living']},
         {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'box',      a:'Non-living', x:['Living']},
-      ]},
-      { id:'c2', name:'Unit 2 · My Body & Senses', q:[
-        {q:'We see with our…', a:'👁️ eyes', x:['👂 ears','👃 nose','✋ hands']},
-        {q:'We smell with our…', a:'👃 nose', x:['👅 tongue','👁️ eyes','👂 ears']},
-        {q:'We hear with our…', a:'👂 ears', x:['👃 nose','👅 tongue','👁️ eyes']},
-        {q:'How many senses do we have?', a:'5', x:['3','4','6']},
-      ]},
-      { id:'c3', name:'Unit 3 · Plants & Animals', q:[
-        {q:'Which part of a plant is under the ground?', a:'root', x:['leaf','flower','fruit']},
-        {q:'Which animal can fly?', a:'🐦 bird', x:['🐟 fish','🐘 elephant','🐍 snake']},
-        {q:'A baby dog is called a…', a:'puppy', x:['kitten','calf','chick']},
       ]},
       { id:'animals-name', name:'ดูรูป เลือกชื่อสัตว์', emoji:'🦁', desc:'Name the animals · ดูรูปสัตว์เลือกชื่ออังกฤษ (9 ข้อ)', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', q:[
         {q:'สัตว์นี้เรียกว่าอะไร? (Name this animal)', pic:'bird',     a:'Bird',     x:['Frog','Monkey','Deer','Dog','Rat','Lion','Ant','Goldfish']},
@@ -816,7 +800,6 @@ const SUBJECTS = [
         {type:'scramble', q:'เรียงตัวอักษรให้เป็นชื่อส่วนพืช', pic:'stem',   a:'stem'},
         {type:'scramble', q:'เรียงตัวอักษรให้เป็นชื่อส่วนพืช', pic:'root',   a:'root'},
       ]},
-      { id:'c4', name:'Unit 4 · (เพิ่มภายหลัง)', ready:false },
     ],
   },
 
@@ -1296,16 +1279,24 @@ function renderChapters(subj){
       <span><span class="t">รวมทุกบท</span><br><span class="d">สุ่ม 50% จากทุกบท · สุ่มใหม่ทุกครั้ง</span>
       <br><span class="meta">${half} ข้อ (จาก ${allQ.length})</span></span></button>`;
   }
-  // การ์ดแต่ละบท
-  html+=(subj.chapters||[]).map(c=>{
-    if(c.ready===false || !c.q || !c.q.length){
-      return `<div class="scard soon"><span class="ic">📄</span>
-        <span><span class="t">${c.name}</span><br><span class="meta">รอเพิ่มข้อมูล</span></span></div>`;
-    }
-    return `<button class="scard chip-arrow" style="background:${subj.color}" onclick="startChapter('${subj.id}','${c.id}')">
-      <span class="ic">📘</span>
-      <span><span class="t">${c.name}</span><br><span class="meta">${c.q.length} ข้อ</span></span></button>`;
-  }).join('');
+  // การ์ดแต่ละบท — จัดกลุ่มตาม group (ถ้ามี) แล้วเรียงชื่อกลุ่ม (บทที่ 1 มาก่อน บทที่ 2)
+  const chapterGroup=(c)=> c.group || ((/^animals-/.test(c.id)||c.id==='living-nonliving') ? 'บทที่ 2 · Animals 🐾' : (/^plants-/.test(c.id) ? 'บทที่ 1 · Plants 🌳' : ''));
+  const grouped={}; const gorder=[];
+  (subj.chapters||[]).filter(c=>c.q&&c.q.length&&c.ready!==false).forEach(c=>{
+    const g=chapterGroup(c); if(!(g in grouped)){ grouped[g]=[]; gorder.push(g); } grouped[g].push(c);
+  });
+  gorder.sort();
+  gorder.forEach(g=>{
+    if(g) html+=`<div class="subjgroup"><span>${g}</span><span class="ln"></span></div>`;
+    html+=grouped[g].map(c=>`<button class="scard chip-arrow" style="background:${c.color||subj.color}" onclick="startChapter('${subj.id}','${c.id}')">
+      <span class="ic">${c.emoji||'📘'}</span>
+      <span><span class="t">${c.name}</span>${c.desc?`<br><span class="d">${c.desc}</span>`:''}<br><span class="meta">${c.q.length} ข้อ</span></span></button>`).join('');
+  });
+  // บทที่ยังไม่มีข้อมูล (รอเพิ่มข้อมูล)
+  (subj.chapters||[]).filter(c=>c.ready===false||!c.q||!c.q.length).forEach(c=>{
+    html+=`<div class="scard soon"><span class="ic">📄</span>
+      <span><span class="t">${c.name}</span><br><span class="meta">รอเพิ่มข้อมูล</span></span></div>`;
+  });
   // เกมสนุก — แยกเป็นเกมๆ (เลือกเล่นทีละเกม)
   if(subj.games && subj.games.length){
     html+=`<div class="subjgroup"><span>🎲 เกมสนุก</span><span class="ln"></span></div>`;
