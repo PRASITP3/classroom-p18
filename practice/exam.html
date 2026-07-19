@@ -436,12 +436,17 @@ const PLANTS = {
   tapir:{ en:'Tapir', th:'สมเสร็จ' }, turtle:{ en:'Turtle', th:'เต่า' }, sheep:{ en:'Sheep', th:'แกะ' },
   goose:{ en:'Goose', th:'ห่าน' }, whale:{ en:'Whale', th:'วาฬ' }, seaturtle:{ en:'Sea turtle', th:'เต่าทะเล' },
   seahorse:{ en:'Seahorse', th:'ม้าน้ำ' }, lizard:{ en:'Lizard', th:'กิ้งก่า' }, camel:{ en:'Camel', th:'อูฐ' },
+  /* ส่วนของร่างกายสัตว์ (เกมเรียงตัวอักษร) — รูปมีลูกศรชี้ */
+  tail:{ en:'Tail', th:'หาง' }, fin:{ en:'Fin', th:'ครีบ' }, beak:{ en:'Beak', th:'จะงอยปาก' },
+  horn:{ en:'Horn', th:'เขา' }, wing:{ en:'Wing', th:'ปีก' }, mouth:{ en:'Mouth', th:'ปาก' },
+  leg:{ en:'Leg', th:'ขา' }, scale:{ en:'Scale', th:'เกล็ด' }, nose:{ en:'Nose', th:'จมูก' },
 };
 // รูปจริง: img/things/<key>.png สำหรับสัตว์+สิ่งของ, ที่เหลือ img/plants/<key>.png
 ['panda','crab','cat','elephant','worm','chair','pencil','pen','ball','eraser','ruler','table','box',
  'bird','frog','monkey','deer','dog','rat','lion','ant','goldfish',
  'tiger','chicken','cow','grasshopper','goat','horse','spider',
- 'tapir','turtle','sheep','goose','whale','seaturtle','seahorse','lizard','camel']
+ 'tapir','turtle','sheep','goose','whale','seaturtle','seahorse','lizard','camel',
+ 'tail','fin','beak','horn','wing','mouth','leg','scale','nose']
   .forEach(k=>{ if(PLANTS[k]) PLANTS[k].img='img/things/'+k+'.png'; });
 // ถ้ามีไฟล์รูปจริง (เช่น สร้างด้วย Nano Banana) วางไว้ที่ practice/img/plants/<key>.png
 // เกมจะใช้รูปจริงแทน SVG อัตโนมัติ; ถ้าไม่มีไฟล์ จะตกมาใช้ SVG เดิมเป็นตัวสำรอง
@@ -698,6 +703,17 @@ const SUBJECTS = [
         {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'seahorse',  a:'Sea',    x:['Forest','Farm','Pond','Desert']},
         {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'lizard',    a:'Desert', x:['Forest','Farm','Pond','Sea']},
         {q:'สัตว์นี้อยู่ที่ไหน? (Where does it live?)', pic:'camel',     a:'Desert', x:['Forest','Farm','Pond','Sea']},
+      ]},
+      { id:'animals-parts', name:'เรียงตัวอักษรส่วนของสัตว์', emoji:'🔤', desc:'Rearrange the letters · ดูลูกศรแล้วเรียงชื่อส่วนของสัตว์ (9 ข้อ)', color:'linear-gradient(135deg,#A988E0,#9B6DD6)', q:[
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นส่วนที่ลูกศรชี้', pic:'tail',  a:'tail'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นส่วนที่ลูกศรชี้', pic:'fin',   a:'fin'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นส่วนที่ลูกศรชี้', pic:'beak',  a:'beak'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นส่วนที่ลูกศรชี้', pic:'horn',  a:'horn'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นส่วนที่ลูกศรชี้', pic:'wing',  a:'wing'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นส่วนที่ลูกศรชี้', pic:'mouth', a:'mouth'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นส่วนที่ลูกศรชี้', pic:'leg',   a:'leg'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นส่วนที่ลูกศรชี้', pic:'scale', a:'scale'},
+        {type:'scramble', q:'เรียงตัวอักษรให้เป็นส่วนที่ลูกศรชี้', pic:'nose',  a:'nose'},
       ]},
       { id:'plants-match', name:'ดูรูป เลือกชื่อพืช', emoji:'🌿', desc:'Name these plants · ดูรูปแล้วเลือกชื่ออังกฤษ (9 ข้อ)', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
         {q:'นี่คือต้นอะไร? (เลือกชื่อภาษาอังกฤษ)', pic:'banana',    a:'Banana',    x:['Mango','Cactus','Coconut','Sunflower','Hibiscus','Pineapple','Rose','Papaya']},
