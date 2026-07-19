@@ -1069,7 +1069,7 @@ const SUBJECTS = [
 
 /* วิชาที่ยังไม่มีหนังสือยืนยัน — ซ่อนไว้ก่อน (เก็บดราฟต์ไว้ในโค้ด รอเพิ่มเนื้อหาจริง)
    ปลดล็อกเมื่อพร้อม: ลบ id ออกจากลิสต์นี้ */
-['math-th','math-mental','sci-th','sci-ep','thai','chinese','social','history']
+['math-th','math-mental','sci-th','thai','chinese','social','history']
   .forEach(id=>{ const s=SUBJECTS.find(x=>x.id===id); if(s) s.ready=false; });
 
 /* ============ helpers ============ */
