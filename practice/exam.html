@@ -797,6 +797,10 @@ const SUBJECTS = [
         {q:'ส่วนนี้ทำหน้าที่อะไร? (What is its function?)', pic:'stem',   a:'Transport water',     x:['Absorb water & hold','Make food','Reproduce','Contain seeds']},
         {q:'ส่วนนี้ทำหน้าที่อะไร? (What is its function?)', pic:'peapod', a:'Contain seeds',       x:['Absorb water & hold','Make food','Reproduce','Transport water']},
       ]},
+      { id:'plants-parts-match', name:'จับคู่ส่วนพืช–หน้าที่', emoji:'🧩', desc:'Match the parts to their functions · แตะรูปจับคู่กับหน้าที่', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
+        {type:'imgmatch', q:'จับคู่ส่วนของพืชกับหน้าที่ (อังกฤษ)', pairs:[['root','Absorb & hold'],['leaf','Make food'],['flower','Reproduce'],['stem','Transport water'],['peapod','Contain seeds']]},
+        {type:'imgmatch', q:'จับคู่ส่วนของพืชกับหน้าที่ (ไทย)', pairs:[['root','ดูดน้ำ + ยึดต้น'],['leaf','สร้างอาหาร'],['flower','สืบพันธุ์'],['stem','ลำเลียงน้ำ/อาหาร'],['peapod','มีเมล็ด']]},
+      ]},
       { id:'plants-name', name:'ตั้งชื่อส่วนของพืช', emoji:'🏷️', desc:'Name the parts of the plant · ดูรูปเลือกชื่อส่วน (5 ข้อ)', color:'linear-gradient(135deg,#5C9DF5,#3B7DE0)', q:[
         {q:'ส่วนนี้เรียกว่าอะไร? (Name this part)', pic:'root',   a:'Root',   x:['Leaf','Flower','Stem','Fruit']},
         {q:'ส่วนนี้เรียกว่าอะไร? (Name this part)', pic:'leaf',   a:'Leaf',   x:['Root','Flower','Stem','Fruit']},
@@ -1337,7 +1341,7 @@ function startExam(subj, pool, label, modeId){
     if(item.type==='write') return { type:'write', q:item.q, big:item.big||'', ph:item.ph||'พิมพ์คำตอบ (a–z)' };
     if(item.type==='fill')  return { type:'fill',  q:item.q, big:item.big||'', ph:item.ph||'พิมพ์คำตอบ (a–z)', correct:item.a, pic:item.pic||'' };
     if(item.type==='match') return { type:'match', q:item.q, pairs:item.pairs.slice() };
-    if(item.type==='imgmatch') return { type:'imgmatch', q:item.q, items:item.items.slice() };
+    if(item.type==='imgmatch') return { type:'imgmatch', q:item.q, items:item.items?item.items.slice():null, pairs:item.pairs?item.pairs.map(p=>p.slice()):null };
     if(item.type==='scramble') return { type:'scramble', q:item.q, pic:item.pic||'', correct:item.a };
     return { q:item.q, big:item.big||'', choices:shuffle([item.a, ...item.x]), correct:item.a, pic:item.pic||'' };
   });
@@ -1513,13 +1517,15 @@ function renderMatch(q, box){
 }
 // จับคู่ "รูปพืช (SVG)" กับ "คำศัพท์อังกฤษ" — ใช้ matchTap/matchState ร่วมกับ match ปกติ
 function renderImgMatch(q, box){
-  const keys=q.items;
+  const usePairs=Array.isArray(q.pairs);
+  const keys=usePairs?q.pairs.map(p=>p[0]):q.items;
+  const labelOf=usePairs?Object.fromEntries(q.pairs):null;
   const map={}; keys.forEach(k=>map[k]=k);
   matchState={ map, sel:null, done:0, wrong:0, total:keys.length };
   const rights=shuffle(keys.slice());
   const picCol=keys.map(k=>`<button class="mitem pic" onclick="matchTap('L',this)" data-v="${esc(k)}">${plantVisual(k)}</button>`).join('');
-  const wordCol=rights.map(k=>`<button class="mitem" onclick="matchTap('R',this)" data-v="${esc(k)}">${esc((PLANTS[k]||{}).en||k)}</button>`).join('');
-  box.innerHTML=`<div class="matchhint">แตะรูปพืช แล้วแตะคำที่ถูกต้อง 👉</div>
+  const wordCol=rights.map(k=>`<button class="mitem" onclick="matchTap('R',this)" data-v="${esc(k)}">${esc(usePairs?labelOf[k]:((PLANTS[k]||{}).en||k))}</button>`).join('');
+  box.innerHTML=`<div class="matchhint">แตะรูป แล้วแตะคู่ที่ถูกต้อง 👉</div>
     <div class="matchwrap imgmode"><div class="mcol">${picCol}</div><div class="mcol pad">${wordCol}</div></div>`;
 }
 // scramble = เรียงตัวอักษรที่สับให้เป็นคำที่ถูกต้อง (แตะทีละตัว)
@@ -1654,10 +1660,12 @@ function finishExam(){
     }
     if(q.type==='imgmatch'){
       const ok=exam.gotOk[i]===true;
-      const wordsTxt=q.items.map(k=>esc((PLANTS[k]||{}).en||k)+' ('+esc((PLANTS[k]||{}).th||'')+')').join(' · ');
+      const wordsTxt = q.pairs
+        ? q.pairs.map(p=>esc((PLANTS[p[0]]||{}).en||p[0])+' – '+esc(p[1])).join(' · ')
+        : q.items.map(k=>esc((PLANTS[k]||{}).en||k)+' ('+esc((PLANTS[k]||{}).th||'')+')').join(' · ');
       return `<div class="rev${ok?'':' bad'}">
         <div class="rq">${ok?'✅':'⭕'} ข้อ ${i+1}. ${esc(q.q)}</div>
-        <div class="ra">✓ พืชในข้อนี้: ${wordsTxt}</div></div>`;
+        <div class="ra">✓ คู่ที่ถูก: ${wordsTxt}</div></div>`;
     }
     if(q.type==='scramble'){
       const ok=exam.gotOk[i]===true;
