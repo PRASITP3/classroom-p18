@@ -463,6 +463,8 @@ const PLANTS = {
   farm:{ en:'Farm', th:'ฟาร์ม' }, point:{ en:'Point', th:'ชี้' }, self:{ en:'Self', th:'ตัวเอง' },
   /* the แบบเจาะจง — หลายชิ้น+ลูกศรชี้ */
   spfox:{ en:'Fox' }, spchair:{ en:'Chair' }, sppencil:{ en:'Pencil' }, spelephant:{ en:'Elephant' },
+  /* พหูพจน์ (หลายชิ้น) */
+  owls:{ en:'Owls' }, buses:{ en:'Buses' }, benches:{ en:'Benches' }, dishes:{ en:'Dishes' }, teachers:{ en:'Teachers' }, girls:{ en:'Girls' },
 };
 // รูปจริง: img/things/<key>.png สำหรับสัตว์+สิ่งของ, ที่เหลือ img/plants/<key>.png
 ['panda','crab','cat','elephant','worm','chair','pencil','pen','ball','eraser','ruler','table','box',
@@ -472,7 +474,8 @@ const PLANTS = {
  'tail','fin','beak','horn','wing','mouth','leg','scale','nose']
   .forEach(k=>{ if(PLANTS[k]) PLANTS[k].img='img/things/'+k+'.png'; });
 ['fish','alligator','octopus','owl','fox','iguana','orange','apple','icecream','egg','broccoli','sandwich','dish','umbrella','airplane','guitar','arrow','book','phone','bus','bike','desk','king','boy','girl','man','teacher','woman','police','doctor','person','sun','church','sea','earth','sky','tree','city','library','park','house','school','farm','point','self',
- 'spfox','spchair','sppencil','spelephant']
+ 'spfox','spchair','sppencil','spelephant',
+ 'owls','buses','benches','dishes','teachers','girls']
   .forEach(k=>{ if(PLANTS[k]) PLANTS[k].img='img/grammar/'+k+'.png'; });
 // ถ้ามีไฟล์รูปจริง (เช่น สร้างด้วย Nano Banana) วางไว้ที่ practice/img/plants/<key>.png
 // เกมจะใช้รูปจริงแทน SVG อัตโนมัติ; ถ้าไม่มีไฟล์ จะตกมาใช้ SVG เดิมเป็นตัวสำรอง
@@ -1021,12 +1024,12 @@ const SUBJECTS = [
         {q:'___ elephant  (ตัวที่ลูกศรชี้)', pic:'spelephant', a:'the', x:['a','an']},
       ]},
       { id:'u4', name:'สะกดพหูพจน์ (A)', group:'บทที่ 4 · Plural Nouns ➕', emoji:'⌨️', desc:'Write the correct plural forms · พิมพ์รูปพหูพจน์', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', q:[
-        {type:'fill', q:'เขียนพหูพจน์:  one owl → three ___',      a:'owls',     ph:'พิมพ์ (a–z)'},
-        {type:'fill', q:'เขียนพหูพจน์:  one bus → two ___',        a:'buses',    ph:'พิมพ์ (a–z)'},
-        {type:'fill', q:'เขียนพหูพจน์:  one bench → two ___',      a:'benches',  ph:'พิมพ์ (a–z)'},
-        {type:'fill', q:'เขียนพหูพจน์:  one dish → five ___',      a:'dishes',   ph:'พิมพ์ (a–z)'},
-        {type:'fill', q:'เขียนพหูพจน์:  one teacher → three ___',  a:'teachers', ph:'พิมพ์ (a–z)'},
-        {type:'fill', q:'เขียนพหูพจน์:  one girl → two ___',       a:'girls',    ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์:  owl → ___',      pic:'owls',     a:'owls',     ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์:  bus → ___',      pic:'buses',    a:'buses',    ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์:  bench → ___',    pic:'benches',  a:'benches',  ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์:  dish → ___',     pic:'dishes',   a:'dishes',   ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์:  teacher → ___',  pic:'teachers', a:'teachers', ph:'พิมพ์ (a–z)'},
+        {type:'fill', q:'เขียนพหูพจน์:  girl → ___',     pic:'girls',    a:'girls',    ph:'พิมพ์ (a–z)'},
       ]},
       { id:'plural-fix-b', name:'แก้พหูพจน์ในประโยค (B)', group:'บทที่ 4 · Plural Nouns ➕', emoji:'🛠️', desc:'Rewrite the sentences correctly', color:'linear-gradient(135deg,#5C9DF5,#3B7DE0)', q:[
         {q:'ประโยคนี้ผิด เลือกคำที่ถูก:  "There are five boyes in class."',      a:'boys',     x:['boyes']},
