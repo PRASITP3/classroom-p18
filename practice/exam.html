@@ -849,7 +849,7 @@ const SUBJECTS = [
     id:'grammar', group:'อังกฤษ (EP)', name:'Grammar', sub:'Nouns · Articles · Plurals · Pronouns', teacher:'Teacher JJ',
     emoji:'📖', color:'linear-gradient(135deg,#A988E0,#9B6DD6)', lang:'en', ready:true,
     chapters:[
-      { id:'u1', name:'Unit 1 · Types of Nouns', emoji:'🔠', desc:'People/Places/Things/Animals · ดูรูปเลือกชนิดคำนาม', color:'linear-gradient(135deg,#A988E0,#9B6DD6)', q:[
+      { id:'u1', name:'จำแนกชนิดคำนาม (A)', group:'บทที่ 1 · Types of Nouns 🔠', emoji:'🔠', desc:'People/Places/Things/Animals · ดูรูปเลือกชนิดคำนาม', color:'linear-gradient(135deg,#A988E0,#9B6DD6)', q:[
         /* A. Circle the correct types of nouns (ตามหนังสือ) — ดูรูปจริง เลือกชนิดคำนาม */
         {q:'รูปนี้เป็นคำนามชนิดไหน? (People/Places/Things/Animals)', pic:'fish',     a:'Animals', x:['People','Places','Things']},
         {q:'รูปนี้เป็นคำนามชนิดไหน? (People/Places/Things/Animals)', pic:'broccoli', a:'Things',  x:['People','Places','Animals']},
@@ -869,11 +869,11 @@ const SUBJECTS = [
         {q:'รูปนี้เป็นคำนามชนิดไหน? (People/Places/Things/Animals)', pic:'girl',     a:'People',  x:['Places','Things','Animals']},
         {q:'รูปนี้เป็นคำนามชนิดไหน? (People/Places/Things/Animals)', pic:'ball',     a:'Things',  x:['People','Places','Animals']},
       ]},
-      { id:'noun-match', name:'จับคู่คำนามชนิดเดียวกัน', emoji:'🧩', desc:'Match the same types of nouns (Unit 1)', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
+      { id:'noun-match', name:'จับคู่คำนามชนิดเดียวกัน (B)', group:'บทที่ 1 · Types of Nouns 🔠', emoji:'🧩', desc:'Match the same types of nouns (Unit 1)', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
         {type:'match', q:'จับคู่คำนามชนิดเดียวกัน (ชุดที่ 1)', pairs:[['dog','monkey'],['aunt','sister'],['sea','farm'],['ball','chair']]},
         {type:'match', q:'จับคู่คำนามชนิดเดียวกัน (ชุดที่ 2)', pairs:[['zoo','city'],['Mom','Dad'],['bird','horse'],['flower','table']]},
       ]},
-      { id:'u2', name:'Unit 2 · A / An', q:[
+      { id:'u2', name:'เลือก a / an', group:'บทที่ 2 · A / An 🅰️', emoji:'🅰️', color:'linear-gradient(135deg,#A988E0,#9B6DD6)', q:[
         /* A/B/D. เลือก a หรือ an (4 ตัวเลือก: a / an / the / some) */
         {q:'___ ice cream bar 🍦', a:'an', x:['a','the','some']},
         {q:'___ horse 🐴', a:'a', x:['an','the','some']},
@@ -899,7 +899,7 @@ const SUBJECTS = [
         {q:'___ soccer ball ⚽', a:'a', x:['an','the','some']},
         {q:'___ airplane ✈️', a:'an', x:['a','the','some']},
       ]},
-      { id:'u3', name:'Unit 3 · The', q:[
+      { id:'u3', name:'เลือก the', group:'บทที่ 3 · The 📗', emoji:'📗', color:'linear-gradient(135deg,#5C9DF5,#3B7DE0)', q:[
         /* เลือก a / an / the (4 ตัวเลือก: a / an / the / some) */
         {q:'___ airplane ✈️', a:'an', x:['a','the','some']},
         {q:'___ sky 🌤️ (มีท้องฟ้าเดียว)', a:'the', x:['a','an','some']},
@@ -921,7 +921,7 @@ const SUBJECTS = [
         {q:'___ pencil ✏️ (แท่งที่เจาะจง)', a:'the', x:['a','an','some']},
         {q:'___ elephant 🐘 (ตัวที่เจาะจง)', a:'the', x:['a','an','some']},
       ]},
-      { id:'u4', name:'Unit 4 · Plural Nouns', q:[
+      { id:'u4', name:'พหูพจน์ (Plurals)', group:'บทที่ 4 · Plural Nouns ➕', emoji:'➕', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
         /* พหูพจน์ที่ถูกต้องคือข้อใด? (4 ตัวเลือก) */
         {q:'พหูพจน์ของ "owl" 🦉 คือ?', a:'owls', x:['owles','owlz','owl']},
         {q:'พหูพจน์ของ "bus" 🚌 คือ?', a:'buses', x:['buss','busses','busies']},
@@ -943,7 +943,7 @@ const SUBJECTS = [
         {q:'My friend has five ___!', a:'cats', x:['cates','catz','cat']},
         {q:'There are nine ___ on my street.', a:'houses', x:['houseses','housies','house']},
       ]},
-      { id:'u5', name:'Unit 5 · Subject Pronouns', q:[
+      { id:'u5', name:'สรรพนาม (Pronouns)', group:'บทที่ 5 · Subject Pronouns 👤', emoji:'👤', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', q:[
         /* A. Circle the correct pronoun (4 ตัวเลือก) */
         {q:'👉 ชี้ไปที่เพื่อน ใช้สรรพนามใด?', a:'You', x:['He','She','It']},
         {q:'👨 ผู้ชาย 1 คน ใช้สรรพนามใด?', a:'He', x:['She','It','You']},
@@ -968,13 +968,13 @@ const SUBJECTS = [
     ],
     /* เกมสนุก — แยกเป็นเกมๆ (โผล่เป็นการ์ดแยกในหน้าเลือกบท เลือกเล่นทีละเกม) */
     games:[
-      { id:'match', name:'เกมจับคู่', emoji:'🔗', desc:'ชนิดคำ · พหูพจน์ · สรรพนาม', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
+      { id:'match', name:'เกมจับคู่', group:'เกมรวม 🎲', emoji:'🔗', desc:'ชนิดคำ · พหูพจน์ · สรรพนาม', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
         {type:'match', q:'จับคู่คำที่เป็นชนิดเดียวกัน (คน/สถานที่/สิ่งของ/สัตว์)', pairs:[['dog','monkey'],['aunt','sister'],['sea','farm'],['ball','chair']]},
         {type:'match', q:'จับคู่คำที่เป็นชนิดเดียวกัน', pairs:[['zoo','city'],['Mom','Dad'],['bird','horse'],['flower','table']]},
         {type:'match', q:'จับคู่เอกพจน์กับพหูพจน์', pairs:[['box','boxes'],['dog','dogs'],['bench','benches'],['fox','foxes']]},
         {type:'match', q:'จับคู่คำนามกับสรรพนาม', pairs:[['Sarah','She'],['the dog','It'],['the boy','He'],['my mother','She']]},
       ]},
-      { id:'fill', name:'เกมเติมคำ', emoji:'⌨️', desc:'a/an/the · พหูพจน์ · สรรพนาม', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', q:[
+      { id:'fill', name:'เกมเติมคำ', group:'เกมรวม 🎲', emoji:'⌨️', desc:'a/an/the · พหูพจน์ · สรรพนาม', color:'linear-gradient(135deg,#FFA94D,#F97B3D)', q:[
         {type:'fill', q:'แก้ให้ถูก: "She eats a egg." → She eats ___ egg.', a:'an', ph:'พิมพ์ a หรือ an'},
         {type:'fill', q:'แก้ให้ถูก: "He has an dog." → He has ___ dog.', a:'a', ph:'พิมพ์ a หรือ an'},
         {type:'fill', q:'แก้ให้ถูก: "They ride in a airplane." → in ___ airplane.', a:'an', ph:'พิมพ์ a หรือ an'},
