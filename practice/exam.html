@@ -403,10 +403,19 @@ const PLANTS = {
   flower:{ en:'Flower', th:'ดอก' },
   stem:{ en:'Stem', th:'ลำต้น' },
   peapod:{ en:'Fruit / seeds', th:'ผล-เมล็ด' },
+  /* สัตว์+สิ่งของ (เกมสิ่งมีชีวิต/ไม่มีชีวิต) — รูปอยู่ที่ img/things/ */
+  panda:{ en:'Panda', th:'แพนด้า' }, crab:{ en:'Crab', th:'ปู' }, cat:{ en:'Cat', th:'แมว' },
+  elephant:{ en:'Elephant', th:'ช้าง' }, worm:{ en:'Worm', th:'ไส้เดือน' },
+  chair:{ en:'Chair', th:'เก้าอี้' }, pencil:{ en:'Pencil', th:'ดินสอ' }, pen:{ en:'Pen', th:'ปากกา' },
+  ball:{ en:'Ball', th:'ลูกบอล' }, eraser:{ en:'Eraser', th:'ยางลบ' }, ruler:{ en:'Ruler', th:'ไม้บรรทัด' },
+  table:{ en:'Table', th:'โต๊ะ' }, box:{ en:'Box', th:'กล่อง' },
 };
+// รูปจริง: img/things/<key>.png สำหรับสัตว์+สิ่งของ, ที่เหลือ img/plants/<key>.png
+['panda','crab','cat','elephant','worm','chair','pencil','pen','ball','eraser','ruler','table','box']
+  .forEach(k=>{ if(PLANTS[k]) PLANTS[k].img='img/things/'+k+'.png'; });
 // ถ้ามีไฟล์รูปจริง (เช่น สร้างด้วย Nano Banana) วางไว้ที่ practice/img/plants/<key>.png
 // เกมจะใช้รูปจริงแทน SVG อัตโนมัติ; ถ้าไม่มีไฟล์ จะตกมาใช้ SVG เดิมเป็นตัวสำรอง
-Object.keys(PLANTS).forEach(k=>{ PLANTS[k].img='img/plants/'+k+'.png'; });
+Object.keys(PLANTS).forEach(k=>{ if(!PLANTS[k].img) PLANTS[k].img='img/plants/'+k+'.png'; });
 // คืน HTML ภาพพืช: <img> รูปจริง + SVG สำรอง (ซ่อนไว้ ใช้เมื่อโหลดรูปไม่ได้)
 function plantVisual(key){
   const p=PLANTS[key]; if(!p) return esc(key);
@@ -595,6 +604,21 @@ const SUBJECTS = [
         {q:'Which one is living?', a:'🌳 tree', x:['🪨 rock','🚗 car','✏️ pencil']},
         {q:'Which one is non-living?', a:'⛰️ mountain', x:['🐶 dog','🌺 flower','🐝 bee']},
         {q:'What do living things need?', a:'food and water', x:['toys','a TV','shoes']},
+      ]},
+      { id:'living-nonliving', name:'สิ่งมีชีวิต / ไม่มีชีวิต', emoji:'🐼', desc:'Living or non-living · ดูรูปเลือกประเภท (13 ข้อ)', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'panda',    a:'Living',     x:['Non-living']},
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'crab',     a:'Living',     x:['Non-living']},
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'cat',      a:'Living',     x:['Non-living']},
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'elephant', a:'Living',     x:['Non-living']},
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'worm',     a:'Living',     x:['Non-living']},
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'chair',    a:'Non-living', x:['Living']},
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'pencil',   a:'Non-living', x:['Living']},
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'pen',      a:'Non-living', x:['Living']},
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'ball',     a:'Non-living', x:['Living']},
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'eraser',   a:'Non-living', x:['Living']},
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'ruler',    a:'Non-living', x:['Living']},
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'table',    a:'Non-living', x:['Living']},
+        {q:'สิ่งนี้มีชีวิตหรือไม่? (Living or non-living?)', pic:'box',      a:'Non-living', x:['Living']},
       ]},
       { id:'c2', name:'Unit 2 · My Body & Senses', q:[
         {q:'We see with our…', a:'👁️ eyes', x:['👂 ears','👃 nose','✋ hands']},
