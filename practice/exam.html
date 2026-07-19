@@ -397,6 +397,12 @@ const PLANTS = {
   rubber:{ en:'Rubber tree', th:'ยางพารา' },
   corn:{ en:'Corn', th:'ข้าวโพด' },
   paddy:{ en:'Paddy', th:'ต้นข้าว' },
+  /* ส่วนของพืช (เกมจับคู่ส่วน–หน้าที่) */
+  root:{ en:'Root', th:'ราก' },
+  leaf:{ en:'Leaf', th:'ใบ' },
+  flower:{ en:'Flower', th:'ดอก' },
+  stem:{ en:'Stem', th:'ลำต้น' },
+  peapod:{ en:'Fruit / seeds', th:'ผล-เมล็ด' },
 };
 // ถ้ามีไฟล์รูปจริง (เช่น สร้างด้วย Nano Banana) วางไว้ที่ practice/img/plants/<key>.png
 // เกมจะใช้รูปจริงแทน SVG อัตโนมัติ; ถ้าไม่มีไฟล์ จะตกมาใช้ SVG เดิมเป็นตัวสำรอง
@@ -643,6 +649,13 @@ const SUBJECTS = [
         {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'tomato',   a:'Soft stem',  x:['Woody stem']},
         {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'corn',     a:'Soft stem',  x:['Woody stem']},
         {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'paddy',    a:'Soft stem',  x:['Woody stem']},
+      ]},
+      { id:'plants-parts', name:'ส่วนของพืชทำหน้าที่อะไร', emoji:'🌱', desc:'Match parts to functions · ส่วนพืช→หน้าที่ (5 ข้อ)', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
+        {q:'ส่วนนี้ทำหน้าที่อะไร? (What is its function?)', pic:'root',   a:'Absorb water & hold', x:['Make food','Reproduce','Transport water','Contain seeds']},
+        {q:'ส่วนนี้ทำหน้าที่อะไร? (What is its function?)', pic:'leaf',   a:'Make food',           x:['Absorb water & hold','Reproduce','Transport water','Contain seeds']},
+        {q:'ส่วนนี้ทำหน้าที่อะไร? (What is its function?)', pic:'flower', a:'Reproduce',           x:['Absorb water & hold','Make food','Transport water','Contain seeds']},
+        {q:'ส่วนนี้ทำหน้าที่อะไร? (What is its function?)', pic:'stem',   a:'Transport water',     x:['Absorb water & hold','Make food','Reproduce','Contain seeds']},
+        {q:'ส่วนนี้ทำหน้าที่อะไร? (What is its function?)', pic:'peapod', a:'Contain seeds',       x:['Absorb water & hold','Make food','Reproduce','Transport water']},
       ]},
       { id:'c4', name:'Unit 4 · (เพิ่มภายหลัง)', ready:false },
     ],
