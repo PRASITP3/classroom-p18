@@ -403,6 +403,9 @@ const PLANTS = {
   flower:{ en:'Flower', th:'ดอก' },
   stem:{ en:'Stem', th:'ลำต้น' },
   peapod:{ en:'Fruit / seeds', th:'ผล-เมล็ด' },
+  pine:{ en:'Pine tree', th:'ต้นสน' },
+  grass:{ en:'Grass', th:'หญ้า' },
+  fern:{ en:'Fern', th:'เฟิร์น' },
   /* สัตว์+สิ่งของ (เกมสิ่งมีชีวิต/ไม่มีชีวิต) — รูปอยู่ที่ img/things/ */
   panda:{ en:'Panda', th:'แพนด้า' }, crab:{ en:'Crab', th:'ปู' }, cat:{ en:'Cat', th:'แมว' },
   elephant:{ en:'Elephant', th:'ช้าง' }, worm:{ en:'Worm', th:'ไส้เดือน' },
@@ -664,15 +667,21 @@ const SUBJECTS = [
         {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'cucumber',      a:'On land',    x:['On trees','In deserts','In water','In swamps']},
         {q:'พืชนี้อยู่ที่ไหน? (Where does it live?)', pic:'waterhyacinth', a:'In water',   x:['On land','On trees','In deserts','In swamps']},
       ]},
-      { id:'plants-stem', name:'ลำต้นแข็งหรืออ่อน (woody/soft)', emoji:'🪵', desc:'Woody or soft stem · ดูรูปเลือกชนิดลำต้น (8 ข้อ)', color:'linear-gradient(135deg,#B5834F,#8B5A2B)', q:[
+      { id:'plants-stem', name:'ลำต้นแข็งหรืออ่อน (woody/soft)', emoji:'🪵', desc:'Woody or soft stem · ดูรูปเลือกชนิดลำต้น (14 ข้อ)', color:'linear-gradient(135deg,#B5834F,#8B5A2B)', q:[
         {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'hibiscus', a:'Woody stem', x:['Soft stem']},
         {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'rambutan', a:'Woody stem', x:['Soft stem']},
         {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'mango',    a:'Woody stem', x:['Soft stem']},
         {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'rubber',   a:'Woody stem', x:['Soft stem']},
+        {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'rose',     a:'Woody stem', x:['Soft stem']},
+        {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'pine',     a:'Woody stem', x:['Soft stem']},
         {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'banana',   a:'Soft stem',  x:['Woody stem']},
         {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'tomato',   a:'Soft stem',  x:['Woody stem']},
         {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'corn',     a:'Soft stem',  x:['Woody stem']},
         {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'paddy',    a:'Soft stem',  x:['Woody stem']},
+        {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'cactus',   a:'Soft stem',  x:['Woody stem']},
+        {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'coconut',  a:'Soft stem',  x:['Woody stem']},
+        {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'grass',    a:'Soft stem',  x:['Woody stem']},
+        {q:'ลำต้นของพืชนี้เป็นแบบไหน? (Woody or soft stem?)', pic:'fern',     a:'Soft stem',  x:['Woody stem']},
       ]},
       { id:'plants-parts', name:'ส่วนของพืชทำหน้าที่อะไร', emoji:'🌱', desc:'Match parts to functions · ส่วนพืช→หน้าที่ (5 ข้อ)', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
         {q:'ส่วนนี้ทำหน้าที่อะไร? (What is its function?)', pic:'root',   a:'Absorb water & hold', x:['Make food','Reproduce','Transport water','Contain seeds']},
