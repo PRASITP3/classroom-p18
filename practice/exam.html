@@ -461,6 +461,8 @@ const PLANTS = {
   tree:{ en:'Tree', th:'ต้นไม้' }, city:{ en:'City', th:'เมือง' }, library:{ en:'Library', th:'ห้องสมุด' },
   park:{ en:'Park', th:'สวนสาธารณะ' }, house:{ en:'House', th:'บ้าน' }, school:{ en:'School', th:'โรงเรียน' },
   farm:{ en:'Farm', th:'ฟาร์ม' }, point:{ en:'' }, self:{ en:'' },
+  /* Reading Unit 1 · My Classroom */
+  bookcase:{ en:'Bookcase', th:'ชั้นหนังสือ' }, wastebasket:{ en:'Wastebasket', th:'ถังขยะ' }, backpack:{ en:'Backpack', th:'กระเป๋าเป้' },
   /* the แบบเจาะจง — หลายชิ้น+ลูกศรชี้ */
   spfox:{ en:'Fox' }, spchair:{ en:'Chair' }, sppencil:{ en:'Pencil' }, spelephant:{ en:'Elephant' },
   /* พหูพจน์ (หลายชิ้น) */
@@ -475,7 +477,8 @@ const PLANTS = {
   .forEach(k=>{ if(PLANTS[k]) PLANTS[k].img='img/things/'+k+'.png'; });
 ['fish','alligator','octopus','owl','fox','iguana','orange','apple','icecream','egg','broccoli','sandwich','dish','umbrella','airplane','guitar','arrow','book','phone','bus','bike','desk','king','boy','girl','man','teacher','woman','police','doctor','person','sun','church','sea','earth','sky','tree','city','library','park','house','school','farm','point','self',
  'spfox','spchair','sppencil','spelephant',
- 'owls','buses','benches','dishes','teachers','girls']
+ 'owls','buses','benches','dishes','teachers','girls',
+ 'bookcase','wastebasket','backpack']
   .forEach(k=>{ if(PLANTS[k]) PLANTS[k].img='img/grammar/'+k+'.png'; });
 // ถ้ามีไฟล์รูปจริง (เช่น สร้างด้วย Nano Banana) วางไว้ที่ practice/img/plants/<key>.png
 // เกมจะใช้รูปจริงแทน SVG อัตโนมัติ; ถ้าไม่มีไฟล์ จะตกมาใช้ SVG เดิมเป็นตัวสำรอง
@@ -1090,25 +1093,39 @@ const SUBJECTS = [
     id:'reading', group:'อังกฤษ (EP)', name:'Reading', sub:'อ่านจับใจความ (Get Ready to Read)', teacher:'Teacher Einas',
     emoji:'📕', color:'linear-gradient(135deg,#5C9DF5,#3B7DE0)', lang:'en', ready:true,
     chapters:[
-      { id:'u1', name:'Unit 1 · Ben\'s Picture (My Classroom)', q:[
-        {q:'รูปโรงเรียน 🏫 ตรงกับคำใด?', a:'my school', x:['my classroom','my house','my park']},
-        {q:'รูปห้องนั่งเล่น 🛋️ ตรงกับคำใด?', a:'my living room', x:['my classroom','my school','my kitchen']},
-        {q:'รูปบ้าน 🏠 ตรงกับคำใด?', a:'my house', x:['my school','my zoo','my shop']},
-        {q:'รูปภาพในหนังสือ ช่วยบอกเราว่า…', a:'เรื่องนี้เกี่ยวกับอะไร', x:['ราคาเท่าไร','สีอะไร','ใครวาด']},
+      /* ===== Unit 1 · My Classroom (Get Ready to Read) ===== */
+      { id:'read-u1-vocab', name:'คำศัพท์ห้องเรียน (Key Words)', group:'บทที่ 1 · My Classroom 🏫', emoji:'🎒', desc:'ดูรูปเลือกคำ · desk / bookcase / chair / wastebasket / backpack', color:'linear-gradient(135deg,#5C9DF5,#3B7DE0)', q:[
+        {q:'รูปนี้คืออะไร?', pic:'desk',        a:'Desk',        x:['Chair','Bookcase','Wastebasket']},
+        {q:'รูปนี้คืออะไร?', pic:'bookcase',    a:'Bookcase',    x:['Desk','Wastebasket','Backpack']},
+        {q:'รูปนี้คืออะไร?', pic:'chair',       a:'Chair',       x:['Desk','Bookcase','Wastebasket']},
+        {q:'รูปนี้คืออะไร?', pic:'wastebasket', a:'Wastebasket', x:['Bookcase','Chair','Backpack']},
+        {q:'รูปนี้คืออะไร?', pic:'backpack',    a:'Backpack',    x:['Desk','Chair','Wastebasket']},
+      ]},
+      { id:'read-u1-spell', name:'สะกดคำ (Complete the sentences)', group:'บทที่ 1 · My Classroom 🏫', emoji:'⌨️', desc:'ดูรูป พิมพ์คำให้ถูก (Understand · C)', color:'linear-gradient(135deg,#4ED6B6,#20B39A)', q:[
+        {type:'fill', q:'This is my ___.', pic:'desk',        a:'desk',        ph:'d _ _ _'},
+        {type:'fill', q:'This is my ___.', pic:'chair',       a:'chair',       ph:'c _ _ _ _'},
+        {type:'fill', q:"It's a ___.",     pic:'wastebasket', a:'wastebasket', ph:'w _ _ _ _ _ _ _ _ _'},
+        {type:'fill', q:"It's a ___.",     pic:'bookcase',    a:'bookcase',    ph:'b _ _ _ _ _ _ _'},
+        {type:'fill', q:'This is my ___.', pic:'backpack',    a:'backpack',    ph:'b _ _ _ _ _ _ _'},
+      ]},
+      { id:'read-u1-choose', name:'เลือกคำที่ถูก (Understand)', group:'บทที่ 1 · My Classroom 🏫', emoji:'✅', desc:'ดูรูปเลือกคำที่ถูก + จับใจความ (Understand · B)', color:'linear-gradient(135deg,#A988E0,#9B6DD6)', q:[
+        {q:'Ben has a ___.',            pic:'desk',     a:'Desk',     x:['Poster']},
+        {q:'The classroom has a ___.',  pic:'bookcase', a:'Bookcase', x:['Cupboard']},
+        {q:'Ben has a ___.',            pic:'chair',    a:'Chair',    x:['Toy']},
+        {q:'"No, it isn\'t. It\'s a ___." (not a cupboard)', pic:'bookcase', a:'Bookcase', x:['Desk','Chair','Wastebasket']},
         {q:'เรื่องนี้เกี่ยวกับอะไร? (This is my classroom…)', a:'my classroom', x:['my backpack','my cupboard','my garden']},
-        {q:'เรานั่งบนอะไร? 🪑', a:'chair', x:['desk','bookcase','wastebasket']},
-        {q:'หนังสือเก็บไว้ที่ไหน?', a:'bookcase', x:['chair','wastebasket','desk']},
-        {q:'ทิ้งขยะที่ไหน? 🗑️', a:'wastebasket', x:['desk','chair','bookcase']},
-        {q:'โต๊ะที่เราอ่าน-เขียนหนังสือคือ…', a:'desk', x:['chair','wastebasket','bookcase']},
         {q:'ภาพของ Ben แสดงเรื่องอะไร?', a:"Ben's classroom", x:["Ben's friends","Ben's house","Ben's pet"]},
-        {q:'Ben has a ___.', a:'desk', x:['poster','toy','ball']},
-        {q:'The classroom has a ___.', a:'bookcase', x:['cupboard','garden','pool']},
-        {q:'Ben has a ___.', a:'chair', x:['toy','kite','drum']},
+        {q:'รูปในหนังสือช่วยบอกเราว่า…', a:'เรื่องนี้เกี่ยวกับอะไร', x:['ราคาเท่าไร','สีอะไร','ใครวาด']},
+        {q:'รูปนี้คือ…', pic:'school', a:'my school', x:['my classroom','my house','my park']},
+        {q:'รูปนี้คือ…', pic:'house',  a:'my house',  x:['my school','my classroom','my park']},
+      ]},
+      { id:'read-u1-ask', name:'Is this / Do you have', group:'บทที่ 1 · My Classroom 🏫', emoji:'❓', desc:'เลือกคำถามให้ถูก (Understand · E)', color:'linear-gradient(135deg,#F5A623,#E8850C)', q:[
+        {q:'"___ a chair?" — "No, it isn\'t. It\'s a backpack."', pic:'backpack',    a:'Is this',     x:['Do you have']},
+        {q:'"___ a desk?" — "Yes, I do."',                        pic:'desk',        a:'Do you have', x:['Is this']},
+        {q:'"___ a bookcase?" — "Yes, it is."',                   pic:'bookcase',    a:'Is this',     x:['Do you have']},
+        {q:'"___ a wastebasket?" — "Yes, I do."',                 pic:'wastebasket', a:'Do you have', x:['Is this']},
         {q:'"Is this your desk?" — "Yes, ___."', a:'it is', x:['I do','I am','it has']},
         {q:'"Do you have a backpack?" — "Yes, ___."', a:'I do', x:['it is','I am','it does']},
-        {q:'"Is this a cupboard?" — "No, it is a ___."', a:'bookcase', x:['chair','desk','wastebasket']},
-        {q:'เติมคำถาม (ถามว่ามีโต๊ะไหม): "___ a desk?"', a:'Do you have', x:['Is this','Are you','Do this']},
-        {q:'เติมคำถาม (ชี้ถามว่านี่คือถังขยะไหม): "___ a wastebasket?"', a:'Is this', x:['Do you have','Are you','Have you']},
       ]},
       { id:'u2', name:'Unit 2 · The Pencil Case (Find the Numbers)', q:[
         {q:'How many backpacks does Hugo have?', a:'one', x:['two','three','four']},
